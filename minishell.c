@@ -1,44 +1,5 @@
 #include "minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (0);
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] != s2[i] || !s1[i] || !s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-int	doublecharlen(char **c)
-{
-	int	i;
-
-	i = 0;
-	while (c[i])
-		i++;
-	return (i);
-}
-
-void	freed(char **c)
-{
-	int	i;
-
-	i = 0;
-	while (c[i])
-	{
-		free(c[i]);
-		i++;
-	}
-	free(c);
-}
-
 void exitcommand(char **tmp)
 {
     int i = 0;
@@ -68,20 +29,19 @@ void exitcommand(char **tmp)
         freed(tmp);
         exit(i);
     }
-
-
 }
 
 int main(int ac, char **av, char **env)
 {
     char *c;
     char **tmp;
-   // t_list *data;
+    t_tree *elems;
     ac++;
     av++;
     while (1)
     {
         c = readline("myshell:%>");
+        add_history(c);
         tmp = ft_split(c, ' ');
         if (!ft_strcmp("exit", tmp[0]))
             (free(c), exitcommand(tmp));

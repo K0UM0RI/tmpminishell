@@ -2,6 +2,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra #-Werror
 SRC = minishell.c \
+	utils.c
 
 lib = minishell.h
 
