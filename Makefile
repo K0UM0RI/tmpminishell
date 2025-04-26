@@ -1,15 +1,16 @@
 NAME = minishell
-CC = cc
+CC = clang
 CFLAGS = -Wall -Wextra #-Werror
 SRC = minishell.c \
-	utils.c
+	ft_strjoins.c \
+	
 
 lib = minishell.h
 
 all: $(NAME)
 
 $(NAME): $(SRC) $(lib)
-	$(CC) $(CFLAGS) $< libft.a -lreadline -o $@
+	$(CC) $(CFLAGS) $(SRC) -lreadline -o $@
 
 fclean: clean
 	rm -f $(NAME) 
