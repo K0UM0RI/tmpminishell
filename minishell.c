@@ -113,6 +113,7 @@ char *foundvar(int *i, char *c, char *ret, char **env)
 {
     char *var;
 
+    (*i)++;
     var = getvarname(c, i);
     if (!var)
         ret = ft_append(ret, '$');
@@ -135,10 +136,7 @@ char *foundquote(char **env, char *c,  int *i, char *ret)
     while (c[*i] && c[*i] != '"')
     {
         if (c[*i] == '$')
-        {
-            (*i)++;
             ret = foundvar(i, c, ret, env);
-        }
         else
         {
             ret = ft_append(ret, c[*i]);
@@ -198,22 +196,27 @@ t_string *clean_line(char *c, char **env)
             q++;
             i++;
         }
-        if (c[i] && j == q && !mywhitespace(c[i]))
-            ret->c = ft_append(ret->c, c[i++]);
+        if (c[i] == '$' && j == q)
+            ret->c = foundvar(&i, c, ret->c, env);
+        else if (c[i] == '$')
+        {
+            ret->next = news_string();
+            ret = ret->next;
+            ret->c = foundvar(&i, c, ret->c, env);
+            j = q;
+        }
+        else if (c[i] && j == q && !mywhitespace(c[i]))
+            ret->c = ft_append(ret->c, c[i]);
         else if (c[i] && !mywhitespace(c[i]))
         {
             ret->next = news_string();
             ret = ret->next;
             ret->c = ft_append(ret->c, c[i]);
             j = q;
-            i++;
         }
-        if (c[i] && mywhitespace(c[i]))
-        {
-            i++;
-            q++;
-        }
-       
+        i++;
+        if (mywhitespace(c[i]))
+        q++;
     }
     if (c[i] && mywhitespace(c[i]))
             i++;
