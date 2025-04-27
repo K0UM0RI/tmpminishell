@@ -1,5 +1,29 @@
 #include "minishell.h"
 
+char	*ft_append(char *c1, char c2)
+{
+	char	*c;
+	int		i;
+	int		l;
+
+	i = 0;
+	l = 0;
+	if (c1)
+		l = ft_strlen(c1);
+	c = malloc(sizeof(char) * (l + 2));
+	while (c1 && *c1)
+	{
+		c[i] = *c1;
+		c1++;
+		i++;
+	}
+	c[i] = c2;
+	i++;
+	c[i] = '\0';
+	// if (c1)
+	//    free(c1);
+	return (c);
+}
 
 char	*ft_strdup(char *s)
 {
@@ -28,58 +52,11 @@ char	*freestr(char *str)
 	return (NULL);
 }
 
-size_t	ft_strlcat(char *dst, char *src, size_t size)
-{
-	size_t	i;
-	size_t	j;
-	size_t	dl;
-	size_t	sl;
-
-	if (!src)
-		return (size);
-	sl = ft_strlen(src);
-	if (!dst)
-		return (sl);
-	dl = ft_strlen(dst);
-	j = 0;
-	i = dl;
-	if (i >= size)
-		return (sl + size);
-	while (src[j] && i < size - 1)
-	{
-		dst[i] = src[j];
-		j++;
-		i++;
-	}
-	dst[i] = '\0';
-	return (dl + sl);
-}
-
-size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	slen;
-
-	if (!src)
-		return (0);
-	slen = ft_strlen(src);
-	i = 0;
-	if (dstsize == 0 || !dst)
-		return (slen);
-	while (i + 1 < dstsize && src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (slen);
-}
-
 char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	len1;
-	size_t	len2;
-	char	*c;
+	size_t len1;
+	size_t len2;
+	char *c;
 
 	if (!s1 && !s2)
 		return (NULL);

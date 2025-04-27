@@ -1,8 +1,14 @@
 NAME = minishell
-CC = clang
+CC = cc
 CFLAGS = -Wall -Wextra #-Werror
-SRC = minishell.c \
-	ft_strjoins.c \
+SRC = ft_strjoins.c \
+	clean_line_utils.c \
+	clean_line.c \
+	env_utils.c \
+	parse_utils.c \
+	utils.c \
+	utils2.c \
+	minishell.c \
 	
 
 lib = minishell.h
