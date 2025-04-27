@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "minishell.h"               
 
 #define WORD 0
 #define OPERATOR 1
@@ -22,6 +22,7 @@
 typedef struct s_string
 {
     char *c;
+    int type;
     struct s_string *next;
 }t_string;
 
@@ -82,12 +83,22 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
+int mycmp(char c1, char c2)
+{
+    return (c1 == c2);
+}
+
+int isoperator(char c)
+{
+    return (mycmp(c, '|') || mycmp(c, '&') || mycmp(c, '<') || mycmp(c, '>'));
+}
+
 char *getvarname(char *c, int *i)
 {
     char *var;
 
     var = NULL;
-    while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"') 
+    while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"' && !isoperator(c[*i]) && c[(*i)] != '\'') 
     {
         var = ft_append(var, c[(*i)]);
         (*i)++;
@@ -123,10 +134,7 @@ char *foundvar(int *i, char *c, char *ret, char **env)
         if (!var)
             ret = ft_append(ret, '$');
         else
-        {
            ret = ft_strjoin(ret, var);
-           // printf("var:%s\n", var);
-        }
     }
     return ret;
 }
@@ -156,64 +164,100 @@ t_string *news_string()
     return (c);
 }
 
+
+
 t_string *clean_line(char *c, char **env)
 {
     int i;
     t_string *ret;
     t_string *head;
+    int s;
 
+    s = 0;
     i = 0;
     ret = news_string();
     head = ret;
-    if (c[i] && mywhitespace(c[i]))
+    if (mywhitespace(c[i]))
             i++;
     while (c[i])
     {
         if (c[i] == '"')
         {
             i++;
-            ret->next = news_string();
-            ret = ret->next;
+            if (s)
+            {
+                ret->next = news_string();
+                ret = ret->next;
+                s = 0;
+            }
+            ret->type = WORD;
             ret->c = foundquote(env, c, &i, ret->c);
             if (c[i] != '"')
-                (printf("error\n"), exit(1));
+                (printf("error\n"), exit(1)); 
             i++;
         }
-        if (c[i] && c[i] == '\'')
+        else if (c[i] == '\'')
         {
             i++;
-            ret->next = news_string();
-            ret = ret->next;
+            if (s)
+            {
+                ret->next = news_string();
+                ret = ret->next;
+                s = 0;
+            }
+            ret->type = WORD;
             while (c[i] && c[i] != '\'')
                 ret->c = ft_append(ret->c, c[i++]);
             if (c[i] != '\'')
                 return (printf("error\n"),NULL);
             i++;
         }
+        else if (isoperator(c[i]))
+        {
+            if (i)
+            {
+                ret->next = news_string();
+                ret = ret->next;
+                ret->type = OPERATOR;
+            }
+            while (isoperator(c[i]))
+                ret->c = ft_append(ret->c, c[i++]);
+            s = 1;
+
+        }
         else if (c[i] == '$')
         {
-            if (i && (mywhitespace(c[i - 1]) || c[i - 1] =='\'' || c[i - 1] == '"'))
+            if (i && (mywhitespace(c[i - 1]) || c[i - 1] =='\'' || c[i - 1] == '"' || s))
             {
                 ret->next = news_string();
                 ret = ret->next;
+                s = 0;
+                ret->type = WORD;
             }
             ret->c = foundvar(&i, c, ret->c, env);
+            // if (!isoperator(c[i]))
+            //     i++;
         }
-        else if (c[i] && !mywhitespace(c[i]))
+        else if (!mywhitespace(c[i]))
         {
-            if (i && (mywhitespace(c[i - 1]) || c[i - 1] =='\'' || c[i - 1] == '"'))
+            if (i && (mywhitespace(c[i - 1]) || c[i - 1] =='\'' || c[i - 1] == '"' || s))
             {
                 ret->next = news_string();
                 ret = ret->next;
+                s = 0;
             }
+            ret->type = WORD;
             ret->c = ft_append(ret->c, c[i]);
+            i++;
         }
-        i++;
         while (mywhitespace(c[i]))
+        {
             i++;
+            s = 1;
+        }
     }
-    if (c[i] && mywhitespace(c[i]))
-            i++;
+    if (mywhitespace(c[i]))
+        i++;
     return head;
 }
 
@@ -230,7 +274,11 @@ int main(int ac, char **av, char **env)
         tmp = clean_line(c, env);
         while (tmp)
         {
-            printf("%d:%s\n", i,tmp->c);
+            if (tmp->type == WORD)
+                printf ("%d:WORD:", i);
+            if (tmp->type == OPERATOR)
+                printf ("%d:OPERATOR:", i);
+            printf("%s\n", tmp->c);
             tmp = tmp->next;
             i++;
         }
