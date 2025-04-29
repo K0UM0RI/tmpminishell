@@ -26,6 +26,7 @@ static int	handlequotes(int *i, int *s, t_string **ret, char *c)
 static int	filllist(int *i, int *s, t_string **ret, char *c)
 {
 	int	d;
+	char tmp;
 
 	d = 0;
 	if (c[*i] == '"' || c[*i] == '\'')
@@ -33,9 +34,14 @@ static int	filllist(int *i, int *s, t_string **ret, char *c)
 	else if (isoperator(c[*i]))
 	{
         if (i)
+		{
+			(*ret)->append = 0;
 		    nexts_string(ret);
+		}
 		(*ret)->type = OPERATOR;
-		while (isoperator(c[*i]))
+		(*ret)->append = 0;
+		tmp = c[*i];
+		while (tmp == c[*i])
 			(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 		*s = 1;
 	}
@@ -54,6 +60,12 @@ static int	filllist(int *i, int *s, t_string **ret, char *c)
 		*s = 0;
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	}
+	while (mywhitespace(c[(*i)]))
+    {
+		(*ret)->append = 0;
+        (*i)++;
+		*s = 1;
+    }
 	return (d);
 }
 
@@ -74,13 +86,9 @@ t_string	*clean_line(char *c)
 	{
 		if (filllist(&i, &s, &ret, c))
 			return (NULL);
-		while (mywhitespace(c[i]))
-        {
-            i++;
-			s = 1;
-        }
 	}
 	if (mywhitespace(c[i]))
 		i++;
+	ret->append = 0;
 	return (head);
 }

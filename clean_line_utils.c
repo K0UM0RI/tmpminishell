@@ -16,6 +16,7 @@ void	nexts_string(t_string **ret)
 	(*ret)->next = news_string();
 	(*ret) = (*ret)->next;
 	(*ret)->type = 0;
+	(*ret)->append = 1;
 }
 
 char	*getvarname(char *c, int *i)
@@ -23,6 +24,8 @@ char	*getvarname(char *c, int *i)
 	char	*var;
 
 	var = NULL;
+	if (c[*i] == '(')
+		(*i)++;
 	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
 		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
 	{
@@ -67,6 +70,7 @@ int	foundquote(char *c, int *i, t_string **ret)
             if (s)
             {
                 nexts_string(ret);
+				(*ret)->append = 1;
                 s = 0;
             }
 			(*ret)->c = ft_append((*ret)->c, c[*i]);

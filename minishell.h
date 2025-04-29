@@ -27,6 +27,7 @@ typedef struct s_string
 {
 	char			*c;
 	int				type;
+	int append;
 	struct s_string	*next;
 }					t_string;
 

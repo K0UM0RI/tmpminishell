@@ -36,14 +36,14 @@ int	main(int ac, char **av, char **env)
 {
 	char *c;
 	char **tmp;
-	t_tree *elems;
 	ac++;
 	av++;
+	env++;
 	while (1)
 	{
 		c = readline("myshell:%>");
 		add_history(c);
-		tmp = ft_split(c, ' ');
+	tmp = ft_split(c, ' ');
 		if (!ft_strcmp("exit", tmp[0]))
 			(free(c), exitcommand(tmp));
 	}

@@ -29,12 +29,18 @@ int	main(int ac, char **av, char **env)
 		while (tmp)
 		{
 			if (tmp->type == WORD)
+			{
 				printf("%d:WORD:", i);
+			}
 			if (tmp->type == OPERATOR)
 				printf("%d:OPERATOR:", i);
             if (tmp->type == VARIABLE)
 				printf("%d:VARIABLE:", i);
-			printf("%s\n", tmp->c);
+			printf("%s", tmp->c);
+			if (tmp->append)
+					printf("->\n");
+			else 
+				printf("\n");
 			tmp = tmp->next;
 			i++;
 		}
