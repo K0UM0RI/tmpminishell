@@ -33,7 +33,7 @@ static int	filllist(int *i, int *s, t_string **ret, char *c)
 		d = handlequotes(i, s, ret, c);
 	else if (isoperator(c[*i]))
 	{
-        if (i)
+        if (*i)
 		{
 			(*ret)->append = 0;
 		    nexts_string(ret);
@@ -47,6 +47,8 @@ static int	filllist(int *i, int *s, t_string **ret, char *c)
 	}
 	else if (c[*i] == '$')
     {
+		if (!s)
+			(*ret)->append = 1;
         if (*i)
 		    nexts_string(ret);
         (*ret)->type = VARIABLE;
