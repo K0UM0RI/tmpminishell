@@ -2,14 +2,14 @@
 
 static int	handlequotes(int *i, int *s, t_string **ret, char *c)
 {
-    if (*s)
+    if (*s && (*ret)->c)
 		nexts_string(ret);
     *s = 0;
 	if (c[*i] == '"')
 	{
 		(*i)++;
 		*s = foundquote(c, i, ret);
-		if (!(*ret)->c)
+		if (*s == -1)
 			return (printf("error:no double quote\n"), 1);
 	}
 	else if (c[*i] == '\'')
@@ -33,7 +33,7 @@ static int	filllist(int *i, int *s, t_string **ret, char *c)
 		d = handlequotes(i, s, ret, c);
 	else if (isoperator(c[*i]))
 	{
-        if (*i)
+        if (*i && (*ret)->c)
 		{
 			(*ret)->append = 0;
 		    nexts_string(ret);
@@ -49,7 +49,7 @@ static int	filllist(int *i, int *s, t_string **ret, char *c)
     {
 		if (!s)
 			(*ret)->append = 1;
-        if (*i)
+        if (*i && (*ret)->c)
 		    nexts_string(ret);
         (*ret)->type = VARIABLE;
 		*s = foundvar(i, c, &((*ret)->c));
@@ -57,7 +57,7 @@ static int	filllist(int *i, int *s, t_string **ret, char *c)
     }
 	else if (!mywhitespace(c[*i]))
 	{
-        if (*s)
+        if (*s && (*ret)->c)
 		    nexts_string(ret);
 		*s = 0;
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);

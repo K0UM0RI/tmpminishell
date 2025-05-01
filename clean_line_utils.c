@@ -78,6 +78,6 @@ int	foundquote(char *c, int *i, t_string **ret)
 		} 
 	}
 	if (c[(*i)++] != '"')
-        (*ret)->c = NULL;
+        return -1;
 	return (s);
 }
