@@ -1,26 +1,35 @@
 #include "minishell.h"
 
-t_tree *maketree(t_string *c)
-{
-	t_string *tmp;
-	t_tree *tree;
+// t_tree *maketree(t_string *c)
+// {
+// 	t_string *tmp;
+// 	t_string *tmp2;
+// 	t_tree *tree;
+// 	int o;
+// 	tree = mymalloc(sizeof(t_tree), 0);
+// 	tree->right = NULL;
+// 	tree->left = NULL;
+// 	tmp = c;
+// 	int i = 0;
+// 	int p = 0;
+// 	while (c)
+// 	{
+// 		if (c->type == OPERATOR && c)
+// 		{
+// 			if (!i || p == i - 1)
+// 				p = i;
+// 		}
+// 		i++;
+// 		c = c->next;
+// 	}
 
-	tree = mymalloc(sizeof(t_tree), 0);
-	tree->right = NULL;
-	tree->left = NULL;
-	tmp = c;
-	while (c)
-	{
-		if (c->type)
-		 ;;
-	}
-}
+// }
 
 int	main(int ac, char **av, char **env)
 {
 	char *c;
 	t_string *tmp;
-	t_tree *tmp1;
+	// t_tree *tmp1;
 	int i = 0;
 	ac++;
 	av++;
