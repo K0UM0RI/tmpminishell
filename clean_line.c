@@ -37,6 +37,8 @@ int handleoperators(int *i, int *s, t_string **ret, char *c)
 	tmp = c[*i];
 	if (tmp == c[*i])
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
+	if (tmp != c[*i] && tmp == '&')
+		return ((mymalloc(0, 1), 1));
 	if (tmp == c[*i] && (tmp == '(' || tmp == ')'))
 		return ((mymalloc(0, 1), 1));
 	else if (tmp == c[*i])
