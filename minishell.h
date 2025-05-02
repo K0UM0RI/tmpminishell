@@ -15,13 +15,20 @@
 # define SUB_OPEN 3
 # define SUB_CLOSE 4
 # define VARIABLE 5
-// typedef struct s_tree
-// {
-//     char *elem;
-//     int type;
-//     struct s_tree *left;
-//     struct s_tree *right;
-// }t_tree;
+typedef struct s_tree
+{
+    char *elem;
+    int type;
+	int append;
+    struct s_tree *left;
+    struct s_tree *right;
+}t_tree;
+
+typedef struct s_truck
+{
+	void				*ptr;
+	struct s_truck	*next;
+}t_truck;
 
 typedef struct s_string
 {
@@ -45,7 +52,7 @@ int					mywhitespace(char c);
 int					mycmp(char c1, char c2);
 size_t				ft_strlcat(char *dst, char *src, size_t size);
 size_t				ft_strlcpy(char *dst, char *src, size_t dstsize);
-
+void *mymalloc(size_t size, int fn);
 // parse utils
 int					isoperator(char c);
 

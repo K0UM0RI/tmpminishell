@@ -4,7 +4,7 @@ t_string	*news_string(void)
 {
 	t_string	*c;
 
-	c = malloc(sizeof(t_string));
+	c = (t_string *)mymalloc(sizeof(t_string), 0);
 	c->c = NULL;
 	c->next = NULL;
 	c->type = 0;

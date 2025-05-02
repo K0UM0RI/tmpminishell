@@ -23,28 +23,37 @@ static int	handlequotes(int *i, int *s, t_string **ret, char *c)
 	return (0);
 }
 
+int handleoperators(int *i, int *s, t_string **ret, char *c)
+{
+	char tmp;
+
+	if (*i && (*ret)->c)
+	{
+		(*ret)->append = 0;
+		nexts_string(ret);
+	}
+	(*ret)->type = OPERATOR;
+	(*ret)->append = 0;
+	tmp = c[*i];
+	if (tmp == c[*i])
+		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
+	if (tmp == c[*i])
+		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
+	if (isoperator(c[*i]))
+		return ((mymalloc(0, 1), 1));
+	*s = 1;
+	return (0);
+}
+
 static int	filllist(int *i, int *s, t_string **ret, char *c)
 {
 	int	d;
-	char tmp;
 
 	d = 0;
 	if (c[*i] == '"' || c[*i] == '\'')
 		d = handlequotes(i, s, ret, c);
 	else if (isoperator(c[*i]))
-	{
-        if (*i && (*ret)->c)
-		{
-			(*ret)->append = 0;
-		    nexts_string(ret);
-		}
-		(*ret)->type = OPERATOR;
-		(*ret)->append = 0;
-		tmp = c[*i];
-		while (tmp == c[*i])
-			(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
-		*s = 1;
-	}
+		d = handleoperators(i, s, ret, c);
 	else if (c[*i] == '$')
     {
 		if (!s)

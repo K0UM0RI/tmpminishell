@@ -9,6 +9,7 @@ SRC = ft_strjoins.c \
 	utils.c \
 	utils2.c \
 	minishell.c \
+	garbage_collector.c
 	
 
 lib = minishell.h

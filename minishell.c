@@ -1,22 +1,26 @@
 #include "minishell.h"
 
-// typedef struct s_token
-// {
-//     char *tok;
-//     int type;
-//     struct s_stoken *next;
-// }t_token;
+t_tree *maketree(t_string *c)
+{
+	t_string *tmp;
+	t_tree *tree;
 
-// t_token *next_token(char *c)
-// {
-
-// }
-//' ' ,  '\t' ,  '\r' ,  '\n' ,  '\v'  '\f'
+	tree = mymalloc(sizeof(t_tree), 0);
+	tree->right = NULL;
+	tree->left = NULL;
+	tmp = c;
+	while (c)
+	{
+		if (c->type)
+		 ;;
+	}
+}
 
 int	main(int ac, char **av, char **env)
 {
 	char *c;
 	t_string *tmp;
+	t_tree *tmp1;
 	int i = 0;
 	ac++;
 	av++;
@@ -25,7 +29,10 @@ int	main(int ac, char **av, char **env)
 	{
 		c = readline("myshell:%>");
 		i = 0;
+		if (!c)
+			break;
 		tmp = clean_line(c);
+		// tmp1 = maketree(tmp);
 		while (tmp)
 		{
 			if (tmp->type == WORD)
@@ -44,12 +51,9 @@ int	main(int ac, char **av, char **env)
 			tmp = tmp->next;
 			i++;
 		}
-		// free(tmp);
-		// tmp = next_token(c);
-		// while (tmp){
-		//     printf("%s\n", tmp);
-		//     tmp = next_token(c);
-		// }
+
+		mymalloc(0, 1);
 		add_history(c);
 	}
+	mymalloc(0, 1);
 }
