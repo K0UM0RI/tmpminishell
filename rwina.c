@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rwina.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 21:35:11 by sbat              #+#    #+#             */
+/*   Updated: 2025/05/02 21:35:12 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	exitcommand(char **tmp)
@@ -43,7 +55,7 @@ int	main(int ac, char **av, char **env)
 	{
 		c = readline("myshell:%>");
 		add_history(c);
-	tmp = ft_split(c, ' ');
+		tmp = ft_split(c, ' ');
 		if (!ft_strcmp("exit", tmp[0]))
 			(free(c), exitcommand(tmp));
 	}

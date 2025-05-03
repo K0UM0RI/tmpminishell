@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   clean_line_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
+/*   Updated: 2025/05/03 16:58:24 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_string	*news_string(void)
@@ -24,8 +36,6 @@ char	*getvarname(char *c, int *i)
 	char	*var;
 
 	var = NULL;
-	if (c[*i] == '(')
-		(*i)++;
 	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
 		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
 	{
@@ -35,7 +45,7 @@ char	*getvarname(char *c, int *i)
 	return (var);
 }
 
-int	foundvar(int *i, char *c, char **ret)
+int	foundvar(int *i, char *c, char **ret, char **env)
 {
 	char	*var;
 
@@ -43,41 +53,27 @@ int	foundvar(int *i, char *c, char **ret)
 	var = getvarname(c, i);
 	if (!var)
 		*ret = ft_append(*ret, '$');
-    else 
-    {
-        *ret = ft_strjoin(*ret, var);
-    }
+	var = getmyenv(var, env);
+	if (!var)
+		return 0;
+	else
+		*ret = ft_strjoin(*ret, var);
 	return (0);
 }
 
-int	foundquote(char *c, int *i, t_string **ret)
+int	foundquote(char *c, int *i, t_string **ret, char **env)
 {
-    int s;
-
-    s = 0;
 	while (c[*i] && c[*i] != '"')
 	{
 		if (c[*i] == '$')
-        {
-            if (*i && c[(*i) - 1] != '"')
-                nexts_string(ret);
-            (*ret)->type = VARIABLE;
-			foundvar(i, c, &(*ret)->c);
-            s = 1;
-        }
+			foundvar(i, c, &(*ret)->c, env);
 		else
 		{
-            if (s)
-            {
-                nexts_string(ret);
-				(*ret)->append = 1;
-                s = 0;
-            }
 			(*ret)->c = ft_append((*ret)->c, c[*i]);
 			(*i)++;
-		} 
+		}
 	}
 	if (c[(*i)++] != '"')
-        return -1;
-	return (s);
+		return (-1);
+	return 0;
 }

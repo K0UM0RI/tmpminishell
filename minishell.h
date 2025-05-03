@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
+/*   Updated: 2025/05/03 16:49:52 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
@@ -11,34 +23,41 @@
 
 # define WORD 0
 # define OPERATOR 1
-# define REDIR 2
-# define SUB_OPEN 3
-# define SUB_CLOSE 4
-# define VARIABLE 5
-typedef struct s_tree
-{
-    char *elem;
-    int type;
-	int append;
-    struct s_tree *left;
-    struct s_tree *right;
-}t_tree;
-
-typedef struct s_truck
-{
-	void				*ptr;
-	struct s_truck	*next;
-}t_truck;
+# define SUB_OPEN 2
+# define SUB_CLOSE 3
+# define VARIABLE 4
+# define PIPE 5
+# define AND 38
+# define OR 124
+# define SUBSHELL 8
+#define COMMAND 69
 
 typedef struct s_string
 {
 	char			*c;
 	int				type;
-	int append;
+	int				append;
 	struct s_string	*next;
 }					t_string;
 
-t_string			*clean_line(char *c);
+typedef struct s_tree
+{
+	t_string *command;
+	t_string *input_red;
+	t_string *output_red;
+	int				type;
+	int				append;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}					t_tree;
+
+typedef struct s_truck
+{
+	void			*ptr;
+	struct s_truck	*next;
+}					t_truck;
+
+t_string			*clean_line(char *c, char **env);
 
 // env utils
 char				*getmyenv(char *var, char **env);
@@ -52,13 +71,14 @@ int					mywhitespace(char c);
 int					mycmp(char c1, char c2);
 size_t				ft_strlcat(char *dst, char *src, size_t size);
 size_t				ft_strlcpy(char *dst, char *src, size_t dstsize);
-void *mymalloc(size_t size, int fn);
+void				*mymalloc(size_t size, int fn);
+char				*ft_strdup(char *s);
 // parse utils
 int					isoperator(char c);
 
 // clean line utils
 t_string			*news_string(void);
 void				nexts_string(t_string **ret);
-int	foundquote(char *c, int *i, t_string **ret);
-int					foundvar(int *i, char *c, char **ret);
+int					foundquote(char *c, int *i, t_string **ret, char **env);
+int					foundvar(int *i, char *c, char **ret, char **env);
 #endif

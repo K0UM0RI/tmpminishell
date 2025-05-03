@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   clean_line.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
+/*   Updated: 2025/05/03 16:58:10 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int	handlequotes(int *i, int *s, t_string **ret, char *c)
+static int	handlequotes(int *i, int *s, t_string **ret, char *c, char **env)
 {
-    if (*s && (*ret)->c)
+	if (*s && (*ret)->c)
 		nexts_string(ret);
-    *s = 0;
+	*s = 0;
 	if (c[*i] == '"')
 	{
 		(*i)++;
-		*s = foundquote(c, i, ret);
+		*s = foundquote(c, i, ret, env);
 		if (*s == -1)
 			return (printf("error:no double quote\n"), 1);
 	}
@@ -23,9 +35,9 @@ static int	handlequotes(int *i, int *s, t_string **ret, char *c)
 	return (0);
 }
 
-int handleoperators(int *i, int *s, t_string **ret, char *c)
+int	handleoperators(int *i, int *s, t_string **ret, char *c)
 {
-	char tmp;
+	char	tmp;
 
 	if (*i && (*ret)->c)
 	{
@@ -39,7 +51,7 @@ int handleoperators(int *i, int *s, t_string **ret, char *c)
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	if (tmp != c[*i] && tmp == '&')
 		return ((mymalloc(0, 1), 1));
-	if (tmp == c[*i] && (tmp == '(' || tmp == ')'))
+	if (tmp == c[*i] && tmp == '|')
 		return ((mymalloc(0, 1), 1));
 	else if (tmp == c[*i])
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
@@ -49,47 +61,43 @@ int handleoperators(int *i, int *s, t_string **ret, char *c)
 	return (0);
 }
 
-static int	filllist(int *i, int *s, t_string **ret, char *c)
+static int	filllist(int *i, int *s, t_string **ret, char *c, char **env)
 {
 	int	d;
 
 	d = 0;
 	if (c[*i] == '"' || c[*i] == '\'')
-		d = handlequotes(i, s, ret, c);
+		d = handlequotes(i, s, ret, c, env);
 	else if (isoperator(c[*i]))
 		d = handleoperators(i, s, ret, c);
 	else if (c[*i] == '$')
-    {
-		if (!s)
-			(*ret)->append = 1;
-        if (*i && (*ret)->c)
-		    nexts_string(ret);
-        (*ret)->type = VARIABLE;
-		*s = foundvar(i, c, &((*ret)->c));
-        *s = 1;
-    }
+	{
+		if (*s && (*ret)->c)
+			nexts_string(ret);
+		*s = foundvar(i, c, &((*ret)->c), env);
+	}
 	else if (!mywhitespace(c[*i]))
 	{
-        if (*s && (*ret)->c)
-		    nexts_string(ret);
+		if (*s && (*ret)->c)
+			nexts_string(ret);
 		*s = 0;
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	}
 	while (mywhitespace(c[(*i)]))
-    {
+	{
 		(*ret)->append = 0;
-        (*i)++;
+		(*i)++;
 		*s = 1;
-    }
+	}
 	return (d);
 }
 
-t_string	*clean_line(char *c)
+t_string	*clean_line(char *c, char **env)
 {
-	int i;
-	t_string *ret;
-	t_string *head;
-	int s;
+	int			i;
+	t_string	*ret;
+	t_string	*head;
+	int			s;
 
 	s = 0;
 	i = 0;
@@ -99,7 +107,7 @@ t_string	*clean_line(char *c)
 		i++;
 	while (c[i])
 	{
-		if (filllist(&i, &s, &ret, c))
+		if (filllist(&i, &s, &ret, c, env))
 			return (NULL);
 	}
 	if (mywhitespace(c[i]))
