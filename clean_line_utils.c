@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/03 16:58:24 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/14 10:02:36 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*getvarname(char *c, int *i)
 	return (var);
 }
 
-int	foundvar(int *i, char *c, char **ret, char **env)
+char *foundvar(int *i, char *c, char **ret, char **env)
 {
 	char	*var;
 
@@ -55,18 +55,26 @@ int	foundvar(int *i, char *c, char **ret, char **env)
 		*ret = ft_append(*ret, '$');
 	var = getmyenv(var, env);
 	if (!var)
-		return 0;
-	else
-		*ret = ft_strjoin(*ret, var);
-	return (0);
+		return NULL;
+	return (var);
 }
 
 int	foundquote(char *c, int *i, t_string **ret, char **env)
 {
+	char *tmp;
+
+	
 	while (c[*i] && c[*i] != '"')
 	{
 		if (c[*i] == '$')
-			foundvar(i, c, &(*ret)->c, env);
+		{
+			tmp = foundvar(i, c, &(*ret)->c, env);
+			while (tmp && *tmp)
+			{
+				(*ret)->c = ft_append((*ret)->c, *tmp);
+				tmp++;
+			}
+		}
 		else
 		{
 			(*ret)->c = ft_append((*ret)->c, c[*i]);

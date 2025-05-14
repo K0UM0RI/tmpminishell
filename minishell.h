@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/03 16:49:52 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/14 09:58:01 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ int					isoperator(char c);
 t_string			*news_string(void);
 void				nexts_string(t_string **ret);
 int					foundquote(char *c, int *i, t_string **ret, char **env);
-int					foundvar(int *i, char *c, char **ret, char **env);
+char					*foundvar(int *i, char *c, char **ret, char **env);
 #endif

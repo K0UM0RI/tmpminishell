@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/03 16:58:10 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/14 10:01:37 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,13 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 	return (0);
 }
 
+
+
 static int	filllist(int *i, int *s, t_string **ret, char *c, char **env)
 {
 	int	d;
-
+	char *tmp;
+	int j;
 	d = 0;
 	if (c[*i] == '"' || c[*i] == '\'')
 		d = handlequotes(i, s, ret, c, env);
@@ -74,7 +77,13 @@ static int	filllist(int *i, int *s, t_string **ret, char *c, char **env)
 	{
 		if (*s && (*ret)->c)
 			nexts_string(ret);
-		*s = foundvar(i, c, &((*ret)->c), env);
+		tmp = foundvar(i, c, &((*ret)->c), env);
+		*s = 0;
+		j = 0;
+		if (!tmp)
+			return d;
+		while (tmp[j])
+			filllist(&j, s, ret, tmp, env);
 	}
 	else if (!mywhitespace(c[*i]))
 	{
