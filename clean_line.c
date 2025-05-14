@@ -6,30 +6,30 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/14 10:01:37 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/14 14:04:21 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handlequotes(int *i, int *s, t_string **ret, char *c, char **env)
+static int	handlequotes(t_lexvars *vars, char *c, char **env)
 {
-	if (*s && (*ret)->c)
-		nexts_string(ret);
-	*s = 0;
-	if (c[*i] == '"')
+	if (vars->s && (vars->ret)->c)
+		nexts_string(&vars->ret);
+	vars->s = 0;
+	if (c[vars->i] == '"')
 	{
-		(*i)++;
-		*s = foundquote(c, i, ret, env);
-		if (*s == -1)
+		(vars->i)++;
+		vars->s = foundquote(c, &vars->i, &vars->ret, env);
+		if (vars->s == -1)
 			return (printf("error:no double quote\n"), 1);
 	}
-	else if (c[*i] == '\'')
+	else if (c[vars->i] == '\'')
 	{
-		(*i)++;
-		while (c[*i] && c[*i] != '\'')
-			(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
-		if (c[(*i)++] != '\'')
+		(vars->i)++;
+		while (c[vars->i] && c[vars->i] != '\'')
+			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++]);
+		if (c[(vars->i)++] != '\'')
 			return (printf("error: no quote\n"), 1);
 	}
 	return (0);
@@ -63,64 +63,69 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 
 
 
-static int	filllist(int *i, int *s, t_string **ret, char *c, char **env)
+static int	filllist(t_lexvars *vars, char *c, char **env)
 {
 	int	d;
 	char *tmp;
 	int j;
 	d = 0;
-	if (c[*i] == '"' || c[*i] == '\'')
-		d = handlequotes(i, s, ret, c, env);
-	else if (isoperator(c[*i]))
-		d = handleoperators(i, s, ret, c);
-	else if (c[*i] == '$')
+	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
+		d = handlequotes(vars, c, env);
+	else if (isoperator(c[vars->i]) && !vars->d)
+		d = handleoperators(&vars->i, &vars->s, &vars->ret, c);
+	else if (c[vars->i] == '$' && !vars->d)
 	{
-		if (*s && (*ret)->c)
-			nexts_string(ret);
-		tmp = foundvar(i, c, &((*ret)->c), env);
-		*s = 0;
-		j = 0;
-		if (!tmp)
-			return d;
-		while (tmp[j])
-			filllist(&j, s, ret, tmp, env);
+		if (vars->s && (vars->ret)->c)
+			nexts_string(&vars->ret);
+		tmp = foundvar(&(vars->i), c, &vars->ret->c, env);
+		vars->s = 0;
+		j = vars->i;
+		vars->i = 0;
+		vars->d = 1;
+		while (tmp && tmp[vars->i])
+			filllist(vars, tmp, env);
+		vars->d = 0;
+		vars->i = j;
 	}
-	else if (!mywhitespace(c[*i]))
+	else if (!mywhitespace(c[vars->i]))
 	{
-		if (*s && (*ret)->c)
-			nexts_string(ret);
-		*s = 0;
-		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
+		if (vars->s && (vars->ret)->c)
+			nexts_string(&vars->ret);
+		vars->s = 0;
+		(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++]);
 	}
-	while (mywhitespace(c[(*i)]))
+	while (mywhitespace(c[(vars->i)]))
 	{
-		(*ret)->append = 0;
-		(*i)++;
-		*s = 1;
+		(vars->ret)->append = 0;
+		(vars->i)++;
+		vars->s = 1;
 	}
 	return (d);
 }
 
 t_string	*clean_line(char *c, char **env)
 {
-	int			i;
-	t_string	*ret;
+	// int			i;
+	// t_string	*ret;
 	t_string	*head;
-	int			s;
+	// int			s;
+	t_lexvars vars;
 
-	s = 0;
-	i = 0;
-	ret = news_string();
-	head = ret;
-	if (mywhitespace(c[i]))
-		i++;
-	while (c[i])
+	
+	vars.s = 0;
+	vars.i = 0;
+	vars.d = 0;
+	vars.ret = news_string();
+	head = vars.ret;
+	if (mywhitespace(c[vars.i]))
+		vars.i++;
+	while (c[vars.i])
 	{
-		if (filllist(&i, &s, &ret, c, env))
+		if (filllist(&vars, c, env))
 			return (NULL);
 	}
-	if (mywhitespace(c[i]))
-		i++;
-	ret->append = 0;
+	if (mywhitespace(c[vars.i]))
+		vars.i++;
+	vars.ret->append = 0;
 	return (head);
 }

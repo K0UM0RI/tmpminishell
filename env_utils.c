@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/03 16:50:55 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/14 13:08:42 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*getmyenv(char *var, char **env)
 
 	j = 0;
 	l = ft_strlen(var);
+	if (!l)
+		return NULL;
 	if (!var)
 		return NULL;
 	while (env[j])

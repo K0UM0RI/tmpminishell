@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/14 10:02:36 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/14 14:01:22 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	nexts_string(t_string **ret)
 char	*getvarname(char *c, int *i)
 {
 	char	*var;
-
 	var = NULL;
 	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
 		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
@@ -42,6 +41,10 @@ char	*getvarname(char *c, int *i)
 		var = ft_append(var, c[(*i)]);
 		(*i)++;
 	}
+	if (mywhitespace(c[*i]) && !var)
+		return (var);
+	else if (!var)
+		return ((char *)69);
 	return (var);
 }
 
@@ -52,7 +55,12 @@ char *foundvar(int *i, char *c, char **ret, char **env)
 	(*i)++;
 	var = getvarname(c, i);
 	if (!var)
+	{
 		*ret = ft_append(*ret, '$');
+		return NULL;
+	}
+	else if (var == (char *)69)
+		return NULL;
 	var = getmyenv(var, env);
 	if (!var)
 		return NULL;

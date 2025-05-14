@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/14 09:58:01 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/14 12:57:10 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@ typedef struct s_truck
 	void			*ptr;
 	struct s_truck	*next;
 }					t_truck;
+
+typedef struct s_lexvars
+{
+	int			i;
+	t_string	*ret;
+	int			s;
+	int d;
+}	t_lexvars;
 
 t_string			*clean_line(char *c, char **env);
 
