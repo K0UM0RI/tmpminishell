@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 15:43:01 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/15 17:14:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ char	*getmyenv(char *var, t_env *env)
 {
 	int	l;
 
+	if (!var)
+		return NULL;
 	l = ft_strlen(var);
 	if (!l)
 		return NULL;
-	if (!var)
-		return NULL;
+	// if (!ft_strncmp(var, "?", 1))
 	while (env)
 	{
 		if (!ft_strncmp(env->name, var, l))

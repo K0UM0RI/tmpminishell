@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 15:40:08 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/15 17:47:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef struct s_string
 {
 	char			*c;
 	int				type;
-	int				append;
 	struct s_string	*next;
 }					t_string;
 
@@ -93,10 +92,11 @@ int	ft_atoi(const char *nptr);
 char *ft_itoa(int n);
 // parse utils
 int					isoperator(char c);
+int	filllist(t_lexvars *vars, char *c, t_env *env);
 
 // clean line utils
 t_string			*news_string(void);
 void				nexts_string(t_string **ret);
 int					foundquote(char *c, int *i, t_string **ret, t_env *env);
-char					*foundvar(int *i, char *c, char **ret, t_env *env);
+char					*foundvar(int *i, char *c, t_env *env);
 #endif

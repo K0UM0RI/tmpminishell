@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 15:36:18 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/15 18:13:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,53 +40,55 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 	char	tmp;
 
 	if (*i && (*ret)->c)
-	{
-		(*ret)->append = 0;
 		nexts_string(ret);
-	}
 	(*ret)->type = OPERATOR;
-	(*ret)->append = 0;
 	tmp = c[*i];
-	if (tmp == c[*i])
-		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
-	if (tmp != c[*i] && tmp == '&')
-		return ((mymalloc(0, 1), 1));
+	(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	if (tmp == c[*i] && tmp == '|')
-		return ((mymalloc(0, 1), 1));
+		return (printf("parsing error near %c\n", tmp), 1);
 	else if (tmp == c[*i])
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	if (isoperator(c[*i]))
-		return ((mymalloc(0, 1), 1));
+		return (printf("parsing error near %c\n", tmp), 1);
 	*s = 1;
 	return (0);
 }
 
-
-
-static int	filllist(t_lexvars *vars, char *c, t_env *env)
+void founddollar(t_lexvars *vars, char *c, t_env *env)
 {
-	int	d;
 	char *tmp;
 	int j;
+
+	if (vars->s && (vars->ret)->c)
+		nexts_string(&vars->ret);
+	tmp = foundvar(&(vars->i), c, env);
+	if (tmp == (char *)-1)
+	{
+		vars->ret->c = ft_append(vars->ret->c, '$');
+		tmp = NULL;
+	}
+	else if (tmp == (char *)-2)
+		tmp = NULL;
+	vars->s = 0;
+	j = vars->i;
+	vars->i = 0;
+	vars->d = 1;
+	while (tmp && tmp[vars->i])
+		filllist(vars, tmp, env);
+	vars->d = 0;
+	vars->i = j;
+}
+
+int	filllist(t_lexvars *vars, char *c, t_env *env)
+{
+	int	d;
 	d = 0;
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
 		d = handlequotes(vars, c, env);
 	else if (isoperator(c[vars->i]) && !vars->d)
 		d = handleoperators(&vars->i, &vars->s, &vars->ret, c);
 	else if (c[vars->i] == '$' && !vars->d)
-	{
-		if (vars->s && (vars->ret)->c)
-			nexts_string(&vars->ret);
-		tmp = foundvar(&(vars->i), c, &vars->ret->c, env);
-		vars->s = 0;
-		j = vars->i;
-		vars->i = 0;
-		vars->d = 1;
-		while (tmp && tmp[vars->i])
-			filllist(vars, tmp, env);
-		vars->d = 0;
-		vars->i = j;
-	}
+		founddollar(vars, c, env);
 	else if (!mywhitespace(c[vars->i]))
 	{
 		if (vars->s && (vars->ret)->c)
@@ -96,7 +98,6 @@ static int	filllist(t_lexvars *vars, char *c, t_env *env)
 	}
 	while (mywhitespace(c[(vars->i)]))
 	{
-		(vars->ret)->append = 0;
 		(vars->i)++;
 		vars->s = 1;
 	}
@@ -105,10 +106,7 @@ static int	filllist(t_lexvars *vars, char *c, t_env *env)
 
 t_string	*clean_line(char *c, t_env *env)
 {
-	// int			i;
-	// t_string	*ret;
 	t_string	*head;
-	// int			s;
 	t_lexvars vars;
 
 	
@@ -126,6 +124,5 @@ t_string	*clean_line(char *c, t_env *env)
 	}
 	if (mywhitespace(c[vars.i]))
 		vars.i++;
-	vars.ret->append = 0;
 	return (head);
 }

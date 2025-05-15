@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 15:39:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(int ac, char **av, char **env)
 {
 	char *c;
 	t_string *tmp;
-	// t_tree *tmp1;
 	int i = 0;
 	ac++;
 	av++;
@@ -39,14 +38,10 @@ int	main(int ac, char **av, char **env)
 		    if (tmp->type == VARIABLE)
 				printf("%d:VARIABLE:", i);
 			printf("%s", tmp->c);
-			if (tmp->append)
-					printf("->\n");
-			else
-				printf("\n");
+			printf("\n");
 			tmp = tmp->next;
 			i++;
 		}
-		mymalloc(0, 1);
 		add_history(c);
 	}
 	mymalloc(0, 1);

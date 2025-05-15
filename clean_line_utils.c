@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 15:36:55 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/15 18:08:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	nexts_string(t_string **ret)
 	(*ret)->next = news_string();
 	(*ret) = (*ret)->next;
 	(*ret)->type = 0;
-	(*ret)->append = 1;
 }
 
 char	*getvarname(char *c, int *i)
@@ -41,26 +40,23 @@ char	*getvarname(char *c, int *i)
 		var = ft_append(var, c[(*i)]);
 		(*i)++;
 	}
-	if (mywhitespace(c[*i]) && !var)
-		return (var);
-	else if (!var)
-		return ((char *)69);
+	if ((mywhitespace(c[*i]) || !c[*i]) && !var)
+		return ((char *)-1);
+	else if (!var && c[*i] == '"')
+		return ((char *)-2);
 	return (var);
 }
 
-char *foundvar(int *i, char *c, char **ret, t_env *env)
+char *foundvar(int *i, char *c, t_env *env)
 {
 	char	*var;
 
 	(*i)++;
 	var = getvarname(c, i);
-	if (!var)
-	{
-		*ret = ft_append(*ret, '$');
-		return NULL;
-	}
-	else if (var == (char *)69)
-		return NULL;
+	if (var == (char *)-1)
+		return (char *)-1;
+	else if (var == (char *)-2)
+		return (char *)-2;
 	var = getmyenv(var, env);
 	if (!var)
 		return NULL;
@@ -71,12 +67,16 @@ int	foundquote(char *c, int *i, t_string **ret, t_env *env)
 {
 	char *tmp;
 
-	
 	while (c[*i] && c[*i] != '"')
 	{
 		if (c[*i] == '$')
 		{
-			tmp = foundvar(i, c, &(*ret)->c, env);
+			tmp = foundvar(i, c, env);
+			if (tmp == (char *)-2 || tmp == (char *)-1)
+			{
+				(*ret)->c = ft_append((*ret)->c, '$');
+				tmp = NULL;
+			}
 			while (tmp && *tmp)
 			{
 				(*ret)->c = ft_append((*ret)->c, *tmp);
