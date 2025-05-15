@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/14 12:57:10 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/15 15:40:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,18 @@ typedef struct s_lexvars
 	int d;
 }	t_lexvars;
 
-t_string			*clean_line(char *c, char **env);
+typedef struct s_env
+{
+	char *name;
+	char *value;
+	struct s_env *next;
+}	t_env;
+
+t_string			*clean_line(char *c, t_env *env);
 
 // env utils
-char				*getmyenv(char *var, char **env);
+char				*getmyenv(char *var, t_env *env);
+t_env *getenvlst(char **env);
 
 char				*ft_strjoin(char *s1, char *s2);
 int					ft_strlen(char *c);
@@ -81,12 +89,14 @@ size_t				ft_strlcat(char *dst, char *src, size_t size);
 size_t				ft_strlcpy(char *dst, char *src, size_t dstsize);
 void				*mymalloc(size_t size, int fn);
 char				*ft_strdup(char *s);
+int	ft_atoi(const char *nptr);
+char *ft_itoa(int n);
 // parse utils
 int					isoperator(char c);
 
 // clean line utils
 t_string			*news_string(void);
 void				nexts_string(t_string **ret);
-int					foundquote(char *c, int *i, t_string **ret, char **env);
-char					*foundvar(int *i, char *c, char **ret, char **env);
+int					foundquote(char *c, int *i, t_string **ret, t_env *env);
+char					*foundvar(int *i, char *c, char **ret, t_env *env);
 #endif

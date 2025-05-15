@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/14 14:06:00 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/15 15:39:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int	main(int ac, char **av, char **env)
 	int i = 0;
 	ac++;
 	av++;
-	env++;
+	t_env *lstenv = getenvlst(env);
 	while (1)
 	{
 		c = readline("myshell:%>");
 		i = 0;
 		if (!c)
 			break ;
-		tmp = clean_line(c, env);
+		tmp = clean_line(c, lstenv);
 		while (tmp)
 		{
 			if (tmp->type == WORD)

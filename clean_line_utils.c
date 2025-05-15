@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_line_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/14 14:01:22 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/15 15:36:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*getvarname(char *c, int *i)
 	return (var);
 }
 
-char *foundvar(int *i, char *c, char **ret, char **env)
+char *foundvar(int *i, char *c, char **ret, t_env *env)
 {
 	char	*var;
 
@@ -67,7 +67,7 @@ char *foundvar(int *i, char *c, char **ret, char **env)
 	return (var);
 }
 
-int	foundquote(char *c, int *i, t_string **ret, char **env)
+int	foundquote(char *c, int *i, t_string **ret, t_env *env)
 {
 	char *tmp;
 

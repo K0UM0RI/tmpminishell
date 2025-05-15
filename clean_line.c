@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   clean_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/14 14:04:21 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/15 15:36:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handlequotes(t_lexvars *vars, char *c, char **env)
+static int	handlequotes(t_lexvars *vars, char *c, t_env *env)
 {
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
@@ -63,7 +63,7 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 
 
 
-static int	filllist(t_lexvars *vars, char *c, char **env)
+static int	filllist(t_lexvars *vars, char *c, t_env *env)
 {
 	int	d;
 	char *tmp;
@@ -103,7 +103,7 @@ static int	filllist(t_lexvars *vars, char *c, char **env)
 	return (d);
 }
 
-t_string	*clean_line(char *c, char **env)
+t_string	*clean_line(char *c, t_env *env)
 {
 	// int			i;
 	// t_string	*ret;
