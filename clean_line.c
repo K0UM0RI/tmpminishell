@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 18:13:04 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/16 20:41:36 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,55 @@ static int	handlequotes(t_lexvars *vars, char *c, t_env *env)
 	return (0);
 }
 
+int doheredoc(int *i, t_string **ret, char *c)
+{
+	char *eof;
+	static int order;
+	char *file;
+	int fd;
+	char *gnl;
+	char quote;
+
+	order++;
+	file = ft_strjoin(".tmp", ft_itoa(order));
+	(*i)++;
+	while (c[*i] && mywhitespace(c[*i]))
+		(*i)++;
+	if (isoperator(c[*i]))
+		return (printf("parsing error near <\n"), 1);
+	while (c[*i] && !isoperator(c[*i]) && !mywhitespace(c[*i]))
+	{
+		if (c[*i] == '"' || c[*i] == '\'')
+		{
+			quote = c[*i];
+			(*i)++;
+			while (c[*i] && c[*i] != '"' && c[*i] != '\'')
+				eof = ft_append(eof, c[(*i)++]);
+			if (c[(*i)++] != quote)
+				return (printf("no matchine quote\n"), 1);
+		}
+		else
+			eof = ft_append(eof, c[(*i)++]);
+	}
+	if (!eof)
+		return (printf("parsing error near < 1\n"), 1);
+	fd = open(file, O_CREAT | O_WRONLY, 0777);
+	write (1, ">", 1);
+	gnl = get_next_line(0, eof);
+	while (gnl)
+	{
+		write (1, ">", 1);
+		write(fd, gnl, ft_strlen(gnl));
+		free(gnl);
+		gnl = get_next_line(0, eof);
+	}
+	close(fd);
+	nexts_string(ret);
+	(*ret)->c = ft_strjoin((*ret)->c, file);
+	(*i)++;
+	return 0;
+}
+
 int	handleoperators(int *i, int *s, t_string **ret, char *c)
 {
 	char	tmp;
@@ -46,6 +95,11 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 	(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	if (tmp == c[*i] && tmp == '|')
 		return (printf("parsing error near %c\n", tmp), 1);
+	else if (tmp == c[*i] && c[*i] == '<')
+	{
+		*s = 1;
+		return (doheredoc(i, ret, c));
+	}
 	else if (tmp == c[*i])
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	if (isoperator(c[*i]))

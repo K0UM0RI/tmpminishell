@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 17:14:01 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/16 19:15:49 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ t_env *getenvlst(char **env)
 	int (i), (j) = 0;
 	if (!env)
 		return NULL;
-	newenv(&lstenv, NULL, NULL);
+	lstenv = mymalloc(sizeof(t_env), 0);
+	lstenv->next = NULL;
 	head = lstenv;
 	while (env[j])
 	{

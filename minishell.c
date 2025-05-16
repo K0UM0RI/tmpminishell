@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:23 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/16 19:45:51 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **env)
 			if (tmp->type == WORD)
 			{
 				printf("%d:WORD:", i);
-			}
+			}		
 			if (tmp->type == OPERATOR)
 				printf("%d:OPERATOR:", i);
 		    if (tmp->type == VARIABLE)
