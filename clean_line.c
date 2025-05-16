@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/16 20:41:36 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 00:23:13 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static int	handlequotes(t_lexvars *vars, char *c, t_env *env)
 
 int doheredoc(int *i, t_string **ret, char *c)
 {
-	char *eof;
+	char *eof = NULL;
 	static int order;
 	char *file;
 	int fd;
-	char *gnl;
+	char *line;
 	char quote;
 
 	order++;
@@ -57,6 +57,7 @@ int doheredoc(int *i, t_string **ret, char *c)
 		{
 			quote = c[*i];
 			(*i)++;
+			eof = (char *)-1;
 			while (c[*i] && c[*i] != '"' && c[*i] != '\'')
 				eof = ft_append(eof, c[(*i)++]);
 			if (c[(*i)++] != quote)
@@ -67,15 +68,14 @@ int doheredoc(int *i, t_string **ret, char *c)
 	}
 	if (!eof)
 		return (printf("parsing error near < 1\n"), 1);
+	if (eof == (char *) -1)
+		eof = ft_strdup("");
 	fd = open(file, O_CREAT | O_WRONLY, 0777);
-	write (1, ">", 1);
-	gnl = get_next_line(0, eof);
-	while (gnl)
+	line = readline(">");
+	while (ft_strncmp(line, eof,ft_strlen(line)) && line[ft_strlen(line)] == '\n')
 	{
-		write (1, ">", 1);
-		write(fd, gnl, ft_strlen(gnl));
-		free(gnl);
-		gnl = get_next_line(0, eof);
+		write(fd, line, ft_strlen(line));
+		line = readline(">");
 	}
 	close(fd);
 	nexts_string(ret);
@@ -94,6 +94,8 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 	tmp = c[*i];
 	(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	if (tmp == c[*i] && tmp == '|')
+		return (printf("parsing error near %c\n", tmp), 1);
+	else if (tmp == c[*i] && tmp == '&')
 		return (printf("parsing error near %c\n", tmp), 1);
 	else if (tmp == c[*i] && c[*i] == '<')
 	{

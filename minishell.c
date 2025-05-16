@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/16 19:45:51 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/16 22:31:48 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(int ac, char **av, char **env)
 			tmp = tmp->next;
 			i++;
 		}
+		unlink(".tmp1");
 		add_history(c);
 	}
 	mymalloc(0, 1);

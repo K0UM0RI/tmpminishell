@@ -10,8 +10,6 @@ SRC = ft_strjoins.c \
 	utils2.c \
 	minishell.c \
 	garbage_collector.c \
-	gnl/get_next_line.c \
-	gnl/get_next_line_utils.c \
 	
 
 lib = minishell.h
