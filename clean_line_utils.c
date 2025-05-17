@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_line_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/15 18:08:56 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/17 10:13:01 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	nexts_string(t_string **ret)
 char	*getvarname(char *c, int *i)
 {
 	char	*var;
+
 	var = NULL;
 	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
 		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
@@ -47,25 +48,25 @@ char	*getvarname(char *c, int *i)
 	return (var);
 }
 
-char *foundvar(int *i, char *c, t_env *env)
+char	*foundvar(int *i, char *c, t_env *env)
 {
 	char	*var;
 
 	(*i)++;
 	var = getvarname(c, i);
 	if (var == (char *)-1)
-		return (char *)-1;
+		return ((char *)-1);
 	else if (var == (char *)-2)
-		return (char *)-2;
+		return ((char *)-2);
 	var = getmyenv(var, env);
 	if (!var)
-		return NULL;
+		return (NULL);
 	return (var);
 }
 
 int	foundquote(char *c, int *i, t_string **ret, t_env *env)
 {
-	char *tmp;
+	char	*tmp;
 
 	while (c[*i] && c[*i] != '"')
 	{
@@ -84,12 +85,9 @@ int	foundquote(char *c, int *i, t_string **ret, t_env *env)
 			}
 		}
 		else
-		{
-			(*ret)->c = ft_append((*ret)->c, c[*i]);
-			(*i)++;
-		}
+			(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
 	}
 	if (c[(*i)++] != '"')
 		return (-1);
-	return 0;
+	return (0);
 }

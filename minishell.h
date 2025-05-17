@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 00:56:22 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:11:46 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 # define MINISHELL_H
 
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <fcntl.h>
 
 # define WORD 0
 # define OPERATOR 1
@@ -31,7 +31,7 @@
 # define AND 38
 # define OR 124
 # define SUBSHELL 8
-#define COMMAND 69
+# define COMMAND 69
 
 typedef struct s_string
 {
@@ -42,9 +42,9 @@ typedef struct s_string
 
 typedef struct s_tree
 {
-	t_string *command;
-	t_string *input_red;
-	t_string *output_red;
+	t_string		*command;
+	t_string		*input_red;
+	t_string		*output_red;
 	int				type;
 	int				append;
 	struct s_tree	*left;
@@ -59,24 +59,24 @@ typedef struct s_truck
 
 typedef struct s_lexvars
 {
-	int			i;
-	t_string	*ret;
-	int			s;
-	int d;
-}	t_lexvars;
+	int				i;
+	t_string		*ret;
+	int				s;
+	int				d;
+}					t_lexvars;
 
 typedef struct s_env
 {
-	char *name;
-	char *value;
-	struct s_env *next;
-}	t_env;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
 
 t_string			*clean_line(char *c, t_env *env);
 
 // env utils
 char				*getmyenv(char *var, t_env *env);
-t_env *getenvlst(char **env);
+t_env				*getenvlst(char **env);
 
 char				*ft_strjoin(char *s1, char *s2);
 int					ft_strlen(char *c);
@@ -89,15 +89,16 @@ size_t				ft_strlcat(char *dst, char *src, size_t size);
 size_t				ft_strlcpy(char *dst, char *src, size_t dstsize);
 void				*mymalloc(size_t size, int fn);
 char				*ft_strdup(char *s);
-int	ft_atoi(const char *nptr);
-char *ft_itoa(int n);
+int					ft_atoi(const char *nptr);
+char				*ft_itoa(int n);
 // parse utils
 int					isoperator(char c);
-int	filllist(t_lexvars *vars, char *c, t_env *env);
+int					filllist(t_lexvars *vars, char *c, t_env *env);
 
 // clean line utils
 t_string			*news_string(void);
 void				nexts_string(t_string **ret);
 int					foundquote(char *c, int *i, t_string **ret, t_env *env);
-char					*foundvar(int *i, char *c, t_env *env);
+char				*foundvar(int *i, char *c, t_env *env);
+int					doheredoc(int *i, t_string **ret, char *c);
 #endif

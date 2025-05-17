@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/16 22:31:48 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:15:27 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 int	main(int ac, char **av, char **env)
 {
-	char *c;
-	t_string *tmp;
-	int i = 0;
+	char		*c;
+	t_string	*tmp;
+	int			i;
+	t_env		*lstenv;
+
 	ac++;
 	av++;
-	t_env *lstenv = getenvlst(env);
+	lstenv = getenvlst(env);
+	i = 0;
 	while (1)
 	{
 		c = readline("myshell:%>");
@@ -32,17 +35,16 @@ int	main(int ac, char **av, char **env)
 			if (tmp->type == WORD)
 			{
 				printf("%d:WORD:", i);
-			}		
+			}
 			if (tmp->type == OPERATOR)
 				printf("%d:OPERATOR:", i);
-		    if (tmp->type == VARIABLE)
+			if (tmp->type == VARIABLE)
 				printf("%d:VARIABLE:", i);
 			printf("%s", tmp->c);
 			printf("\n");
 			tmp = tmp->next;
 			i++;
 		}
-		unlink(".tmp1");
 		add_history(c);
 	}
 	mymalloc(0, 1);

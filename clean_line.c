@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 00:23:13 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:11:20 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,55 +35,6 @@ static int	handlequotes(t_lexvars *vars, char *c, t_env *env)
 	return (0);
 }
 
-int doheredoc(int *i, t_string **ret, char *c)
-{
-	char *eof = NULL;
-	static int order;
-	char *file;
-	int fd;
-	char *line;
-	char quote;
-
-	order++;
-	file = ft_strjoin(".tmp", ft_itoa(order));
-	(*i)++;
-	while (c[*i] && mywhitespace(c[*i]))
-		(*i)++;
-	if (isoperator(c[*i]))
-		return (printf("parsing error near <\n"), 1);
-	while (c[*i] && !isoperator(c[*i]) && !mywhitespace(c[*i]))
-	{
-		if (c[*i] == '"' || c[*i] == '\'')
-		{
-			quote = c[*i];
-			(*i)++;
-			eof = (char *)-1;
-			while (c[*i] && c[*i] != '"' && c[*i] != '\'')
-				eof = ft_append(eof, c[(*i)++]);
-			if (c[(*i)++] != quote)
-				return (printf("no matchine quote\n"), 1);
-		}
-		else
-			eof = ft_append(eof, c[(*i)++]);
-	}
-	if (!eof)
-		return (printf("parsing error near < 1\n"), 1);
-	if (eof == (char *) -1)
-		eof = ft_strdup("");
-	fd = open(file, O_CREAT | O_WRONLY, 0777);
-	line = readline(">");
-	while (ft_strncmp(line, eof,ft_strlen(line)) && line[ft_strlen(line)] == '\n')
-	{
-		write(fd, line, ft_strlen(line));
-		line = readline(">");
-	}
-	close(fd);
-	nexts_string(ret);
-	(*ret)->c = ft_strjoin((*ret)->c, file);
-	(*i)++;
-	return 0;
-}
-
 int	handleoperators(int *i, int *s, t_string **ret, char *c)
 {
 	char	tmp;
@@ -110,10 +61,10 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 	return (0);
 }
 
-void founddollar(t_lexvars *vars, char *c, t_env *env)
+void	founddollar(t_lexvars *vars, char *c, t_env *env)
 {
-	char *tmp;
-	int j;
+	char	*tmp;
+	int		j;
 
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
@@ -138,6 +89,7 @@ void founddollar(t_lexvars *vars, char *c, t_env *env)
 int	filllist(t_lexvars *vars, char *c, t_env *env)
 {
 	int	d;
+
 	d = 0;
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
 		d = handlequotes(vars, c, env);
@@ -163,9 +115,8 @@ int	filllist(t_lexvars *vars, char *c, t_env *env)
 t_string	*clean_line(char *c, t_env *env)
 {
 	t_string	*head;
-	t_lexvars vars;
+	t_lexvars	vars;
 
-	
 	vars.s = 0;
 	vars.i = 0;
 	vars.d = 0;

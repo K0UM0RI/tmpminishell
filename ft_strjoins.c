@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:42 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/02 21:34:43 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:09:43 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ char	*ft_append(char *c1, char c2)
 
 	i = 0;
 	l = 0;
-	if (c1)
+	if (c1 > 0)
 		l = ft_strlen(c1);
 	c = mymalloc(sizeof(char) * (l + 2), 0);
-	while (c1 && *c1)
+	while (c1 > 0 && *c1)
 	{
 		c[i] = *c1;
 		c1++;
@@ -55,9 +55,9 @@ char	*ft_strdup(char *s)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t len1;
-	size_t len2;
-	char *c;
+	size_t	len1;
+	size_t	len2;
+	char	*c;
 
 	if (!s1 && !s2)
 		return (NULL);

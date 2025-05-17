@@ -6,22 +6,22 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/16 19:15:49 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:15:37 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// if (!ft_strncmp(var, "?", 1))
 char	*getmyenv(char *var, t_env *env)
 {
 	int	l;
 
 	if (!var)
-		return NULL;
+		return (NULL);
 	l = ft_strlen(var);
 	if (!l)
-		return NULL;
-	// if (!ft_strncmp(var, "?", 1))
+		return (NULL);
 	while (env)
 	{
 		if (!ft_strncmp(env->name, var, l))
@@ -31,9 +31,9 @@ char	*getmyenv(char *var, t_env *env)
 	return (NULL);
 }
 
-void newenv(t_env **lstenv, char *name, char *value)
+void	newenv(t_env **lstenv, char *name, char *value)
 {
-	t_env *env;
+	t_env	*env;
 
 	if (!ft_strncmp(name, "SHLVL", 5))
 		value = ft_itoa(ft_atoi(value) + 1);
@@ -45,14 +45,14 @@ void newenv(t_env **lstenv, char *name, char *value)
 	*lstenv = (*lstenv)->next;
 }
 
-t_env *getenvlst(char **env)
+t_env	*getenvlst(char **env)
 {
-	t_env *lstenv;
-	t_env *head;
+	t_env	*lstenv;
+	t_env	*head;
 
 	int (i), (j) = 0;
 	if (!env)
-		return NULL;
+		return (NULL);
 	lstenv = mymalloc(sizeof(t_env), 0);
 	lstenv->next = NULL;
 	head = lstenv;
@@ -64,8 +64,8 @@ t_env *getenvlst(char **env)
 			if (env[j][i] == '=')
 			{
 				env[j][i] = '\0';
-			 	newenv(&lstenv, env[j], env[j] + i + 1);
-				break;
+				newenv(&lstenv, env[j], env[j] + i + 1);
+				break ;
 			}
 			i++;
 		}
