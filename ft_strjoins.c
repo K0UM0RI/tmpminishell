@@ -6,13 +6,13 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:42 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:09:43 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:48:55 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_append(char *c1, char c2)
+char	*ft_append(char *c1, char c2, int fn)
 {
 	char	*c;
 	int		i;
@@ -22,7 +22,7 @@ char	*ft_append(char *c1, char c2)
 	l = 0;
 	if (c1 > 0)
 		l = ft_strlen(c1);
-	c = mymalloc(sizeof(char) * (l + 2), 0);
+	c = mymalloc(sizeof(char) * (l + 2), fn);
 	while (c1 > 0 && *c1)
 	{
 		c[i] = *c1;
@@ -35,7 +35,7 @@ char	*ft_append(char *c1, char c2)
 	return (c);
 }
 
-char	*ft_strdup(char *s)
+char	*ft_strdup(char *s, int fn)
 {
 	char	*c;
 	int		i;
@@ -43,7 +43,7 @@ char	*ft_strdup(char *s)
 	if (!s)
 		return (NULL);
 	i = 0;
-	c = mymalloc(sizeof(char) * ft_strlen(s) + 1, 0);
+	c = mymalloc(sizeof(char) * ft_strlen(s) + 1, fn);
 	while (s[i])
 	{
 		c[i] = s[i];
@@ -53,7 +53,7 @@ char	*ft_strdup(char *s)
 	return (c);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2, int fn)
 {
 	size_t	len1;
 	size_t	len2;
@@ -62,12 +62,12 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)
-		return (ft_strdup(s2));
+		return (ft_strdup(s2, fn));
 	if (!s2)
-		return (ft_strdup(s1));
+		return (ft_strdup(s1, fn));
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
-	c = mymalloc((len1 + len2 + 1) * sizeof(char), 0);
+	c = mymalloc((len1 + len2 + 1) * sizeof(char), fn);
 	ft_strlcpy(c, s1, len1 + 1);
 	ft_strlcat(c + len1, s2, len1 + len2 + 1);
 	return (c);

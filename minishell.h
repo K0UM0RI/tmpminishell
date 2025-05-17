@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:11:46 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:50:58 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,19 @@ t_string			*clean_line(char *c, t_env *env);
 char				*getmyenv(char *var, t_env *env);
 t_env				*getenvlst(char **env);
 
-char				*ft_strjoin(char *s1, char *s2);
+char				*ft_strjoin(char *s1, char *s2, int fn);
 int					ft_strlen(char *c);
 int					mywhitespace(char c);
-char				*ft_append(char *c1, char c2);
+char				*ft_append(char *c1, char c2, int fn);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					mywhitespace(char c);
 int					mycmp(char c1, char c2);
 size_t				ft_strlcat(char *dst, char *src, size_t size);
 size_t				ft_strlcpy(char *dst, char *src, size_t dstsize);
 void				*mymalloc(size_t size, int fn);
-char				*ft_strdup(char *s);
+char				*ft_strdup(char *s, int fn);
 int					ft_atoi(const char *nptr);
-char				*ft_itoa(int n);
+char				*ft_itoa(int n, int fn);
 // parse utils
 int					isoperator(char c);
 int					filllist(t_lexvars *vars, char *c, t_env *env);

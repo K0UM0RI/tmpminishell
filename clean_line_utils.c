@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:13:01 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:49:35 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*getvarname(char *c, int *i)
 	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
 		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
 	{
-		var = ft_append(var, c[(*i)]);
+		var = ft_append(var, c[(*i)], 0);
 		(*i)++;
 	}
 	if ((mywhitespace(c[*i]) || !c[*i]) && !var)
@@ -75,17 +75,17 @@ int	foundquote(char *c, int *i, t_string **ret, t_env *env)
 			tmp = foundvar(i, c, env);
 			if (tmp == (char *)-2 || tmp == (char *)-1)
 			{
-				(*ret)->c = ft_append((*ret)->c, '$');
+				(*ret)->c = ft_append((*ret)->c, '$', 0);
 				tmp = NULL;
 			}
 			while (tmp && *tmp)
 			{
-				(*ret)->c = ft_append((*ret)->c, *tmp);
+				(*ret)->c = ft_append((*ret)->c, *tmp, 0);
 				tmp++;
 			}
 		}
 		else
-			(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
+			(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	}
 	if (c[(*i)++] != '"')
 		return (-1);

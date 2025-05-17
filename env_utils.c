@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:15:37 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:51:09 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*getmyenv(char *var, t_env *env)
 	while (env)
 	{
 		if (!ft_strncmp(env->name, var, l))
-			return (ft_strdup(env->value));
+			return (ft_strdup(env->value, 2));
 		env = env->next;
 	}
 	return (NULL);
@@ -36,10 +36,10 @@ void	newenv(t_env **lstenv, char *name, char *value)
 	t_env	*env;
 
 	if (!ft_strncmp(name, "SHLVL", 5))
-		value = ft_itoa(ft_atoi(value) + 1);
-	env = mymalloc(sizeof(t_env), 0);
-	env->name = ft_strdup(name);
-	env->value = ft_strdup(value);
+		value = ft_itoa(ft_atoi(value) + 1, 2);
+	env = mymalloc(sizeof(t_env), 2);
+	env->name = ft_strdup(name, 2);
+	env->value = ft_strdup(value, 2);
 	env->next = NULL;
 	(*lstenv)->next = env;
 	*lstenv = (*lstenv)->next;
@@ -53,7 +53,7 @@ t_env	*getenvlst(char **env)
 	int (i), (j) = 0;
 	if (!env)
 		return (NULL);
-	lstenv = mymalloc(sizeof(t_env), 0);
+	lstenv = mymalloc(sizeof(t_env), 2);
 	lstenv->next = NULL;
 	head = lstenv;
 	while (env[j])

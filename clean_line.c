@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:11:20 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/17 10:50:29 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	handlequotes(t_lexvars *vars, char *c, t_env *env)
 	{
 		(vars->i)++;
 		while (c[vars->i] && c[vars->i] != '\'')
-			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++]);
+			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
 		if (c[(vars->i)++] != '\'')
 			return (printf("error: no quote\n"), 1);
 	}
@@ -43,7 +43,7 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 		nexts_string(ret);
 	(*ret)->type = OPERATOR;
 	tmp = c[*i];
-	(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
+	(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	if (tmp == c[*i] && tmp == '|')
 		return (printf("parsing error near %c\n", tmp), 1);
 	else if (tmp == c[*i] && tmp == '&')
@@ -54,7 +54,7 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 		return (doheredoc(i, ret, c));
 	}
 	else if (tmp == c[*i])
-		(*ret)->c = ft_append((*ret)->c, c[(*i)++]);
+		(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	if (isoperator(c[*i]))
 		return (printf("parsing error near %c\n", tmp), 1);
 	*s = 1;
@@ -71,7 +71,7 @@ void	founddollar(t_lexvars *vars, char *c, t_env *env)
 	tmp = foundvar(&(vars->i), c, env);
 	if (tmp == (char *)-1)
 	{
-		vars->ret->c = ft_append(vars->ret->c, '$');
+		vars->ret->c = ft_append(vars->ret->c, '$', 0);
 		tmp = NULL;
 	}
 	else if (tmp == (char *)-2)
@@ -102,7 +102,7 @@ int	filllist(t_lexvars *vars, char *c, t_env *env)
 		if (vars->s && (vars->ret)->c)
 			nexts_string(&vars->ret);
 		vars->s = 0;
-		(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++]);
+		(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
 	}
 	while (mywhitespace(c[(vars->i)]))
 	{
@@ -129,7 +129,5 @@ t_string	*clean_line(char *c, t_env *env)
 		if (filllist(&vars, c, env))
 			return (NULL);
 	}
-	if (mywhitespace(c[vars.i]))
-		vars.i++;
 	return (head);
 }
