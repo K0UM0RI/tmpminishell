@@ -20,10 +20,10 @@ char	*ft_append(char *c1, char c2, int fn)
 
 	i = 0;
 	l = 0;
-	if (c1 > 0)
+	if (c1 > (char *)0)
 		l = ft_strlen(c1);
 	c = mymalloc(sizeof(char) * (l + 2), fn);
-	while (c1 > 0 && *c1)
+	while (c1 > (char *)0 && *c1)
 	{
 		c[i] = *c1;
 		c1++;

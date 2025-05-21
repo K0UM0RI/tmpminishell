@@ -24,14 +24,9 @@
 
 # define WORD 0
 # define OPERATOR 1
-# define SUB_OPEN 2
-# define SUB_CLOSE 3
-# define VARIABLE 4
-# define PIPE 5
-# define AND 38
-# define OR 124
-# define SUBSHELL 8
-# define COMMAND 69
+# define RED_OUT_APPEND 2
+# define RED_OUT_TRUNC 3
+# define RED_IN 4
 
 typedef struct s_string
 {
