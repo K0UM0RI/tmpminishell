@@ -119,6 +119,7 @@ t_line *breakdown(t_string *elems)
 				linenew(&line);
 				i = 1;
 			}
+			elems = elems->next;
 		}
 		else
 		{
