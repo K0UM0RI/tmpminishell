@@ -51,11 +51,12 @@ char **gridjoin(char **command, char *elem, int i)
 	return ret;
 }
 
-void linenew(t_line **line)
+int linenew(t_line **line)
 {
 	t_line *tmp;
+
 	if (!line)
-		return ;
+		return 1;
 	tmp = mymalloc(sizeof(line), 0);
 	tmp->command = NULL;
 	tmp->reds = NULL;
@@ -67,36 +68,43 @@ void linenew(t_line **line)
 		(*line)->next = tmp;
 		*line = (*line)->next;
 	}
+	return 1;
+}
+
+int doops(t_string **elems, t_line **line)
+{
+	char *tmp;
+
+	tmp = (*elems)->c;
+	(*elems) = (*elems)->next;
+	if (!ft_strncmp(tmp, ">", 1))
+		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0), RED_OUT_APPEND));
+	if (!ft_strncmp(tmp, ">>", 2))
+		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0), RED_OUT_TRUNC));
+	if (!ft_strncmp(tmp, "<", 1))
+		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0), RED_IN));
+	if (!ft_strncmp(tmp, "|", 1))
+		return (linenew(line));
+	if (ft_strncmp(tmp, "|", 1))
+		(*elems) = (*elems)->next;
+	return (0);
 }
 
 t_line *breakdown(t_string *elems)
 {
 	t_line *line;
 	t_line *head;
-	int i = 1;
-	char *tmp;
+	int i;
 
-	linenew(&line);
+	line = NULL;
+	i = linenew(&line);
 	head = line;
 	while (elems)
 	{
 		if (elems->type == OPERATOR)
 		{
-			tmp = elems->c;
-			elems = elems->next;
-			if (!ft_strncmp(tmp, ">", 1))
-				red_addback(&line->reds, red_new(ft_strdup(elems->c, 0), RED_OUT_APPEND));
-			if (!ft_strncmp(tmp, ">>", 2))
-				red_addback(&line->reds, red_new(ft_strdup(elems->c, 0), RED_OUT_TRUNC));
-			if (!ft_strncmp(tmp, "<", 1))
-				red_addback(&line->reds, red_new(ft_strdup(elems->c, 0), RED_IN));
-			if (!ft_strncmp(tmp, "|", 1))
-			{
-				linenew(&line);
+			if (doops(&elems, &line))
 				i = 1;
-			}
-			if (ft_strncmp(tmp, "|", 1))
-				elems = elems->next;
 		}
 		else
 		{
