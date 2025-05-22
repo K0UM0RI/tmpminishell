@@ -63,10 +63,33 @@ void printcleanline(t_string *clean)
 
 int handlerrors(t_string *clean)
 {
-	int d = 0;
+	int p = 0;
+	int r = 0;
 
-	if (!ft_strncmp(clean->c, "|", 1))
-		return (printf("syntax error near '|'\n"), 1);
+	if (!clean)
+		return 1;
+	if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+		return (printf("syntax error\n"), 1);
+	while (clean)
+	{
+		if ((r || p) && !ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+			return (printf("syntax error\n"), 1);
+		else if (clean->type == OPERATOR && ft_strncmp(clean->c, "|", 1))
+		{
+			r = 1;
+			p = 0;
+		}
+		else if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+			p = 1;
+		else if(!(!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR))
+		{
+			p = 0;
+			r = 0;
+		}
+		clean = clean->next;
+	}
+	if (p || r)
+		return (printf("syntax error\n"), 1);
 	return 0;
 }
 

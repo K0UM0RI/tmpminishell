@@ -45,9 +45,9 @@ int	handleoperators(int *i, int *s, t_string **ret, const char *c)
 	tmp = c[*i];
 	(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	if (tmp == c[*i] && tmp == '|')
-		return (printf("parsing error near %c\n", tmp), 1);
+		return (printf("syntax error\n"), 1);
 	else if (tmp == c[*i] && tmp == '&')
-		return (printf("parsing error near %c\n", tmp), 1);
+		return (printf("syntax error\n"), 1);
 	else if (tmp == c[*i] && c[*i] == '<')
 	{
 		*s = 1;
@@ -56,7 +56,7 @@ int	handleoperators(int *i, int *s, t_string **ret, const char *c)
 	else if (tmp == c[*i])
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	if (isoperator(c[*i]))
-		return (printf("parsing error near %c\n", tmp), 1);
+		return (printf("syntax error\n"), 1);
 	*s = 1;
 	return (0);
 }
