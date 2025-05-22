@@ -30,7 +30,7 @@ void	nexts_string(t_string **ret)
 	(*ret)->type = 0;
 }
 
-char	*getvarname(char *c, int *i)
+char	*getvarname(const char *c, int *i)
 {
 	char	*var;
 
@@ -48,7 +48,7 @@ char	*getvarname(char *c, int *i)
 	return (var);
 }
 
-char	*foundvar(int *i, char *c, t_env *env)
+char	*foundvar(int *i, const char *c, t_env *env)
 {
 	char	*var;
 
@@ -64,7 +64,7 @@ char	*foundvar(int *i, char *c, t_env *env)
 	return (var);
 }
 
-int	foundquote(char *c, int *i, t_string **ret, t_env *env)
+int	foundquote(const char *c, int *i, t_string **ret, t_env *env)
 {
 	char	*tmp;
 

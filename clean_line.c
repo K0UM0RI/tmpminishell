@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	handlequotes(t_lexvars *vars, char *c, t_env *env)
+static int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 {
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
@@ -35,7 +35,7 @@ static int	handlequotes(t_lexvars *vars, char *c, t_env *env)
 	return (0);
 }
 
-int	handleoperators(int *i, int *s, t_string **ret, char *c)
+int	handleoperators(int *i, int *s, t_string **ret, const char *c)
 {
 	char	tmp;
 
@@ -61,7 +61,7 @@ int	handleoperators(int *i, int *s, t_string **ret, char *c)
 	return (0);
 }
 
-void	founddollar(t_lexvars *vars, char *c, t_env *env)
+void	founddollar(t_lexvars *vars, const char *c, t_env *env)
 {
 	char	*tmp;
 	int		j;
@@ -86,7 +86,7 @@ void	founddollar(t_lexvars *vars, char *c, t_env *env)
 	vars->i = j;
 }
 
-int	filllist(t_lexvars *vars, char *c, t_env *env)
+int	filllist(t_lexvars *vars, const char *c, t_env *env)
 {
 	int	d;
 
@@ -112,7 +112,7 @@ int	filllist(t_lexvars *vars, char *c, t_env *env)
 	return (d);
 }
 
-t_string	*clean_line(char *c, t_env *env)
+t_string	*clean_line(const char *c, t_env *env)
 {
 	t_string	*head;
 	t_lexvars	vars;

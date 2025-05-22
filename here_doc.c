@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*getendoffile(char *c, int *i)
+char	*getendoffile(const char *c, int *i)
 {
 	char	*eof;
 	char	quote;
@@ -63,7 +63,7 @@ char	*makeheredoc(char *eof)
 	return (file);
 }
 
-int	doheredoc(int *i, t_string **ret, char *c)
+int	doheredoc(int *i, t_string **ret, const char *c)
 {
 	char    *eof;
 

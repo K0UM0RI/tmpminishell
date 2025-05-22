@@ -67,7 +67,21 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-t_string			*clean_line(char *c, t_env *env);
+typedef struct s_redirections
+{
+	char *file;
+	int redtype;
+	struct s_redirections *next;
+} t_redirections;
+
+typedef struct s_line
+{
+	char **command;
+	t_redirections *reds;
+	struct s_line *next;
+} t_line;
+
+t_string			*clean_line(const char *c, t_env *env);
 
 // env utils
 char				*getmyenv(char *var, t_env *env);
@@ -88,12 +102,15 @@ int					ft_atoi(const char *nptr);
 char				*ft_itoa(int n, int fn);
 // parse utils
 int					isoperator(char c);
-int					filllist(t_lexvars *vars, char *c, t_env *env);
+int					filllist(t_lexvars *vars, const char *c, t_env *env);
 
 // clean line utils
 t_string			*news_string(void);
 void				nexts_string(t_string **ret);
-int					foundquote(char *c, int *i, t_string **ret, t_env *env);
-char				*foundvar(int *i, char *c, t_env *env);
-int					doheredoc(int *i, t_string **ret, char *c);
+int					foundquote(const char *c, int *i, t_string **ret, t_env *env);
+char				*foundvar(int *i, const char *c, t_env *env);
+int					doheredoc(int *i, t_string **ret, const char *c);
+
+//breakdown
+t_line *breakdown(t_string *elems);
 #endif

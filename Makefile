@@ -11,6 +11,7 @@ SRC = ft_strjoins.c \
 	minishell.c \
 	garbage_collector.c \
 	here_doc.c \
+	breakdown.c \
 	
 
 lib = minishell.h
