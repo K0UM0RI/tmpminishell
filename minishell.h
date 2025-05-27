@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:50:58 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/27 23:16:12 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <sys/wait.h>
 
 # define WORD 0
 # define OPERATOR 1
@@ -110,6 +111,8 @@ void				nexts_string(t_string **ret);
 int					foundquote(const char *c, int *i, t_string **ret, t_env *env);
 char				*foundvar(int *i, const char *c, t_env *env);
 int					doheredoc(int *i, t_string **ret, const char *c);
+
+char	*getcmd(char *cmd, t_env *env);
 
 //breakdown
 t_line *breakdown(t_string *elems);
