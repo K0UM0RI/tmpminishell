@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:50:29 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/28 02:52:22 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,24 @@ void	founddollar(t_lexvars *vars, const char *c, t_env *env)
 {
 	char	*tmp;
 	int		j;
-
+	
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
+	if (c[vars->i] == '~' && (mywhitespace(c[vars->i + 1]) || !c[vars->i + 1]) && (vars->s || !vars->i))
+	{
+		vars->s = 0;
+		j = vars->i;
+		vars->i = 0;
+		founddollar(vars, "$HOME", env);
+		vars->i = j + 1;
+		return ;
+	}
+	else if (c[vars->i] == '~')
+	{
+		vars->ret->c = ft_append(vars->ret->c, '~', 0);
+		vars->i++;
+		return;
+	}
 	tmp = foundvar(&(vars->i), c, env);
 	if (tmp == (char *)-1)
 	{
@@ -76,10 +91,10 @@ void	founddollar(t_lexvars *vars, const char *c, t_env *env)
 	}
 	else if (tmp == (char *)-2)
 		tmp = NULL;
-	vars->s = 0;
 	j = vars->i;
 	vars->i = 0;
 	vars->d = 1;
+	vars->s = 0;
 	while (tmp && tmp[vars->i])
 		filllist(vars, tmp, env);
 	vars->d = 0;
@@ -93,9 +108,9 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 	d = 0;
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
 		d = handlequotes(vars, c, env);
-	else if (isoperator(c[vars->i]) && !vars->d)
+	else if (isoperator(c[vars->i]) && !vars->d )
 		d = handleoperators(&vars->i, &vars->s, &vars->ret, c);
-	else if (c[vars->i] == '$' && !vars->d)
+	else if ((c[vars->i] == '$' || c[vars->i] == '~') && !vars->d)
 		founddollar(vars, c, env);
 	else if (!mywhitespace(c[vars->i]))
 	{
