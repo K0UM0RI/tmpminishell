@@ -6,13 +6,26 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:51:09 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/28 02:59:04 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // if (!ft_strncmp(var, "?", 1))
+
+int ft_lstsizeenv(t_env *env)
+{
+	int size;
+
+	while(env)
+	{
+		size++;
+		env = env->next;
+	}
+	return size;
+}
+
 char	*getmyenv(char *var, t_env *env)
 {
 	int	l;
@@ -72,4 +85,23 @@ t_env	*getenvlst(char **env)
 		j++;
 	}
 	return (head->next);
+}
+
+char **convertenv(t_env *env)
+{
+	int size;
+	char **ret;
+	int i = 0;
+	
+	size = ft_lstsizeenv(env);
+	ret = mymalloc(sizeof(char *) * (size + 1), 0);
+	while (env)
+	{
+		ret[i] = ft_append(env->name, '=', 0);
+		ret[i] = ft_strjoin(ret[i], env->value, 0);
+		i++;
+		env = env->next;
+	}
+	ret[i] = NULL;
+	return ret;
 }

@@ -13,7 +13,7 @@ SRC = ft_strjoins.c \
 	here_doc.c \
 	breakdown.c \
 	getcmd.c \
-	
+	execute.c \
 
 lib = minishell.h
 

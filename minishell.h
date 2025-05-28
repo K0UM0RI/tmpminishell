@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/27 23:16:12 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/28 03:04:59 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,20 @@ typedef struct s_line
 	struct s_line *next;
 } t_line;
 
+typedef struct s_exec
+{
+	int pipefd[2];
+	int oldpipefd[2];
+	int *child;
+	int npipes;
+} t_exec;
+
 t_string			*clean_line(const char *c, t_env *env);
 
 // env utils
 char				*getmyenv(char *var, t_env *env);
 t_env				*getenvlst(char **env);
+char **convertenv(t_env *env);
 
 char				*ft_strjoin(char *s1, char *s2, int fn);
 int					ft_strlen(char *c);
@@ -116,4 +125,6 @@ char	*getcmd(char *cmd, t_env *env);
 
 //breakdown
 t_line *breakdown(t_string *elems);
+
+void ft_execute(t_line *line, t_env *env);
 #endif
