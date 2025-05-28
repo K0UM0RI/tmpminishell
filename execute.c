@@ -88,6 +88,12 @@ void birth(int i, t_exec exec, t_line *line, t_env *env)
     cmd = NULL;
     piping(i, exec, line);
 	openredirs(line->reds);
+	if (!line->command || !line->command[0])
+		exit(0);
+	if (isbuiltin(line->command[0]))
+		exit(execbuiltin(line, env));
+	if (!ft_strncmp(line->command[0], "echo", 5))
+		exit(ft_echo(line->command));
 	cmd = getcmd(line->command[0], env);
 	if (!cmd)
 		exit(127);
@@ -108,9 +114,18 @@ void ft_execute(t_line *line, t_env *env)
 	while (line)
 	{
 		pipe(exec.pipefd);
-		exec.child[i] = fork();
-		if (!exec.child[i])
-            birth(i, exec, line, env);
+		if (isbuiltin(line->command[0]) && !line->next)
+		{
+			openredirsnodup(line->reds);
+			execbuiltin(line, env);
+			break;
+		}
+		else
+		{
+			exec.child[i] = fork();
+			if (!exec.child[i])
+            	birth(i, exec, line, env);
+		}
         resetoldpipe(exec.oldpipefd, exec.pipefd);
 		i++;
 		line = line->next;

@@ -14,6 +14,8 @@ SRC = ft_strjoins.c \
 	breakdown.c \
 	getcmd.c \
 	execute.c \
+	builtins.c \
+	ft_split.c \
 
 lib = minishell.h
 

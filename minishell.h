@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/28 03:04:59 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/28 14:10:51 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void				*mymalloc(size_t size, int fn);
 char				*ft_strdup(char *s, int fn);
 int					ft_atoi(const char *nptr);
 char				*ft_itoa(int n, int fn);
+char	**ft_split(char *s, char c);
 // parse utils
 int					isoperator(char c);
 int					filllist(t_lexvars *vars, const char *c, t_env *env);
@@ -127,4 +128,12 @@ char	*getcmd(char *cmd, t_env *env);
 t_line *breakdown(t_string *elems);
 
 void ft_execute(t_line *line, t_env *env);
+
+//bultins
+int ft_echo(char **command);
+void openredirsnodup(t_redirections *reds);
+int execbuiltin(t_line *line, t_env *env);
+int isbuiltin(char *command);
+
+void cleanfds(int *fd, int end);
 #endif
