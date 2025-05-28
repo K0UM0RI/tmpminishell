@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/28 02:52:37 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/28 02:57:25 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ char **convertenv(t_env *env)
 	while (env)
 	{
 		ret[i] = ft_append(env->name, '=', 0);
-		ret[i] = ft_strjoin(ret[0], env->value, 0);
+		ret[i] = ft_strjoin(ret[i], env->value, 0);
 		i++;
 		env = env->next;
 	}
@@ -216,6 +216,7 @@ void ft_execute(t_line *line, t_env *env)
 				cmd = getcmd(line->command[0], env);
 				if (!cmd)
 					exit(127);
+				
 				execve(cmd, line->command, convertenv(env));
 			}
 		}
