@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/27 23:27:20 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/28 01:45:35 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int handlerrors(t_string *clean)
 typedef struct s_exec
 {
 	int pipefd[2];
-	int oldpipefd;
+	int oldpipefd[2];
 	int *child;
 	int npipes;
 	int file[2];
@@ -160,47 +160,58 @@ void ft_execute(t_line *line, t_env *env)
 	reds = NULL;
 	exec.npipes = ft_lstsizeline(line);
 	exec.child = mymalloc(sizeof(int) * exec.npipes, 0);
+	exec.oldpipefd[0] = -1;
+	exec.oldpipefd[1] = -1;
 	while (line)
 	{
 		if (line->command && *line->command)
 		{
 			pipe(exec.pipefd);
 			exec.child[i] = fork();
-			exec.oldpipefd = exec.pipefd[0];
 			if (!exec.child[i])
 			{
 				exec.file[0] = -1;
 				exec.file[1] = -1;
+				close(exec.pipefd[0]);
 				if (i)
-					dup2(exec.oldpipefd, 0);
+				{
+					if (exec.oldpipefd[0] != -1)
+						close(exec.oldpipefd[1]);
+					dup2(exec.oldpipefd[0], 0);
+					close(exec.oldpipefd[0]);
+				}
 				if (line->next)
+				{
 					dup2(exec.pipefd[1], 1);
+					close(exec.pipefd[1]);
+				}
 				reds = line->reds;
 				while(reds)
 				{
 					if (reds->redtype == RED_OUT_APPEND)
 					{
-						if (exec.file[1] != -1)
-							close(exec.file[1]);
 						exec.file[1] = open(reds->file, O_CREAT | O_APPEND | O_WRONLY, 0777);
 						dup2(exec.file[1], 1);
+						close(exec.file[1]);
 					}
 					else if (reds->redtype == RED_OUT_TRUNC)
 					{
-						if (exec.file[1] != -1)
-							close(exec.file[1]);
 						exec.file[1] = open(reds->file, O_CREAT | O_TRUNC | O_WRONLY, 0777);
 						dup2(exec.file[1], 1);
+						close(exec.file[1]);
 					}
 					else if (reds->redtype == RED_IN)
 					{
-						if (exec.file[0] != -1)
-							close(exec.file[0]);
 						exec.file[0] = open(reds->file, O_RDONLY);
+						if (exec.file[0] < 0)
+						{
+							perror("open");
+							exit(1);
+						}
 						dup2(exec.file[0], 0);
+						close(exec.file[0]);
 					}
 					reds = reds->next;
-					i++;
 				}
 				cmd = getcmd(line->command[0], env);
 				if (!cmd)
@@ -208,10 +219,20 @@ void ft_execute(t_line *line, t_env *env)
 				execve(cmd, line->command, convertenv(env));
 			}
 		}
-		exec.oldpipefd = exec.pipefd[0];
+		if (exec.oldpipefd[0] != -1)
+			close(exec.oldpipefd[0]);
+		if (exec.oldpipefd[1] != -1)
+			close(exec.oldpipefd[1]);
+		exec.oldpipefd[0] = exec.pipefd[0];
+		exec.oldpipefd[1] = exec.pipefd[1];
+		i++;
 		line = line->next;
 	}
 	j = 0;
+	if (exec.oldpipefd[0] != -1)
+		close(exec.oldpipefd[0]);
+	if (exec.oldpipefd[1] != -1)
+		close(exec.oldpipefd[1]);
 	while (j < i)
 	{
 		waitpid(exec.child[j], NULL, 0);
@@ -231,7 +252,7 @@ int	main(int ac, char **av, char **env)
 	lstenv = getenvlst(env);
 	while (1)
 	{
-		c = readline(NULL);
+		c = readline("minishell> ");
 		if (!c)
 			break ;
 		clean = clean_line(c, lstenv);
