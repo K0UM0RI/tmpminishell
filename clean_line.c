@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/28 02:52:22 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/29 04:18:42 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 		(vars->i)++;
 		vars->s = foundquote(c, &vars->i, &vars->ret, env);
 		if (vars->s == -1)
-			return (printf("error:no double quote\n"), 1);
+			return (write(2, "error:no double quote\n", 23), 1);
 	}
 	else if (c[vars->i] == '\'')
 	{
@@ -30,7 +30,7 @@ static int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 		while (c[vars->i] && c[vars->i] != '\'')
 			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
 		if (c[(vars->i)++] != '\'')
-			return (printf("error: no quote\n"), 1);
+			return (write(2, "error: no quote\n", 17), 1);
 	}
 	return (0);
 }
@@ -45,9 +45,9 @@ int	handleoperators(int *i, int *s, t_string **ret, const char *c)
 	tmp = c[*i];
 	(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	if (tmp == c[*i] && tmp == '|')
-		return (printf("syntax error\n"), 1);
+		return (write(2, "syntax error\n", 14), 1);
 	else if (tmp == c[*i] && tmp == '&')
-		return (printf("syntax error\n"), 1);
+		return (write(2, "syntax error\n", 14), 1);
 	else if (tmp == c[*i] && c[*i] == '<')
 	{
 		*s = 1;
@@ -56,7 +56,7 @@ int	handleoperators(int *i, int *s, t_string **ret, const char *c)
 	else if (tmp == c[*i])
 		(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	if (isoperator(c[*i]))
-		return (printf("syntax error\n"), 1);
+		return (write(2, "syntax error\n", 14), 1);
 	*s = 1;
 	return (0);
 }

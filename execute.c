@@ -37,11 +37,21 @@ void openredirs(t_redirections *reds)
 		if (reds->redtype == RED_OUT_APPEND)
 		{
 			file[1] = open(reds->file, O_CREAT | O_APPEND | O_WRONLY, 0777);
+			if (file[1] < 0)
+			{
+				perror("open");
+				exit(1);
+			}
 			dup2(file[1], 1);
 		}
 		else if (reds->redtype == RED_OUT_TRUNC)
 		{
 			file[1] = open(reds->file, O_CREAT | O_TRUNC | O_WRONLY, 0777);
+			if (file[1] < 0)
+			{
+				perror("open");
+				exit(1);
+			}
 			dup2(file[1], 1);
 		}
 		else if (reds->redtype == RED_IN)
@@ -98,6 +108,10 @@ void birth(int i, t_exec exec, t_line *line, t_env *env)
 	if (!cmd)
 		exit(127);
 	execve(cmd, line->command, convertenv(env));
+	mymalloc(0, 1);
+	mymalloc(0, 3);
+	perror("execv");
+	exit(127);
 }
 
 void ft_execute(t_line *line, t_env *env)
@@ -113,7 +127,8 @@ void ft_execute(t_line *line, t_env *env)
 	exec.oldpipefd[1] = -1;
 	while (line)
 	{
-		pipe(exec.pipefd);
+		if (pipe(exec.pipefd) < 0)
+			perror("pipe");
 		if (isbuiltin(line->command[0]) && !line->next)
 		{
 			openredirsnodup(line->reds);
@@ -123,6 +138,8 @@ void ft_execute(t_line *line, t_env *env)
 		else
 		{
 			exec.child[i] = fork();
+			if (exec.child[i] < 0)
+				perror("fork");
 			if (!exec.child[i])
             	birth(i, exec, line, env);
 		}

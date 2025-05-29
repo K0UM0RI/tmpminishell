@@ -53,7 +53,7 @@ char	*checkpaths(char *env, char **paths)
 	{
 		c = ft_strjoin(paths[i], env, 0);
 		if (!c)
-			return (perror("join fail"), NULL);
+			return (NULL);
 		if (!access(c, F_OK | X_OK))
 			return (c);
 		c = NULL;

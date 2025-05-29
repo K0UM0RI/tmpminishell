@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/28 14:10:51 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/29 03:48:53 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_env
 {
 	char			*name;
 	char			*value;
+	int unset;
 	struct s_env	*next;
 }					t_env;
 

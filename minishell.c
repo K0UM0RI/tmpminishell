@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/28 02:59:45 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/29 04:19:25 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int handlerrors(t_string *clean)
 	if (!clean)
 		return 1;
 	if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
-		return (printf("syntax error\n"), 1);
+		return (write(2, "syntax error\n", 14), 1);
 	while (clean)
 	{
 		if ((r || p) && !ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
-			return (printf("syntax error\n"), 1);
+			return (write(2, "syntax error\n", 14), 1);
 		else if (clean->type == OPERATOR && ft_strncmp(clean->c, "|", 1))
 		{
 			r = 1;
@@ -92,7 +92,7 @@ int handlerrors(t_string *clean)
 		clean = clean->next;
 	}
 	if (p || r)
-		return (printf("syntax error\n"), 1);
+		return (write(2, "syntax error\n", 14), 1);
 	return 0;
 }
 
