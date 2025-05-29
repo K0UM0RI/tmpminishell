@@ -54,7 +54,7 @@ int ft_export(char **command, t_env *env)
         write(2, "export: not a valid identifier\n", 32);
         return 1;
     }
-    if (tmp[2])
+    if (tmp[2] || !ft_strncmp(tmp[0], "?", 2))
     {
         write(2, "export: not a valid identifier\n", 32);
         return 1;
@@ -96,7 +96,8 @@ int ft_env(t_env *env)
 {
     while (env)
     {
-        printf("%s=%s\n", env->name, env->value);
+        if (ft_strncmp(env->name, "?", 2))
+            printf("%s=%s\n", env->name, env->value);
         env = env->next;
     }
     return (0);
@@ -142,6 +143,8 @@ int ft_unset(char **command, t_env **env)
 
     i = 1;
     if (!command[1])
+        return 0;
+    if (!ft_strncmp(command[1], "?", 2))
         return 0;
     while(command[i])
     {

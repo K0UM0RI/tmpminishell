@@ -114,9 +114,10 @@ void birth(int i, t_exec exec, t_line *line, t_env **env)
 	exit(127);
 }
 
-void ft_execute(t_line *line, t_env **env)
+int ft_execute(t_line *line, t_env **env)
 {
 	t_exec exec;
+	int exit;
 	int i;
 	int j;
 
@@ -125,15 +126,17 @@ void ft_execute(t_line *line, t_env **env)
 	exec.child = mymalloc(sizeof(int) * exec.npipes, 0);
 	exec.oldpipefd[0] = -1;
 	exec.oldpipefd[1] = -1;
+	exit = 0;
 	while (line)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
-		if (isbuiltin(line->command[0]) && !line->next)
+		if (isbuiltin(line->command[0]) && !line->next && !i)
 		{
+			cleanfds(exec.pipefd, 2);
 			openredirsnodup(line->reds);
-			execbuiltin(line, env);
-			break;
+			exit = execbuiltin(line, env);
+			return exit;
 		}
 		else
 		{
@@ -151,7 +154,8 @@ void ft_execute(t_line *line, t_env **env)
     j = 0;
 	while (j < i)
 	{
-		waitpid(exec.child[j], NULL, 0);
+		waitpid(exec.child[j], &exit, 0);
 		j++;
 	}
+	return WEXITSTATUS(exit);
 }

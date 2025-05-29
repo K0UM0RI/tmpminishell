@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 14:55:41 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/30 00:08:49 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ t_env	*getenvlst(char **env)
 		}
 		j++;
 	}
+	newenv(&lstenv, "?", "0");
 	return (head->next);
 }
 
@@ -97,10 +98,15 @@ char **convertenv(t_env *env)
 	ret = mymalloc(sizeof(char *) * (size + 1), 0);
 	while (env)
 	{
-		ret[i] = ft_append(env->name, '=', 0);
-		ret[i] = ft_strjoin(ret[i], env->value, 0);
-		i++;
-		env = env->next;
+		if (!ft_strncmp(env->name, "?", 2))
+			env = env->next;
+		else
+		{
+			ret[i] = ft_append(env->name, '=', 0);
+			ret[i] = ft_strjoin(ret[i], env->value, 0);
+			i++;
+			env = env->next;
+		}
 	}
 	ret[i] = NULL;
 	return ret;

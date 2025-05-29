@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 15:00:30 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/30 00:14:34 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,31 @@ int handlerrors(t_string *clean)
 	return 0;
 }
 
+void changeexitstatus(int exit, t_env *env)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->name, "?", 2))
+		{
+			env->value = ft_itoa(exit, 2);
+			return ;
+		}
+		env = env->next;
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
 	const char		*c;
 	t_string	*clean;
 	t_env		*lstenv;
+	int exit;
 	t_line *line;
 
 	ac++;
 	av++;
 	lstenv = getenvlst(env);
+	exit = 0;
 	while (1)
 	{
 		c = readline("minishell> ");
@@ -116,8 +131,9 @@ int	main(int ac, char **av, char **env)
 		{
 			line = breakdown(clean);
 			// printbreakdown(line);
-			ft_execute(line, &lstenv);
+			exit = ft_execute(line, &lstenv);
 		}
+		changeexitstatus(exit, lstenv);
 		add_history(c);
 		mymalloc(0, 1);
 	}
