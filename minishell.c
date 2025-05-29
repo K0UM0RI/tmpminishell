@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 04:19:25 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/29 15:00:30 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	main(int ac, char **av, char **env)
 		{
 			line = breakdown(clean);
 			// printbreakdown(line);
-			ft_execute(line, lstenv);
+			ft_execute(line, &lstenv);
 		}
 		add_history(c);
 		mymalloc(0, 1);

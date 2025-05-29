@@ -91,7 +91,7 @@ void resetoldpipe(int *oldpipefd, int *pipefd)
 	oldpipefd[1] = pipefd[1];
 }
 
-void birth(int i, t_exec exec, t_line *line, t_env *env)
+void birth(int i, t_exec exec, t_line *line, t_env **env)
 {
     char *cmd;
 
@@ -104,17 +104,17 @@ void birth(int i, t_exec exec, t_line *line, t_env *env)
 		exit(execbuiltin(line, env));
 	if (!ft_strncmp(line->command[0], "echo", 5))
 		exit(ft_echo(line->command));
-	cmd = getcmd(line->command[0], env);
+	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
 		exit(127);
-	execve(cmd, line->command, convertenv(env));
+	execve(cmd, line->command, convertenv(*env));
 	mymalloc(0, 1);
 	mymalloc(0, 3);
 	perror("execv");
 	exit(127);
 }
 
-void ft_execute(t_line *line, t_env *env)
+void ft_execute(t_line *line, t_env **env)
 {
 	t_exec exec;
 	int i;

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 03:49:20 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/29 14:55:41 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	newenv(t_env **lstenv, char *name, char *value)
 	env = mymalloc(sizeof(t_env), 2);
 	env->name = ft_strdup(name, 2);
 	env->value = ft_strdup(value, 2);
-	env->unset = 0;
 	env->next = NULL;
 	(*lstenv)->next = env;
 	*lstenv = (*lstenv)->next;

@@ -41,11 +41,14 @@ int ft_export(char **command, t_env *env)
     char **tmp;
 
     tmp = NULL;
-    while (env->next)
-        env = env->next;
     if (!command[1])
         return (write(2, "invalid options\n", 17), 1);
     tmp = ft_split(command[1], '=');
+    if (ft_strncmp(env->name, tmp[0], ft_strlen(tmp[0])))
+    {
+        while (env->next && ft_strncmp(env->next->name, tmp[0], ft_strlen(tmp[0])))
+            env = env->next;
+    }
     if (!tmp || !tmp[0] || !tmp[1])
     {
         write(2, "export: not a valid identifier\n", 32);
@@ -59,7 +62,6 @@ int ft_export(char **command, t_env *env)
     env->next = mymalloc(sizeof(t_env), 2);
     env->next->name = ft_strdup(tmp[0], 2);
     env->next->value = ft_strdup(tmp[1], 2);
-    env->unset = 0;
     env->next->next = NULL;
     return 0;
 }
@@ -94,8 +96,7 @@ int ft_env(t_env *env)
 {
     while (env)
     {
-        if (!env->unset)
-            printf("%s=%s\n", env->name, env->value);
+        printf("%s=%s\n", env->name, env->value);
         env = env->next;
     }
     return (0);
@@ -133,18 +134,48 @@ int ft_exit(char **command)
         exit(2);
 }
 
-int execbuiltin(t_line *line, t_env *env)
+int ft_unset(char **command, t_env **env)
+{
+    int i;
+    t_env *tmp;
+    t_env *previous;
+
+    i = 1;
+    if (!command[1])
+        return 0;
+    while(command[i])
+    {
+        tmp = *env;
+        previous = NULL;
+        while (tmp)
+        {
+            if (!ft_strncmp(tmp->name, command[i], ft_strlen(command[i])))
+            {
+                if (previous)
+                    previous->next = tmp->next;
+                else
+                    *env = (*env)->next;
+                break;
+            }
+            previous = tmp;
+            tmp = tmp->next;
+        }
+        i++;
+    }
+    return 0;
+}
+int execbuiltin(t_line *line, t_env **env)
 {
     // if (!ft_strncmp(command[0], "cd", 3))
     //     return ft_cd(command, env);
     // if (!ft_strncmp(command[0], "pwd", 4))
     //     return ft_pwd();
     if (!ft_strncmp(line->command[0], "export", 7))
-        return ft_export(line->command, env);
-    // if (!ft_strncmp(line->command[0], "unset", 6))
-    //     return ft_unset(line->command, env);
+        return ft_export(line->command, *env);
+    if (!ft_strncmp(line->command[0], "unset", 6))
+        return ft_unset(line->command, env);
     if (!ft_strncmp(line->command[0], "env", 4))
-        return ft_env(env);
+        return ft_env(*env);
     if (!ft_strncmp(line->command[0], "exit", 5))
         return ft_exit(line->command);
     return 0;

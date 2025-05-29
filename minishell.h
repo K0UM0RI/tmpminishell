@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 03:48:53 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/29 15:04:09 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_env
 {
 	char			*name;
 	char			*value;
-	int unset;
 	struct s_env	*next;
 }					t_env;
 
@@ -128,12 +127,12 @@ char	*getcmd(char *cmd, t_env *env);
 //breakdown
 t_line *breakdown(t_string *elems);
 
-void ft_execute(t_line *line, t_env *env);
+void ft_execute(t_line *line, t_env **env);
 
 //bultins
 int ft_echo(char **command);
 void openredirsnodup(t_redirections *reds);
-int execbuiltin(t_line *line, t_env *env);
+int execbuiltin(t_line *line, t_env **env);
 int isbuiltin(char *command);
 
 void cleanfds(int *fd, int end);
