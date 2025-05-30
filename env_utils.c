@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/30 00:08:49 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/30 00:58:20 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int ft_lstsizeenv(t_env *env)
 {
 	int size;
 
+	size = 0;
 	while(env)
 	{
 		size++;
@@ -67,6 +68,8 @@ t_env	*getenvlst(char **env)
 	if (!env)
 		return (NULL);
 	lstenv = mymalloc(sizeof(t_env), 2);
+	lstenv->name = NULL;
+	lstenv->value = NULL;
 	lstenv->next = NULL;
 	head = lstenv;
 	while (env[j])

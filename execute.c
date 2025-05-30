@@ -18,6 +18,7 @@ int ft_lstsizeline(t_line *line)
 {
 	int size;
 
+	size = 0;
 	while(line)
 	{
 		size++;

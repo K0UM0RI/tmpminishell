@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:16 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:47:45 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/30 00:55:03 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,35 +104,26 @@ int	ft_atoi(const char *nptr)
 
 char	*ft_itoa(int n, int fn)
 {
-	char	*str;
-	int		len;
-	int		s;
+    char	*str;
+    int		len = 1;
+    int		tmp = n;
+    int		neg = n < 0;
 
-	len = 1;
-	s = n + (n < 0) * 2 * (-n);
-	if (n == -2147483648)
-		return (strdup("-2147483648"));
-	while (s > 9)
-	{
-		s /= 10;
-		len++;
-	}
-	s = 1;
-	if (n < 0)
-	{
-		s = -1;
-		len++;
-		n = -n;
-	}
-	str = mymalloc(sizeof(char) * (len + 1), fn);
-	str[len--] = '\0';
-	if (s == -1)
-		str[0] = '-';
-	while (len >= 0 && str[len] != '-')
-	{
-		str[len] = n % 10 + '0';
-		n /= 10;
-		len--;
-	}
-	return (str);
+    if (n == -2147483648)
+        return (ft_strdup("-2147483648", fn));
+    while (tmp /= 10)
+        len++;
+    str = mymalloc(sizeof(char) * (len + neg + 1), fn);
+    str[len + neg] = '\0';
+    if (neg)
+    {
+        str[0] = '-';
+        n = -n;
+    }
+    for (int i = len + neg - 1; i >= neg; i--)
+    {
+        str[i] = (n % 10) + '0';
+        n /= 10;
+    }
+    return str;
 }

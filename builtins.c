@@ -122,15 +122,22 @@ int isnumber(char *c)
 int ft_exit(char **command)
 {
     write(2, "exit\n", 5);
+
     if (!command[1])
+    {
+        mymalloc(0, 1);
+        mymalloc(0, 3);
         exit(0);
+    }
     if (command[2])
     {
         write(2, "too many arguments\n", 20);
         return 1;
     }
+    mymalloc(0, 1);
+    mymalloc(0, 3);
     if (isnumber(command[1]))
-        exit (atoi(command[1]) & 0xFF);
+        exit(atoi(command[1]) & 0xFF);
     else
         exit(2);
 }

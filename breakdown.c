@@ -31,9 +31,10 @@ t_redirections *red_new(char *file, int type)
 char **gridjoin(char **command, char *elem, int i)
 {
 	char **ret;
-	int j = 0;
+	int j;
 
-	ret = mymalloc(sizeof(char *) * i + 1, 0);
+	j = 0;
+	ret = mymalloc(sizeof(char *) * (i + 1), 0);
 	if (!command)
 	{
 		*ret = elem;
@@ -57,7 +58,7 @@ int linenew(t_line **line)
 
 	if (!line)
 		return 1;
-	tmp = mymalloc(sizeof(line), 0);
+	tmp = mymalloc(sizeof(t_line), 0);
 	tmp->command = NULL;
 	tmp->reds = NULL;
 	tmp->next = NULL;
