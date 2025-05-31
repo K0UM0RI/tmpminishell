@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:35 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:52:01 by sbat             ###   ########.fr       */
+/*   Updated: 2025/05/31 18:42:08 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ void	free_lst(t_truck **allocated)
 	}
 }
 
+void mallocfail(t_truck	**allocatedtmp, t_truck	**allocatedlasting)
+{
+	write(2, "malloc failed!\n", 15);
+	free_lst(allocatedtmp);
+	free_lst(allocatedlasting);
+	exit(1);
+}
+
 void	*mymalloc(size_t size, int fn)
 {
 	static t_truck	*allocatedtmp = NULL;
@@ -40,21 +48,10 @@ void	*mymalloc(size_t size, int fn)
 		return (free_lst(&allocatedlasting), NULL);
 	new = malloc(sizeof(t_truck));
 	if (!new)
-	{
-		write(2, "malloc failed!\n", 15);
-		free_lst(&allocatedtmp);
-		free_lst(&allocatedlasting);
-		exit(1);
-	}
+		mallocfail(&allocatedtmp, &allocatedlasting);
 	new->ptr = malloc(size);
 	if (!new)
-	{
-		write(2, "malloc failed!\n", 15);
-		free(new);
-		free_lst(&allocatedtmp);
-		free_lst(&allocatedlasting);
-		exit(1);
-	}
+		(free(new), mallocfail(&allocatedtmp, &allocatedlasting));
 	if (fn == 0)
 	{
 		new->next = allocatedtmp;

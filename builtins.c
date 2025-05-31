@@ -49,16 +49,8 @@ int ft_export(char **command, t_env *env)
         while (env->next && ft_strncmp(env->next->name, tmp[0], ft_strlen(tmp[0])))
             env = env->next;
     }
-    if (!tmp || !tmp[0] || !tmp[1])
-    {
-        write(2, "export: not a valid identifier\n", 32);
-        return 1;
-    }
-    if (tmp[2] || !ft_strncmp(tmp[0], "?", 2))
-    {
-        write(2, "export: not a valid identifier\n", 32);
-        return 1;
-    }
+    if (!tmp || !tmp[0] || !tmp[1] || tmp[2] || !ft_strncmp(tmp[0], "?", 2))
+        return (write(2, "export: not a valid identifier\n", 32), 1);
     env->next = mymalloc(sizeof(t_env), 2);
     env->next->name = ft_strdup(tmp[0], 2);
     env->next->value = ft_strdup(tmp[1], 2);
@@ -82,10 +74,7 @@ void openredirsnodup(t_redirections *reds)
 		{
 			file[0] = open(reds->file, O_RDONLY);
 			if (file[0] < 0)
-			{
-				perror("open");
-				exit(1);
-			}
+				(perror("open"), exit(1));
 		}
         cleanfds(file, 2);
 		reds = reds->next;
@@ -106,60 +95,50 @@ int ft_env(t_env *env)
 int isnumber(char *c)
 {
     int i;
-    
-    i = 0;
-    if (c[i] == '-' || c[i] == '+')
+
+     i = 0;
+    if (!c || !*c)
+        return (write(2, "numeric argument required\n", 27), 0);
+    if (c[i] && (c[i] == '-' || c[i] == '+'))
         i++;
-    while (c[i])
-    {
-        if (!(c[i] >= '0' && c[i] <= '9'))
-            return (write(2, "numeric argument required\n", 27), 0);
+    while (c[i] && (c[i] >= '0' && c[i] <= '9'))
         i++;
-    }
-    return 1;
+    if (c[i])
+        return (write(2, "numeric argument required\n", 27), 0);
+    return (1);
 }
 
 int ft_exit(char **command)
 {
-    write(2, "exit\n", 5);
+    int e;
 
+    write(2, "exit\n", 5);
     if (!command[1])
-    {
-        mymalloc(0, 1);
-        mymalloc(0, 3);
-        exit(0);
-    }
+        (mymalloc(0, 1), mymalloc(0, 3), exit(0));
     if (command[2])
-    {
-        write(2, "too many arguments\n", 20);
-        return 1;
-    }
+        return (write(2, "too many arguments\n", 20), 1);
+    if (isnumber(command[1]))
+        e = ft_atoi(command[1]) & 0xFF;
+    else
+        e = 2;
     mymalloc(0, 1);
     mymalloc(0, 3);
-    if (isnumber(command[1]))
-        exit(atoi(command[1]) & 0xFF);
-    else
-        exit(2);
+    exit(e);
 }
 
 int ft_unset(char **command, t_env **env)
 {
     int i;
-    t_env *tmp;
-    t_env *previous;
 
+    t_env (*tmp), (*previous);
     i = 1;
-    if (!command[1])
-        return 0;
-    if (!ft_strncmp(command[1], "?", 2))
-        return 0;
     while(command[i])
     {
         tmp = *env;
         previous = NULL;
         while (tmp)
         {
-            if (!ft_strncmp(tmp->name, command[i], ft_strlen(command[i])))
+            if (!ft_strncmp(tmp->name, command[i], ft_strlen(command[i])) && ft_strncmp(command[i], "?", 2))
             {
                 if (previous)
                     previous->next = tmp->next;
@@ -177,16 +156,16 @@ int ft_unset(char **command, t_env **env)
 int execbuiltin(t_line *line, t_env **env)
 {
     // if (!ft_strncmp(command[0], "cd", 3))
-    //     return ft_cd(command, env);
+    //     return (ft_cd(command, env));
     // if (!ft_strncmp(command[0], "pwd", 4))
-    //     return ft_pwd();
+    //     return (ft_pwd());
     if (!ft_strncmp(line->command[0], "export", 7))
-        return ft_export(line->command, *env);
+        return (ft_export(line->command, *env));
     if (!ft_strncmp(line->command[0], "unset", 6))
-        return ft_unset(line->command, env);
+        return (ft_unset(line->command, env));
     if (!ft_strncmp(line->command[0], "env", 4))
-        return ft_env(*env);
+        return (ft_env(*env));
     if (!ft_strncmp(line->command[0], "exit", 5))
-        return ft_exit(line->command);
-    return 0;
+        return (ft_exit(line->command));
+    return (0);
 }

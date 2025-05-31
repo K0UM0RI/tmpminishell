@@ -39,30 +39,21 @@ void openredirs(t_redirections *reds)
 		{
 			file[1] = open(reds->file, O_CREAT | O_APPEND | O_WRONLY, 0777);
 			if (file[1] < 0)
-			{
-				perror("open");
-				exit(1);
-			}
+				(perror("open"), exit(1));
 			dup2(file[1], 1);
 		}
 		else if (reds->redtype == RED_OUT_TRUNC)
 		{
 			file[1] = open(reds->file, O_CREAT | O_TRUNC | O_WRONLY, 0777);
 			if (file[1] < 0)
-			{
-				perror("open");
-				exit(1);
-			}
+				(perror("open"), exit(1));
 			dup2(file[1], 1);
 		}
 		else if (reds->redtype == RED_IN)
 		{
 			file[0] = open(reds->file, O_RDONLY);
 			if (file[0] < 0)
-			{
-				perror("open");
-				exit(1);
-			}
+				(perror("open"), exit(1));
 			dup2(file[0], 0);
 		}
         cleanfds(file, 2);
@@ -115,38 +106,43 @@ void birth(int i, t_exec exec, t_line *line, t_env **env)
 	exit(127);
 }
 
+int initexecstruct(t_exec *exec, t_line *line)
+{
+	exec->npipes = ft_lstsizeline(line);
+	exec->child = mymalloc(sizeof(int) * exec->npipes, 0);
+	exec->oldpipefd[0] = -1;
+	exec->oldpipefd[1] = -1;
+	return (0);
+}
+
+int  entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
+{
+	int ret;
+	
+	ret = fork();
+	if (ret < 0)
+		return (perror("fork"), cleanfds(exec.pipefd, 2), cleanfds(exec.oldpipefd, 2), -1);
+	if (!ret)
+        birth(i, exec, line, env);
+	return (ret);
+}
+
 int ft_execute(t_line *line, t_env **env)
 {
 	t_exec exec;
-	int exit;
-	int i;
-	int j;
 
-    i = 0;
-	exec.npipes = ft_lstsizeline(line);
-	exec.child = mymalloc(sizeof(int) * exec.npipes, 0);
-	exec.oldpipefd[0] = -1;
-	exec.oldpipefd[1] = -1;
-	exit = 0;
+	int (exit), (j), (i) = 0;
+    exit = initexecstruct(&exec, line);
 	while (line)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
 		if (isbuiltin(line->command[0]) && !line->next && !i)
-		{
-			cleanfds(exec.pipefd, 2);
-			openredirsnodup(line->reds);
-			exit = execbuiltin(line, env);
-			return exit;
-		}
+			return (cleanfds(exec.pipefd, 2), openredirsnodup(line->reds), execbuiltin(line, env));
 		else
-		{
-			exec.child[i] = fork();
-			if (exec.child[i] < 0)
-				perror("fork");
-			if (!exec.child[i])
-            	birth(i, exec, line, env);
-		}
+			exec.child[i] = entersubprocess(exec, line, env, i);
+		if (exec.child[i] < 0)
+			return (1);
         resetoldpipe(exec.oldpipefd, exec.pipefd);
 		i++;
 		line = line->next;
@@ -154,9 +150,6 @@ int ft_execute(t_line *line, t_env **env)
 	cleanfds(exec.oldpipefd, 2);
     j = 0;
 	while (j < i)
-	{
-		waitpid(exec.child[j], &exit, 0);
-		j++;
-	}
-	return WEXITSTATUS(exit);
+		waitpid(exec.child[j++], &exit, 0);
+	return (WEXITSTATUS(exit));
 }
