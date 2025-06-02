@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/02 21:18:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/02 22:00:05 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,16 @@ int	handleoperators(int *i, int *s, t_string **ret, const char *c)
 		*s = 1;
 		return (doheredoc(i, ret, c));
 	}
-	else if (tmp == c[*i])
-		(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
+	else if (tmp == '>')
+	{
+		if (c[*i] == '|' && c[(*i) + 1] && !isoperator(c[(*i) + 1]))
+		{
+			(*i)++;
+			return (0);
+		}
+		else if (tmp == c[*i])
+			(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
+	}
 	if (isoperator(c[*i]))
 		return (write(2, "syntax error\n", 14), 1);
 	*s = 1;

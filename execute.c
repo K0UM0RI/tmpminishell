@@ -99,7 +99,6 @@ void birth(int i, t_exec exec, t_line *line, t_env **env)
 	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
 		exit(127);
-	printf("%s\n", cmd);
 	execve(cmd, line->command, convertenv(*env));
 	mymalloc(0, 1);
 	mymalloc(0, 3);
@@ -127,7 +126,7 @@ int  entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
         birth(i, exec, line, env);
 	return (ret);
 }
-// hand >|
+// hand >|file
 //expansion on here_doc
 //export all options
 //export on unque local environment variable

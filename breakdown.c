@@ -78,15 +78,15 @@ int doops(t_string **elems, t_line **line)
 
 	tmp = (*elems)->c;
 	(*elems) = (*elems)->next;
-	if (!ft_strncmp(tmp, ">", 1))
+	if (!ft_strncmp(tmp, ">", 2))
 		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0), RED_OUT_TRUNC));
-	if (!ft_strncmp(tmp, ">>", 2))
+	if (!ft_strncmp(tmp, ">>", 3))
 		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0), RED_OUT_APPEND));
-	if (!ft_strncmp(tmp, "<", 1))
+	if (!ft_strncmp(tmp, "<", 2))
 		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0), RED_IN));
-	if (!ft_strncmp(tmp, "|", 1))
+	if (!ft_strncmp(tmp, "|", 2))
 		return (linenew(line));
-	if (ft_strncmp(tmp, "|", 1))
+	if (ft_strncmp(tmp, "|", 2))
 		(*elems) = (*elems)->next;
 	return (0);
 }
