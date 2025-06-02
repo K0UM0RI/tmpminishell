@@ -126,7 +126,8 @@ int  entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
         birth(i, exec, line, env);
 	return (ret);
 }
-
+// hand >|
+//expansion on here_doc
 int ft_execute(t_line *line, t_env **env)
 {
 	t_exec exec;
