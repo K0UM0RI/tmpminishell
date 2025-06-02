@@ -67,10 +67,13 @@ char	*getcmd(char *cmd, t_env *env)
 	char	*c;
 	char	*error;
     char **paths;
+
 	c = NULL;
 	error = "command not found, or isnt executable\n";
 	if (!cmd)
 		return (NULL);
+	if (!*cmd)
+		return (write(2, error, ft_strlen(error)), NULL);
 	if (ifslash(cmd))
 	{
 		if (!access(cmd, F_OK | X_OK))
