@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/30 00:14:34 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/02 21:20:40 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,19 @@ void printbreakdown(t_line *line)
 	{
 		printf("{");
 		if (line->command && line->command[i])
-			printf("%s", line->command[i++]);
+		{
+			if (line->command[i][0] == '\0')
+				printf("\\0");
+			else
+				printf("%s", line->command[i]);
+			i++;
+		}
 		while (line->command && line->command[i])
 		{
-			printf(", %s", line->command[i]);
+			if (line->command[i][0] == '\0')
+				printf(", \\0");
+			else
+				printf(", %s", line->command[i]);
 			i++;
 		}
 		printf("}\n");
@@ -130,6 +139,7 @@ int	main(int ac, char **av, char **env)
 		if (!handlerrors(clean))
 		{
 			line = breakdown(clean);
+			// printcleanline(clean);
 			// printbreakdown(line);
 			exit = ft_execute(line, &lstenv);
 		}

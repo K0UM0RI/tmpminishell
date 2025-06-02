@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 04:18:42 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/02 21:18:04 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 {
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
+	(vars->ret)->c = ft_append((vars->ret)->c, '\0', 0);
 	vars->s = 0;
 	if (c[vars->i] == '"')
 	{

@@ -99,6 +99,7 @@ void birth(int i, t_exec exec, t_line *line, t_env **env)
 	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
 		exit(127);
+	printf("%s\n", cmd);
 	execve(cmd, line->command, convertenv(*env));
 	mymalloc(0, 1);
 	mymalloc(0, 3);
@@ -128,6 +129,10 @@ int  entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
 }
 // hand >|
 //expansion on here_doc
+//export all options
+//export on unque local environment variable
+//print export environement varibale with export
+
 int ft_execute(t_line *line, t_env **env)
 {
 	t_exec exec;
@@ -138,7 +143,7 @@ int ft_execute(t_line *line, t_env **env)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
-		if (isbuiltin(line->command[0]) && !line->next && !i)
+		if (line->command && isbuiltin(line->command[0]) && !line->next && !i)
 			return (cleanfds(exec.pipefd, 2), openredirsnodup(line->reds), execbuiltin(line, env));
 		else
 			exec.child[i] = entersubprocess(exec, line, env, i);

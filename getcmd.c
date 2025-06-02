@@ -42,7 +42,7 @@ int	ifslash(char *av)
 	return (0);
 }
 
-char	*checkpaths(char *env, char **paths)
+char	*checkpaths(char *cmd, char **paths)
 {
 	int		i;
 	char	*c;
@@ -51,7 +51,7 @@ char	*checkpaths(char *env, char **paths)
 	c = NULL;
 	while (paths[i])
 	{
-		c = ft_strjoin(paths[i], env, 0);
+		c = ft_strjoin(paths[i], cmd, 0);
 		if (!c)
 			return (NULL);
 		if (!access(c, F_OK | X_OK))
@@ -69,7 +69,7 @@ char	*getcmd(char *cmd, t_env *env)
     char **paths;
 	c = NULL;
 	error = "command not found, or isnt executable\n";
-	if (!cmd || !*cmd)
+	if (!cmd)
 		return (NULL);
 	if (ifslash(cmd))
 	{
