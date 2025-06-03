@@ -126,7 +126,6 @@ int  entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
         birth(i, exec, line, env);
 	return (ret);
 }
-//expansion on here_doc
 //export all options
 //export on unque local environment variable
 //print export environement varibale with export

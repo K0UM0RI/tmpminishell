@@ -38,23 +38,55 @@ int isbuiltin(char *command)
 
 int ft_export(char **command, t_env *env)
 {
-    char **tmp;
+    char *tmp;
+    int i;
+    int j;
+    int s;
 
+    i = 1;
     tmp = NULL;
     if (!command[1])
-        return (write(2, "invalid options\n", 17), 1);
-    tmp = ft_split(command[1], '=');
-    if (ft_strncmp(env->name, tmp[0], ft_strlen(tmp[0])))
     {
-        while (env->next && ft_strncmp(env->next->name, tmp[0], ft_strlen(tmp[0])))
+        while (env)
+        {
+            if (ft_strncmp(env->name, "?", 2))
+            {
+                printf("declare -x %s", env->name);
+                if (env->value)
+                    printf("=%s", env->value);
+                printf("\n");
+            }
             env = env->next;
+        }
+        return (0);
     }
-    if (!tmp || !tmp[0] || !tmp[1] || tmp[2] || !ft_strncmp(tmp[0], "?", 2))
-        return (write(2, "export: not a valid identifier\n", 32), 1);
-    env->next = mymalloc(sizeof(t_env), 2);
-    env->next->name = ft_strdup(tmp[0], 2);
-    env->next->value = ft_strdup(tmp[1], 2);
-    env->next->next = NULL;
+    while (command[i])
+    {
+        j = 0;
+        s = 0;
+        tmp = ft_strdup(command[i], 0);
+        while (tmp[j] && tmp[j] != '=')
+            j++;
+        if (!tmp[j])
+            s = 1;
+        else
+            tmp[j] = '\0';
+        if (ft_strncmp(env->name, tmp, ft_strlen(tmp)))
+        {
+            while (env->next && ft_strncmp(env->next->name, tmp, ft_strlen(tmp)))
+                env = env->next;
+        }
+        if (!ft_strncmp(tmp, "?", 2))
+            return (write(2, "export: not a valid identifier\n", 32), 1);
+        env->next = mymalloc(sizeof(t_env), 2);
+        env->next->name = ft_strdup(tmp, 2);
+        if (s)
+            env->next->value = NULL;
+        else
+            env->next->value = ft_strdup(tmp + j + 1, 2);
+        env->next->next = NULL;
+        i++;
+    }
     return 0;
 }
 
@@ -86,7 +118,12 @@ int ft_env(t_env *env)
     while (env)
     {
         if (ft_strncmp(env->name, "?", 2))
-            printf("%s=%s\n", env->name, env->value);
+        {
+            printf("%s", env->name);
+            if (env->value)
+                printf("=%s", env->value);
+            printf("\n");
+        }
         env = env->next;
     }
     return (0);
