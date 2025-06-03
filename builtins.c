@@ -149,13 +149,16 @@ int isnumber(char *c)
     return (1);
 }
 
-int ft_exit(char **command)
+int ft_exit(char **command, t_env *env)
 {
     int e;
 
     write(2, "exit\n", 5);
     if (!command[1])
-        (mymalloc(0, 1), mymalloc(0, 3), exit(0));
+    {
+        e = ft_atoi(getmyenv("?", env)) & 0xFF;
+        (mymalloc(0, 1), mymalloc(0, 3), exit(e));
+    }
     if (command[2])
         return (write(2, "too many arguments\n", 20), 1);
     if (isnumber(command[1]))
@@ -207,6 +210,6 @@ int execbuiltin(t_line *line, t_env **env)
     if (!ft_strncmp(line->command[0], "env", 4))
         return (ft_env(*env));
     if (!ft_strncmp(line->command[0], "exit", 5))
-        return (ft_exit(line->command));
+        return (ft_exit(line->command, *env));
     return (0);
 }

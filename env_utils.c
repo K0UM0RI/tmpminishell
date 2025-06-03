@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/03 13:00:14 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/03 18:38:10 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*getmyenv(char *var, t_env *env)
 		return (NULL);
 	while (env)
 	{
-		if (!ft_strncmp(env->name, var, l))
+		if (!ft_strncmp(env->name, var, l + 1))
 			return (ft_strdup(env->value, 2));
 		env = env->next;
 	}
