@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/03 10:13:59 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/03 17:58:21 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	founddollar(t_lexvars *vars, const char *c, t_env *env)
 	
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
-	if (c[vars->i] == '~' && (mywhitespace(c[vars->i + 1]) || !c[vars->i + 1]) && (vars->s || !vars->i))
+	if (c[vars->i] == '~' && (mywhitespace(c[vars->i + 1]) || !c[vars->i + 1] || c[vars->i + 1] == '/') && (vars->s || !vars->i))
 	{
 		vars->s = 0;
 		j = vars->i;
