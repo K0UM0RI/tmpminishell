@@ -7,9 +7,16 @@ int ft_echo(char **command)
 
     i = 1;
     n = 0;
-    if (!ft_strncmp(command[i], "-n", 3))
+    if (!ft_strncmp(command[i], "-n", 2))
     {
         n = 1;
+        while(command[i][n] == 'n')
+            n++;
+        if (command[i][n])
+        {
+            n = 0;
+            i--;
+        }
         i++;
     }
     while (command[i])
@@ -53,7 +60,7 @@ int ft_export(char **command, t_env *env)
             {
                 printf("declare -x %s", env->name);
                 if (env->value)
-                    printf("=%s", env->value);
+                    printf("=\"%s\"", env->value);
                 printf("\n");
             }
             env = env->next;
