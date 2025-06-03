@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 23:56:40 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/03 10:14:52 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_string			*news_string(void);
 void				nexts_string(t_string **ret);
 int					foundquote(const char *c, int *i, t_string **ret, t_env *env);
 char				*foundvar(int *i, const char *c, t_env *env);
-int					doheredoc(int *i, t_string **ret, const char *c);
+int					doheredoc(int *i, t_string **ret, const char *c, t_env *env);
 
 char	*getcmd(char *cmd, t_env *env);
 

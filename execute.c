@@ -126,7 +126,6 @@ int  entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
         birth(i, exec, line, env);
 	return (ret);
 }
-// hand >|file
 //expansion on here_doc
 //export all options
 //export on unque local environment variable
@@ -156,5 +155,11 @@ int ft_execute(t_line *line, t_env **env)
     j = 0;
 	while (j < i)
 		waitpid(exec.child[j++], &exit, 0);
+	i = 1;
+	while (!access(ft_strjoin("here_doc_history/.tmp", ft_itoa(i, 0), 0), F_OK))
+	{
+		unlink(ft_strjoin("here_doc_history/.tmp", ft_itoa(i, 0), 0));
+		i++;
+	}
 	return (WEXITSTATUS(exit));
 }

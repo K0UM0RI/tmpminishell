@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/02 22:00:05 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/03 10:13:59 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,37 +36,37 @@ static int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 	return (0);
 }
 
-int	handleoperators(int *i, int *s, t_string **ret, const char *c)
+int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 {
 	char	tmp;
 
-	if (*i && (*ret)->c)
-		nexts_string(ret);
-	(*ret)->type = OPERATOR;
-	tmp = c[*i];
-	(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
-	if (tmp == c[*i] && tmp == '|')
+	if (vars->i && vars->ret->c)
+		nexts_string(&vars->ret);
+	vars->ret->type = OPERATOR;
+	tmp = c[vars->i];
+	vars->ret->c = ft_append(vars->ret->c, c[vars->i++], 0);
+	if (tmp == c[vars->i] && tmp == '|')
 		return (write(2, "syntax error\n", 14), 1);
-	else if (tmp == c[*i] && tmp == '&')
+	else if (tmp == c[vars->i] && tmp == '&')
 		return (write(2, "syntax error\n", 14), 1);
-	else if (tmp == c[*i] && c[*i] == '<')
+	else if (tmp == c[vars->i] && c[vars->i] == '<')
 	{
-		*s = 1;
-		return (doheredoc(i, ret, c));
+		vars->s = 1;
+		return (doheredoc(&vars->i, &vars->ret, c, env));
 	}
 	else if (tmp == '>')
 	{
-		if (c[*i] == '|' && c[(*i) + 1] && !isoperator(c[(*i) + 1]))
+		if (c[vars->i] == '|' && c[vars->i + 1] && !isoperator(c[vars->i + 1]))
 		{
-			(*i)++;
+			vars->i++;
 			return (0);
 		}
-		else if (tmp == c[*i])
-			(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
+		else if (tmp == c[vars->i])
+			vars->ret->c = ft_append(vars->ret->c, c[vars->i++], 0);
 	}
-	if (isoperator(c[*i]))
+	if (isoperator(c[vars->i]))
 		return (write(2, "syntax error\n", 14), 1);
-	*s = 1;
+	vars->s = 1;
 	return (0);
 }
 
@@ -118,7 +118,7 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
 		d = handlequotes(vars, c, env);
 	else if (isoperator(c[vars->i]) && !vars->d )
-		d = handleoperators(&vars->i, &vars->s, &vars->ret, c);
+		d = handleoperators(vars, c, env);
 	else if ((c[vars->i] == '$' || c[vars->i] == '~') && !vars->d)
 		founddollar(vars, c, env);
 	else if (!mywhitespace(c[vars->i]))
