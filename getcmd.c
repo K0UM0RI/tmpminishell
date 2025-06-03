@@ -16,6 +16,7 @@ char	**getpaths(t_env *env)
 {
 	char	**paths;
 
+	paths = NULL;
 	while (env)
 	{
 		if (!ft_strncmp("PATH", env->name, 6))
@@ -23,7 +24,7 @@ char	**getpaths(t_env *env)
 		env = env->next;
 	}
 	if (!env)
-		return (NULL);
+		return (NULL); 
 	paths = ft_split(env->value, ':');
 	if (!paths)
 		return (NULL);
@@ -48,7 +49,7 @@ char	*checkpaths(char *cmd, char **paths)
 	char	*c;
 
 	i = 0;
-	c = NULL;
+	c = ft_strdup(cmd, 0);
 	while (paths[i])
 	{
 		c = ft_strjoin(paths[i], cmd, 0);
@@ -56,7 +57,7 @@ char	*checkpaths(char *cmd, char **paths)
 			return (NULL);
 		if (!access(c, F_OK | X_OK))
 			return (c);
-		c = NULL;
+		c = ft_strdup(cmd, 0);
 		i++;
 	}
 	return (c);
@@ -82,9 +83,12 @@ char	*getcmd(char *cmd, t_env *env)
 			return (write(2, error, ft_strlen(error)), NULL);
 	}
     paths = getpaths(env);
-	if (env)
+	if (paths)
 		c = checkpaths(cmd, paths);
-	if (c)
-		return (c);
+    else if (!access(cmd, F_OK | X_OK))
+	{
+		printf("%s\n", cmd);
+		return (ft_strdup(cmd, 0));
+	}
 	return (write(2, error, ft_strlen(error)), NULL);
 }
