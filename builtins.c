@@ -78,13 +78,15 @@ int ft_export(char **command, t_env *env)
         }
         if (!ft_strncmp(tmp, "?", 2))
             return (write(2, "export: not a valid identifier\n", 32), 1);
-        env->next = mymalloc(sizeof(t_env), 2);
-        env->next->name = ft_strdup(tmp, 2);
-        if (s)
+        if (!env->next)
+        {
+            env->next = mymalloc(sizeof(t_env), 2);
+            env->next->name = ft_strdup(tmp, 2);
             env->next->value = NULL;
-        else
+            env->next->next = NULL;
+        }
+        if (!s)
             env->next->value = ft_strdup(tmp + j + 1, 2);
-        env->next->next = NULL;
         i++;
     }
     return 0;
@@ -117,13 +119,8 @@ int ft_env(t_env *env)
 {
     while (env)
     {
-        if (ft_strncmp(env->name, "?", 2))
-        {
-            printf("%s", env->name);
-            if (env->value)
-                printf("=%s", env->value);
-            printf("\n");
-        }
+        if (ft_strncmp(env->name, "?", 2) && env->value)
+            printf("%s=%s\n", env->name, env->value);
         env = env->next;
     }
     return (0);
