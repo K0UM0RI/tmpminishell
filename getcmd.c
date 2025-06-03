@@ -49,7 +49,9 @@ char	*checkpaths(char *cmd, char **paths)
 	char	*c;
 
 	i = 0;
-	c = ft_strdup(cmd, 0);
+	c = NULL;
+	if (!paths || !*paths)
+		return NULL;
 	while (paths[i])
 	{
 		c = ft_strjoin(paths[i], cmd, 0);
@@ -57,7 +59,7 @@ char	*checkpaths(char *cmd, char **paths)
 			return (NULL);
 		if (!access(c, F_OK | X_OK))
 			return (c);
-		c = ft_strdup(cmd, 0);
+		c = NULL;
 		i++;
 	}
 	return (c);
@@ -86,9 +88,8 @@ char	*getcmd(char *cmd, t_env *env)
 	if (paths)
 		c = checkpaths(cmd, paths);
     else if (!access(cmd, F_OK | X_OK))
-	{
-		printf("%s\n", cmd);
 		return (ft_strdup(cmd, 0));
-	}
+	if (c)
+		return (c);
 	return (write(2, error, ft_strlen(error)), NULL);
 }
