@@ -7,7 +7,7 @@ int ft_echo(char **command)
 
     i = 1;
     n = 0;
-    if (!ft_strncmp(command[i], "-n", 2))
+    while (!ft_strncmp(command[i], "-n", 2))
     {
         n = 1;
         while(command[i][n] == 'n')
@@ -15,7 +15,7 @@ int ft_echo(char **command)
         if (command[i][n])
         {
             n = 0;
-            i--;
+            break;
         }
         i++;
     }

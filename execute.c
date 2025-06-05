@@ -126,8 +126,6 @@ int  entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
         birth(i, exec, line, env);
 	return (ret);
 }
-//export on unque local environment variable
-//print export environement varibale with export
 
 int ft_execute(t_line *line, t_env **env)
 {
