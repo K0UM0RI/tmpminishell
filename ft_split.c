@@ -28,11 +28,11 @@ static void	wordlen(const char *s, char c, size_t *d, size_t *b)
 
 char	**ft_split(char *s, char c)
 {
-	char	**str;
-	size_t	count;
-	size_t	j;
-	size_t	d;
-	size_t	b;
+	char **str;
+	size_t count;
+	size_t j;
+	size_t d;
+	size_t b;
 
 	if (!s)
 		return (NULL);

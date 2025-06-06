@@ -28,7 +28,7 @@ void	free_lst(t_truck **allocated)
 	}
 }
 
-void mallocfail(t_truck	**allocatedtmp, t_truck	**allocatedlasting)
+void	mallocfail(t_truck **allocatedtmp, t_truck **allocatedlasting)
 {
 	write(2, "malloc failed!\n", 15);
 	free_lst(allocatedtmp);

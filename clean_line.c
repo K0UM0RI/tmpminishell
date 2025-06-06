@@ -74,10 +74,11 @@ void	founddollar(t_lexvars *vars, const char *c, t_env *env)
 {
 	char	*tmp;
 	int		j;
-	
+
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
-	if (c[vars->i] == '~' && (mywhitespace(c[vars->i + 1]) || !c[vars->i + 1] || c[vars->i + 1] == '/') && (vars->s || !vars->i))
+	if (c[vars->i] == '~' && (mywhitespace(c[vars->i + 1]) || !c[vars->i + 1]
+			|| c[vars->i + 1] == '/') && (vars->s || !vars->i))
 	{
 		vars->s = 0;
 		j = vars->i;
@@ -90,7 +91,7 @@ void	founddollar(t_lexvars *vars, const char *c, t_env *env)
 	{
 		vars->ret->c = ft_append(vars->ret->c, '~', 0);
 		vars->i++;
-		return;
+		return ;
 	}
 	tmp = foundvar(&(vars->i), c, env);
 	if (tmp == (char *)-1)
@@ -117,7 +118,7 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 	d = 0;
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
 		d = handlequotes(vars, c, env);
-	else if (isoperator(c[vars->i]) && !vars->d )
+	else if (isoperator(c[vars->i]) && !vars->d)
 		d = handleoperators(vars, c, env);
 	else if ((c[vars->i] == '$' || c[vars->i] == '~') && !vars->d)
 		founddollar(vars, c, env);

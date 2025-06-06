@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int ft_lstsizeenv(t_env *env)
+int	ft_lstsizeenv(t_env *env)
 {
-	int size;
+	int	size;
 
 	size = 0;
-	while(env)
+	while (env)
 	{
 		size++;
 		env = env->next;
@@ -62,7 +62,7 @@ t_env	*getenvlst(char **env)
 	t_env	*lstenv;
 	t_env	*head;
 
-	int (i), (j) = 0;
+	int(i), (j) = 0;
 	if (!env)
 		return (NULL);
 	lstenv = mymalloc(sizeof(t_env), 2);
@@ -86,12 +86,13 @@ t_env	*getenvlst(char **env)
 	return (head->next);
 }
 
-char **convertenv(t_env *env)
+char	**convertenv(t_env *env)
 {
-	int size;
-	char **ret;
-	int i = 0;
-	
+	int		size;
+	char	**ret;
+	int		i;
+
+	i = 0;
 	size = ft_lstsizeenv(env);
 	ret = mymalloc(sizeof(char *) * (size + 1), 0);
 	while (env)

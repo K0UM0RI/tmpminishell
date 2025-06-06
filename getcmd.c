@@ -2,7 +2,7 @@
 
 static void	joinwithslash(char **paths)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (paths[i])
@@ -24,7 +24,7 @@ char	**getpaths(t_env *env)
 		env = env->next;
 	}
 	if (!env)
-		return (NULL); 
+		return (NULL);
 	paths = ft_split(env->value, ':');
 	if (!paths)
 		return (NULL);
@@ -51,7 +51,7 @@ char	*checkpaths(char *cmd, char **paths)
 	i = 0;
 	c = NULL;
 	if (!paths || !*paths)
-		return NULL;
+		return (NULL);
 	while (paths[i])
 	{
 		c = ft_strjoin(paths[i], cmd, 0);
@@ -69,7 +69,7 @@ char	*getcmd(char *cmd, t_env *env)
 {
 	char	*c;
 	char	*error;
-    char **paths;
+	char	**paths;
 
 	c = NULL;
 	error = "command not found, or isnt executable\n";
@@ -84,10 +84,10 @@ char	*getcmd(char *cmd, t_env *env)
 		else
 			return (write(2, error, ft_strlen(error)), NULL);
 	}
-    paths = getpaths(env);
+	paths = getpaths(env);
 	if (paths)
 		c = checkpaths(cmd, paths);
-    else if (!access(cmd, F_OK | X_OK))
+	else if (!access(cmd, F_OK | X_OK))
 		return (ft_strdup(cmd, 0));
 	if (c)
 		return (c);

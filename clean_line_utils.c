@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/29 23:53:09 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/06 18:59:40 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ char	*getvarname(const char *c, int *i)
 
 	var = NULL;
 	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
-		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
+		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$'
+		&& c[(*i)] != '/')
 	{
 		var = ft_append(var, c[(*i)], 0);
 		(*i)++;

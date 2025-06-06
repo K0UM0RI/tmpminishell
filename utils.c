@@ -104,26 +104,29 @@ int	ft_atoi(const char *nptr)
 
 char	*ft_itoa(int n, int fn)
 {
-    char	*str;
-    int		len = 1;
-    int		tmp = n;
-    int		neg = n < 0;
+	char	*str;
+	int		len;
+	int		tmp;
+	int		neg;
 
-    if (n == -2147483648)
-        return (ft_strdup("-2147483648", fn));
-    while (tmp /= 10)
-        len++;
-    str = mymalloc(sizeof(char) * (len + neg + 1), fn);
-    str[len + neg] = '\0';
-    if (neg)
-    {
-        str[0] = '-';
-        n = -n;
-    }
-    for (int i = len + neg - 1; i >= neg; i--)
-    {
-        str[i] = (n % 10) + '0';
-        n /= 10;
-    }
-    return str;
+	len = 1;
+	tmp = n;
+	neg = n < 0;
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648", fn));
+	while (tmp /= 10)
+		len++;
+	str = mymalloc(sizeof(char) * (len + neg + 1), fn);
+	str[len + neg] = '\0';
+	if (neg)
+	{
+		str[0] = '-';
+		n = -n;
+	}
+	for (int i = len + neg - 1; i >= neg; i--)
+	{
+		str[i] = (n % 10) + '0';
+		n /= 10;
+	}
+	return (str);
 }

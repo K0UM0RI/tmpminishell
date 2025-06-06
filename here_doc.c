@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/03 11:05:06 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/05 12:47:50 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,21 @@ char	*makeheredoc(char *eof, t_env *env)
 	char		*file;
 	int			fd;
 	char		*line;
-	char *tmp;
-	int i;
+	char		*tmp;
+	int			i;
 
-	i = 0;	
+	i = 0;
 	if (access(ft_strjoin("here_doc_history/.tmp", ft_itoa(1, 0), 0), F_OK))
 		order = 0;
 	order++;
 	file = ft_strjoin("here_doc_history/.tmp", ft_itoa(order, 0), 0);
 	fd = open(file, O_CREAT | O_WRONLY, 0777);
-	if (!eof || !*eof)
+	if (!eof)
 		return (file);
 	line = readline(">");
 	eof = ft_append(eof, '\n', 0);
 	line = ft_append(line, '\n', 0);
-	while (ft_strncmp(line, eof, ft_strlen(line)))
+	while (line && ft_strncmp(line, eof, ft_strlen(line) + 1))
 	{
 		while (line && line[i])
 		{
@@ -109,7 +109,7 @@ char	*makeheredoc(char *eof, t_env *env)
 
 int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 {
-	char    *eof;
+	char	*eof;
 
 	(*i)++;
 	while (c[*i] && mywhitespace(c[*i]))

@@ -6,19 +6,20 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/03 18:34:47 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/05 12:49:01 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-# define STDIN 100
-# define STDOUT 101
+#define STDIN 100
+#define STDOUT 101
 
-void printbreakdown(t_line *line)
+void	printbreakdown(t_line *line)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (line)
 	{
 		printf("{");
@@ -56,10 +57,11 @@ void printbreakdown(t_line *line)
 	}
 }
 
-void printcleanline(t_string *clean)
+void	printcleanline(t_string *clean)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (clean)
 	{
 		if (clean->type == WORD)
@@ -73,18 +75,21 @@ void printcleanline(t_string *clean)
 	}
 }
 
-int handlerrors(t_string *clean)
+int	handlerrors(t_string *clean)
 {
-	int p = 0;
-	int r = 0;
+	int	p;
+	int	r;
 
+	p = 0;
+	r = 0;
 	if (!clean)
-		return 1;
+		return (1);
 	if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
 		return (write(2, "syntax error\n", 14), 1);
 	while (clean)
 	{
-		if ((r || p) && !ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+		if ((r || p) && !ft_strncmp(clean->c, "|", 1)
+			&& clean->type == OPERATOR)
 			return (write(2, "syntax error\n", 14), 1);
 		else if (clean->type == OPERATOR && ft_strncmp(clean->c, "|", 1))
 		{
@@ -93,7 +98,7 @@ int handlerrors(t_string *clean)
 		}
 		else if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
 			p = 1;
-		else if(!(!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR))
+		else if (!(!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR))
 		{
 			p = 0;
 			r = 0;
@@ -102,10 +107,10 @@ int handlerrors(t_string *clean)
 	}
 	if (p || r)
 		return (write(2, "syntax error\n", 14), 1);
-	return 0;
+	return (0);
 }
 
-void changeexitstatus(int exit, t_env *env)
+void	changeexitstatus(int exit, t_env *env)
 {
 	while (env)
 	{
@@ -120,11 +125,11 @@ void changeexitstatus(int exit, t_env *env)
 
 int	main(int ac, char **av, char **env)
 {
-	const char		*c;
+	const char	*c;
 	t_string	*clean;
 	t_env		*lstenv;
-	int exit;
-	t_line *line;
+	int			exit;
+	t_line		*line;
 
 	ac++;
 	av++;
@@ -143,6 +148,8 @@ int	main(int ac, char **av, char **env)
 			// printbreakdown(line);
 			exit = ft_execute(line, &lstenv);
 		}
+		else
+			exit = 2;
 		changeexitstatus(exit, lstenv);
 		add_history(c);
 		mymalloc(0, 1);
