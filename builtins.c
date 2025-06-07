@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 int	ft_echo(char **command)
@@ -35,9 +36,7 @@ int	isbuiltin(char *command)
 {
 	if (!command)
 		return (-1);
-	if (!ft_strncmp(command, "cd", 3) || !ft_strncmp(command, "pwd", 4)
-		|| !ft_strncmp(command, "export", 7) || !ft_strncmp(command, "unset", 6)
-		|| !ft_strncmp(command, "env", 4) || !ft_strncmp(command, "exit", 5))
+	if (!ft_strncmp(command, "cd", 3) || !ft_strncmp(command, "pwd", 4) || !ft_strncmp(command, "unset", 6) || !ft_strncmp(command, "exit", 5))
 		return (1);
 	return (0);
 }
@@ -208,8 +207,6 @@ int	execbuiltin(t_line *line, t_env **env)
 		return (ft_export(line->command, *env));
 	if (!ft_strncmp(line->command[0], "unset", 6))
 		return (ft_unset(line->command, env));
-	if (!ft_strncmp(line->command[0], "env", 4))
-		return (ft_env(*env));
 	if (!ft_strncmp(line->command[0], "exit", 5))
 		return (ft_exit(line->command, *env));
 	return (0);

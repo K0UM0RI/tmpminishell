@@ -96,6 +96,10 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 		exit(execbuiltin(line, env));
 	if (!ft_strncmp(line->command[0], "echo", 5))
 		exit(ft_echo(line->command));
+	if (!ft_strncmp(line->command[0], "env", 5))
+		exit(ft_env(*env));
+	if (!ft_strncmp(line->command[0], "export", 7))
+		exit(ft_export(line->command, *env));
 	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
 		exit(127);
@@ -138,7 +142,7 @@ int	ft_execute(t_line *line, t_env **env)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
-		if (line->command && isbuiltin(line->command[0]) && !line->next && !i)
+		if (line->command && (isbuiltin(line->command[0]) || (!ft_strncmp(line->command[0], "export", 7) && line->command[1])) && !line->next && !i)
 			return (cleanfds(exec.pipefd, 2), openredirsnodup(line->reds),
 				execbuiltin(line, env));
 		else

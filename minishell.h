@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/03 12:59:54 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/07 13:16:48 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ int							ft_execute(t_line *line, t_env **env);
 
 // bultins
 int							ft_echo(char **command);
+int	ft_env(t_env *env);
+int	ft_export(char **command, t_env *env);
 void						openredirsnodup(t_redirections *reds);
 int							execbuiltin(t_line *line, t_env **env);
 int							isbuiltin(char *command);
