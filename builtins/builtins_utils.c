@@ -47,3 +47,21 @@ void	openredirsnodup(t_redirections *reds)
 		reds = reds->next;
 	}
 }
+
+int foundchar(char f, char *c)
+{
+	while (*c)
+	{
+		if (*c == f)
+			return 1;
+		c++;
+	}
+	return (0);
+}
+
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}

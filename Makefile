@@ -2,9 +2,10 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra #-Werror
 SRC = break_down/breakdown.c \
+	break_down/breakdown_utils.c \
 	builtins/builtins.c \
 	builtins/builtins_utils.c \
-	break_down/breakdown_utils.c \
+	builtins/export.c \
 	clean_line/clean_line_utils.c \
 	clean_line/clean_line.c \
 	env/env_utils.c \
