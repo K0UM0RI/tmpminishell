@@ -6,11 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/03 18:38:10 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 17:22:50 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_lstsizeenv(t_env *env)
 {

@@ -6,11 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:16 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/30 00:55:03 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 18:08:08 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "utils.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

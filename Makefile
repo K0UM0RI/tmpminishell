@@ -1,21 +1,24 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra #-Werror
-SRC = ft_strjoins.c \
-	clean_line_utils.c \
-	clean_line.c \
-	env_utils.c \
-	parse_utils.c \
-	utils.c \
-	utils2.c \
-	minishell.c \
-	garbage_collector.c \
-	here_doc.c \
-	breakdown.c \
-	getcmd.c \
-	execute.c \
-	builtins.c \
-	ft_split.c \
+SRC = break_down/breakdown.c \
+	builtins/builtins.c \
+	builtins/builtins_utils.c \
+	break_down/breakdown_utils.c \
+	clean_line/clean_line_utils.c \
+	clean_line/clean_line.c \
+	env/env_utils.c \
+	env/getcmd.c \
+	execution/execute.c \
+	execution/execute_utils.c \
+	here_doc/here_doc.c \
+	here_doc/here_doc_expand.c \
+	malloc-free/garbage_collector.c \
+	stringutils/ft_split.c \
+	stringutils/ft_strjoins.c \
+	stringutils/utils.c \
+	stringutils/utils2.c \
+	minishell.c
 
 lib = minishell.h
 

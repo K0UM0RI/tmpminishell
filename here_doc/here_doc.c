@@ -6,11 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/05 12:47:50 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 18:07:13 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "here_doc.h"
 
 char	*getendoffile(const char *c, int *i)
 {
@@ -39,32 +39,6 @@ char	*getendoffile(const char *c, int *i)
 	if (!eof)
 		return (printf("parsing error near < 1\n"), NULL);
 	return (eof);
-}
-
-char	*here_docvarname(const char *c, int *i)
-{
-	char	*var;
-
-	var = NULL;
-	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
-		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
-	{
-		var = ft_append(var, c[(*i)], 0);
-		(*i)++;
-	}
-	return (var);
-}
-
-char	*here_docexpand(int *i, const char *c, t_env *env)
-{
-	char	*var;
-
-	(*i)++;
-	var = here_docvarname(c, i);
-	if (!var)
-		return (ft_strdup("$", 0));
-	var = getmyenv(var, env);
-	return (var);
 }
 
 char	*makeheredoc(char *eof, t_env *env)

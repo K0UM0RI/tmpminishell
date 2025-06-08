@@ -6,16 +6,15 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:19 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:10:12 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 18:08:12 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "utils.h"
 
-int	mywhitespace(char c)
+int	isoperator(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v'
-		|| c == '\f');
+	return (c == '|' || c == '<' || c == '>');
 }
 
 int	ft_strlen(char *c)
@@ -26,9 +25,4 @@ int	ft_strlen(char *c)
 	while (c[i])
 		i++;
 	return (i);
-}
-
-int	mycmp(char c1, char c2)
-{
-	return (c1 == c2);
 }

@@ -6,11 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:35 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/31 18:42:08 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 17:22:29 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	free_lst(t_truck **allocated)
 {

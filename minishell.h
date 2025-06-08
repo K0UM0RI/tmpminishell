@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/07 13:16:48 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 18:06:14 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,56 +90,27 @@ typedef struct s_exec
 	int						npipes;
 }							t_exec;
 
-t_string					*clean_line(const char *c, t_env *env);
+//malloc-free
+void	*mymalloc(size_t size, int fn);
 
-// env utils
-char						*getmyenv(char *var, t_env *env);
-t_env						*getenvlst(char **env);
-char						**convertenv(t_env *env);
+//utils
+char	**ft_split(char *s, char c);
+char	*ft_strjoin(char *s1, char *s2, int fn);
+char	*ft_append(char *c1, char c2, int fn);
+char	*ft_strdup(char *s, int fn);
+int	mywhitespace(char c);
+int	isoperator(char c);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int	ft_strlen(char *c);
+int	ft_atoi(const char *nptr);
+char	*ft_itoa(int n, int fn);
 
-char						*ft_strjoin(char *s1, char *s2, int fn);
-int							ft_strlen(char *c);
-int							mywhitespace(char c);
-char						*ft_append(char *c1, char c2, int fn);
-int							ft_strncmp(const char *s1, const char *s2,
-								size_t n);
-int							mywhitespace(char c);
-int							mycmp(char c1, char c2);
-size_t						ft_strlcat(char *dst, char *src, size_t size);
-size_t						ft_strlcpy(char *dst, char *src, size_t dstsize);
-void						*mymalloc(size_t size, int fn);
-char						*ft_strdup(char *s, int fn);
-int							ft_atoi(const char *nptr);
-char						*ft_itoa(int n, int fn);
-char						**ft_split(char *s, char c);
-// parse utils
-int							isoperator(char c);
-int							filllist(t_lexvars *vars, const char *c,
-								t_env *env);
+//env
+char	*getmyenv(char *var, t_env *env);
 
-// clean line utils
-t_string					*news_string(void);
-void						nexts_string(t_string **ret);
-int							foundquote(const char *c, int *i, t_string **ret,
-								t_env *env);
-char						*foundvar(int *i, const char *c, t_env *env);
-int							doheredoc(int *i, t_string **ret, const char *c,
-								t_env *env);
+t_string	*clean_line(const char *c, t_env *env);
+t_line	*breakdown(t_string *elems);
+int	ft_execute(t_line *line, t_env **env);
+t_env	*getenvlst(char **env);
 
-char						*getcmd(char *cmd, t_env *env);
-
-// breakdown
-t_line						*breakdown(t_string *elems);
-
-int							ft_execute(t_line *line, t_env **env);
-
-// bultins
-int							ft_echo(char **command);
-int	ft_env(t_env *env);
-int	ft_export(char **command, t_env *env);
-void						openredirsnodup(t_redirections *reds);
-int							execbuiltin(t_line *line, t_env **env);
-int							isbuiltin(char *command);
-
-void						cleanfds(int *fd, int end);
 #endif

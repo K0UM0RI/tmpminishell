@@ -6,11 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/03 17:58:21 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 17:48:25 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "clean_line.h"
 
 static int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 {

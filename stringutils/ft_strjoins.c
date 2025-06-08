@@ -6,11 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:42 by sbat              #+#    #+#             */
-/*   Updated: 2025/05/17 10:48:55 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 18:08:00 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "utils.h"
 
 char	*ft_append(char *c1, char c2, int fn)
 {

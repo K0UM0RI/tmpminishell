@@ -6,11 +6,17 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/06 18:59:40 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/08 17:46:43 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "clean_line.h"
+
+int	mywhitespace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v'
+		|| c == '\f');
+}
 
 t_string	*news_string(void)
 {
