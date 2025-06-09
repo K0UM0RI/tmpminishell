@@ -1,6 +1,6 @@
 #include "execute.h"
 
-void	openredirs(t_redirections *reds)
+void	handleredirections(t_redirections *reds, int ft)
 {
 	int	file[2];
 
@@ -8,27 +8,10 @@ void	openredirs(t_redirections *reds)
 	file[1] = -1;
 	while (reds)
 	{
-		if (reds->redtype == RED_OUT_APPEND)
-		{
-			file[1] = open(reds->file, O_CREAT | O_APPEND | O_WRONLY, 0777);
-			if (file[1] < 0)
-				(perror("open"), exit(1));
-			dup2(file[1], 1);
-		}
-		else if (reds->redtype == RED_OUT_TRUNC)
-		{
-			file[1] = open(reds->file, O_CREAT | O_TRUNC | O_WRONLY, 0777);
-			if (file[1] < 0)
-				(perror("open"), exit(1));
-			dup2(file[1], 1);
-		}
-		else if (reds->redtype == RED_IN)
-		{
-			file[0] = open(reds->file, O_RDONLY);
-			if (file[0] < 0)
-				(perror("open"), exit(1));
-			dup2(file[0], 0);
-		}
+		if (!ft)
+			openredirs(reds, file);
+		else
+			openredirsnodup(reds, file);
 		cleanfds(file, 2);
 		reds = reds->next;
 	}
@@ -40,7 +23,7 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 
 	cmd = NULL;
 	piping(i, exec, line);
-	openredirs(line->reds);
+	handleredirections(line->reds, 0);
 	if (!line->command || !line->command[0])
 		exit(0);
 	if (isbuiltin(line->command[0]))
@@ -61,15 +44,6 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 	exit(127);
 }
 
-int	initexecstruct(t_exec *exec, t_line *line)
-{
-	exec->npipes = ft_lstsizeline(line);
-	exec->child = mymalloc(sizeof(int) * exec->npipes, 0);
-	exec->oldpipefd[0] = -1;
-	exec->oldpipefd[1] = -1;
-	return (0);
-}
-
 int	entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
 {
 	int	ret;
@@ -87,14 +61,14 @@ int	ft_execute(t_line *line, t_env **env)
 {
 	t_exec	exec;
 
-	int(exit), (j), (i) = 0;
+	int(exit), (i) = 0;
 	exit = initexecstruct(&exec, line);
 	while (line)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
 		if (line->command && (isbuiltin(line->command[0]) || (!ft_strncmp(line->command[0], "export", 7) && line->command[1])) && !line->next && !i)
-			return (cleanfds(exec.pipefd, 2), openredirsnodup(line->reds),
+			return (cleanfds(exec.pipefd, 2), handleredirections(line->reds, 1),
 				execbuiltin(line, env));
 		else
 			exec.child[i] = entersubprocess(exec, line, env, i);
@@ -105,14 +79,5 @@ int	ft_execute(t_line *line, t_env **env)
 		line = line->next;
 	}
 	cleanfds(exec.oldpipefd, 2);
-	j = 0;
-	while (j < i)
-		waitpid(exec.child[j++], &exit, 0);
-	i = 1;
-	while (!access(ft_strjoin("here_doc_history/.tmp", ft_itoa(i, 0), 0), F_OK))
-	{
-		unlink(ft_strjoin("here_doc_history/.tmp", ft_itoa(i, 0), 0));
-		i++;
-	}
-	return (WEXITSTATUS(exit));
+	return (finishexec(exec, i, exit));
 }

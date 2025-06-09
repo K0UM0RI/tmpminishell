@@ -13,4 +13,7 @@ int	ft_export(char **command, t_env *env);
 
 //clean
 void	cleanfds(int *fd, int end);
+
+//exec
+void	handleredirections(t_redirections *reds, int ft);
 #endif

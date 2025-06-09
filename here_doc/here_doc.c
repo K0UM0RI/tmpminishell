@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 18:07:13 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 10:54:08 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,14 @@ char	*getendoffile(const char *c, int *i)
 	return (eof);
 }
 
-char	*makeheredoc(char *eof, t_env *env)
+void redirectcontent(char *eof, t_env *env, int fd)
 {
-	static int	order;
-	char		*file;
-	int			fd;
-	char		*line;
-	char		*tmp;
-	int			i;
+	char *tmp;
+	char *line;
+	int i;
 
 	i = 0;
-	if (access(ft_strjoin("here_doc_history/.tmp", ft_itoa(1, 0), 0), F_OK))
-		order = 0;
-	order++;
-	file = ft_strjoin("here_doc_history/.tmp", ft_itoa(order, 0), 0);
-	fd = open(file, O_CREAT | O_WRONLY, 0777);
-	if (!eof)
-		return (file);
+	line = NULL;
 	line = readline(">");
 	eof = ft_append(eof, '\n', 0);
 	line = ft_append(line, '\n', 0);
@@ -77,6 +68,22 @@ char	*makeheredoc(char *eof, t_env *env)
 		line = readline(">");
 		line = ft_append(line, '\n', 0);
 	}
+}
+
+char	*makeheredoc(char *eof, t_env *env)
+{
+	static int	order;
+	char		*file;
+	int			fd;
+
+	if (access(ft_strjoin("here_doc_history/.tmp", ft_itoa(1, 0), 0), F_OK))
+		order = 0;
+	order++;
+	file = ft_strjoin("here_doc_history/.tmp", ft_itoa(order, 0), 0);
+	fd = open(file, O_CREAT | O_WRONLY, 0777);
+	if (!eof)
+		return (file);
+	redirectcontent(eof, env, fd);
 	close(fd);
 	return (file);
 }

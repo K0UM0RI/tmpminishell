@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/05 12:49:01 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 10:59:46 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,41 +75,6 @@ void	printcleanline(t_string *clean)
 	}
 }
 
-int	handlerrors(t_string *clean)
-{
-	int	p;
-	int	r;
-
-	p = 0;
-	r = 0;
-	if (!clean)
-		return (1);
-	if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
-		return (write(2, "syntax error\n", 14), 1);
-	while (clean)
-	{
-		if ((r || p) && !ft_strncmp(clean->c, "|", 1)
-			&& clean->type == OPERATOR)
-			return (write(2, "syntax error\n", 14), 1);
-		else if (clean->type == OPERATOR && ft_strncmp(clean->c, "|", 1))
-		{
-			r = 1;
-			p = 0;
-		}
-		else if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
-			p = 1;
-		else if (!(!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR))
-		{
-			p = 0;
-			r = 0;
-		}
-		clean = clean->next;
-	}
-	if (p || r)
-		return (write(2, "syntax error\n", 14), 1);
-	return (0);
-}
-
 void	changeexitstatus(int exit, t_env *env)
 {
 	while (env)
@@ -141,7 +106,7 @@ int	main(int ac, char **av, char **env)
 		if (!c)
 			break ;
 		clean = clean_line(c, lstenv);
-		if (!handlerrors(clean))
+		if (clean)
 		{
 			line = breakdown(clean);
 			// printcleanline(clean);

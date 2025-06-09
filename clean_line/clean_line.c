@@ -6,35 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 17:48:25 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 11:07:16 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "clean_line.h"
-
-static int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
-{
-	if (vars->s && (vars->ret)->c)
-		nexts_string(&vars->ret);
-	(vars->ret)->c = ft_append((vars->ret)->c, '\0', 0);
-	vars->s = 0;
-	if (c[vars->i] == '"')
-	{
-		(vars->i)++;
-		vars->s = foundquote(c, &vars->i, &vars->ret, env);
-		if (vars->s == -1)
-			return (write(2, "error:no double quote\n", 23), 1);
-	}
-	else if (c[vars->i] == '\'')
-	{
-		(vars->i)++;
-		while (c[vars->i] && c[vars->i] != '\'')
-			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
-		if (c[(vars->i)++] != '\'')
-			return (write(2, "error: no quote\n", 17), 1);
-	}
-	return (0);
-}
 
 int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 {
@@ -47,8 +23,6 @@ int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 	vars->ret->c = ft_append(vars->ret->c, c[vars->i++], 0);
 	if (tmp == c[vars->i] && tmp == '|')
 		return (write(2, "syntax error\n", 14), 1);
-	else if (tmp == c[vars->i] && tmp == '&')
-		return (write(2, "syntax error\n", 14), 1);
 	else if (tmp == c[vars->i] && c[vars->i] == '<')
 	{
 		vars->s = 1;
@@ -56,12 +30,7 @@ int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 	}
 	else if (tmp == '>')
 	{
-		if (c[vars->i] == '|' && c[vars->i + 1] && !isoperator(c[vars->i + 1]))
-		{
-			vars->i++;
-			return (0);
-		}
-		else if (tmp == c[vars->i])
+		if (tmp == c[vars->i])
 			vars->ret->c = ft_append(vars->ret->c, c[vars->i++], 0);
 	}
 	if (isoperator(c[vars->i]))
@@ -70,20 +39,18 @@ int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 	return (0);
 }
 
-void	founddollar(t_lexvars *vars, const char *c, t_env *env)
+void expandhome(t_lexvars *vars, const char *c, t_env *env)
 {
-	char	*tmp;
-	int		j;
+	int j;
 
-	if (vars->s && (vars->ret)->c)
-		nexts_string(&vars->ret);
+
 	if (c[vars->i] == '~' && (mywhitespace(c[vars->i + 1]) || !c[vars->i + 1]
 			|| c[vars->i + 1] == '/') && (vars->s || !vars->i))
 	{
 		vars->s = 0;
 		j = vars->i;
 		vars->i = 0;
-		founddollar(vars, "$HOME", env);
+		foundexpandable(vars, "$HOME", env);
 		vars->i = j + 1;
 		return ;
 	}
@@ -93,6 +60,17 @@ void	founddollar(t_lexvars *vars, const char *c, t_env *env)
 		vars->i++;
 		return ;
 	}
+}
+
+void	foundexpandable(t_lexvars *vars, const char *c, t_env *env)
+{
+	char	*tmp;
+	int		j;
+
+	if (vars->s && (vars->ret)->c)
+		nexts_string(&vars->ret);
+	if (c[vars->i] == '~')
+		return (expandhome(vars, c, env));
 	tmp = foundvar(&(vars->i), c, env);
 	if (tmp == (char *)-1)
 	{
@@ -121,7 +99,7 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 	else if (isoperator(c[vars->i]) && !vars->d)
 		d = handleoperators(vars, c, env);
 	else if ((c[vars->i] == '$' || c[vars->i] == '~') && !vars->d)
-		founddollar(vars, c, env);
+		foundexpandable(vars, c, env);
 	else if (!mywhitespace(c[vars->i]))
 	{
 		if (vars->s && (vars->ret)->c)
@@ -154,5 +132,8 @@ t_string	*clean_line(const char *c, t_env *env)
 		if (filllist(&vars, c, env))
 			return (NULL);
 	}
-	return (head);
+	if (!handlerrors(head))
+		return (head);
+	else
+		return NULL;
 }

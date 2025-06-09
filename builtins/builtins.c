@@ -15,7 +15,7 @@ int	ft_echo(char **command)
 			n++;
 		i++;
 	}
-	if (command[i][n] && n)
+	if (command[i] && command[i][n])
 		n = 0;
 	while (command[i])
 	{

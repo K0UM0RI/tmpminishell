@@ -8,10 +8,12 @@ SRC = break_down/breakdown.c \
 	builtins/export.c \
 	clean_line/clean_line_utils.c \
 	clean_line/clean_line.c \
+	clean_line/clean_line_utils2.c \
 	env/env_utils.c \
 	env/getcmd.c \
 	execution/execute.c \
 	execution/execute_utils.c \
+	execution/execute_utils2.c \
 	here_doc/here_doc.c \
 	here_doc/here_doc_expand.c \
 	malloc-free/garbage_collector.c \

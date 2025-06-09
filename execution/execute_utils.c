@@ -18,15 +18,9 @@ void	piping(int i, t_exec exec, t_line *line)
 {
 	close(exec.pipefd[0]);
 	if (i)
-	{
-		dup2(exec.oldpipefd[0], 0);
-		cleanfds(exec.oldpipefd, 2);
-	}
+		(dup2(exec.oldpipefd[0], 0), cleanfds(exec.oldpipefd, 2));
 	if (line->next)
-	{
-		dup2(exec.pipefd[1], 1);
-		close(exec.pipefd[1]);
-	}
+		(dup2(exec.pipefd[1], 1), close(exec.pipefd[1]));
 }
 
 void	resetoldpipe(int *oldpipefd, int *pipefd)
@@ -47,4 +41,13 @@ int	ft_lstsizeline(t_line *line)
 		line = line->next;
 	}
 	return (size);
+}
+
+int	initexecstruct(t_exec *exec, t_line *line)
+{
+	exec->npipes = ft_lstsizeline(line);
+	exec->child = mymalloc(sizeof(int) * exec->npipes, 0);
+	exec->oldpipefd[0] = -1;
+	exec->oldpipefd[1] = -1;
+	return (0);
 }

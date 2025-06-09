@@ -6,35 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 17:46:43 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 11:11:59 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "clean_line.h"
-
-int	mywhitespace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v'
-		|| c == '\f');
-}
-
-t_string	*news_string(void)
-{
-	t_string	*c;
-
-	c = (t_string *)mymalloc(sizeof(t_string), 0);
-	c->c = NULL;
-	c->next = NULL;
-	c->type = 0;
-	return (c);
-}
-
-void	nexts_string(t_string **ret)
-{
-	(*ret)->next = news_string();
-	(*ret) = (*ret)->next;
-	(*ret)->type = 0;
-}
 
 char	*getvarname(const char *c, int *i)
 {
@@ -96,5 +72,66 @@ int	foundquote(const char *c, int *i, t_string **ret, t_env *env)
 	}
 	if (c[(*i)++] != '"')
 		return (-1);
+	return (0);
+}
+
+int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
+{
+	if (vars->s && (vars->ret)->c)
+		nexts_string(&vars->ret);
+	(vars->ret)->c = ft_append((vars->ret)->c, '\0', 0);
+	vars->s = 0;
+	if (c[vars->i] == '"')
+	{
+		(vars->i)++;
+		vars->s = foundquote(c, &vars->i, &vars->ret, env);
+		if (vars->s == -1)
+			return (write(2, "error:no double quote\n", 23), 1);
+	}
+	else if (c[vars->i] == '\'')
+	{
+		(vars->i)++;
+		while (c[vars->i] && c[vars->i] != '\'')
+			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
+		if (c[(vars->i)++] != '\'')
+			return (write(2, "error: no quote\n", 17), 1);
+	}
+	return (0);
+}
+
+int checkopsorder(int r, int p, t_string *clean)
+{
+	if ((r || p) && !ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+		return (write(2, "syntax error\n", 14), 1);
+	else if (clean->type == OPERATOR && ft_strncmp(clean->c, "|", 1))
+	{
+		r = 1;
+		p = 0;
+	}
+	else if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+		p = 1;
+	else if (!(!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR))
+	{
+		p = 0;
+		r = 0;
+	}
+	return (0);
+}
+int	handlerrors(t_string *clean)
+{
+	int	(p), (r) = 0;
+	p = 0;
+	if (!clean)
+		return (1);
+	if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+		return (write(2, "syntax error\n", 14), 1);
+	while (clean)
+	{
+		if (checkopsorder(r, p, clean))
+			return (1);
+		clean = clean->next;
+	}
+	if (p || r)
+		return (write(2, "syntax error\n", 14), 1);
 	return (0);
 }

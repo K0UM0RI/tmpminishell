@@ -6,6 +6,12 @@ int	ft_lstsizeline(t_line *line);
 void	cleanfds(int *fd, int end);
 void	piping(int i, t_exec exec, t_line *line);
 void	resetoldpipe(int *oldpipefd, int *pipefd);
+int	initexecstruct(t_exec *exec, t_line *line);
+
+//utils2
+void openredirs(t_redirections *reds, int *file);
+void	openredirsnodup(t_redirections *reds, int *file);
+int finishexec(t_exec exec, int i, int exit);
 
 //builtins
 int	execbuiltin(t_line *line, t_env **env);
@@ -13,7 +19,6 @@ int	isbuiltin(char *command);
 int	ft_export(char **command, t_env *env);
 int	ft_env(t_env *env);
 int	ft_echo(char **command);
-void	openredirsnodup(t_redirections *reds);
 
 //env
 char	**convertenv(t_env *env);
