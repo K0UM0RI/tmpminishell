@@ -7,22 +7,23 @@ void openredirs(t_redirections *reds, int *file)
 		file[1] = open(reds->file, O_CREAT | O_APPEND | O_WRONLY, 0777);
 		if (file[1] < 0)
 			(perror("open"), exit(1));
-		dup2(file[1], 1);
 	}
 	else if (reds->redtype == RED_OUT_TRUNC)
 	{
 		file[1] = open(reds->file, O_CREAT | O_TRUNC | O_WRONLY, 0777);
 		if (file[1] < 0)
 			(perror("open"), exit(1));
-		dup2(file[1], 1);
 	}
 	else if (reds->redtype == RED_IN)
 	{
 		file[0] = open(reds->file, O_RDONLY);
 		if (file[0] < 0)
 			(perror("open"), exit(1));
-		dup2(file[0], 0);
 	}
+	if (file[0] != -1)
+		dup2(file[0], 0);
+	if (file[1] != -1)
+		dup2(file[1], 1);
 }
 
 void	openredirsnodup(t_redirections *reds, int *file)
