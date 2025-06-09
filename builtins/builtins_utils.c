@@ -4,7 +4,7 @@ int	isbuiltin(char *command)
 {
 	if (!command)
 		return (-1);
-	if (!ft_strncmp(command, "cd", 3) || !ft_strncmp(command, "pwd", 4) || !ft_strncmp(command, "unset", 6) || !ft_strncmp(command, "exit", 5))
+	if (!ft_strncmp(command, "cd", 3) || !ft_strncmp(command, "unset", 6) || !ft_strncmp(command, "exit", 5))
 		return (1);
 	return (0);
 }

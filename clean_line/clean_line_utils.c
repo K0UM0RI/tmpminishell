@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 11:11:59 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 14:22:19 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	*foundvar(int *i, const char *c, t_env *env)
 
 	(*i)++;
 	var = getvarname(c, i);
+	if (!ft_strncmp(var, "1PWD", 5))
+		return NULL;
 	if (var == (char *)-1)
 		return ((char *)-1);
 	else if (var == (char *)-2)

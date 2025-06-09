@@ -19,6 +19,7 @@ int	isbuiltin(char *command);
 int	ft_export(char **command, t_env *env);
 int	ft_env(t_env *env);
 int	ft_echo(char **command);
+int ft_pwd(t_env *env);
 
 //env
 char	**convertenv(t_env *env);

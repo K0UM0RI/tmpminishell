@@ -1,6 +1,67 @@
 
 #include "builtins.h"
 
+void unprotectedgetnewvar(t_env *env, char *name, char *value)
+{
+	if (ft_strncmp(env->name, name, ft_strlen(name)))
+	{
+		while (env->next && ft_strncmp(env->next->name, name,
+				ft_strlen(name)))
+			env = env->next;
+	}
+	if (!env->next)
+		add_env(env, name);
+	env->next->value = ft_strdup(value, 2);
+}
+
+int ft_cd(char **command, t_env **env)
+{
+	char *pwd;
+	char *tmp;
+	char tmp1[4096];
+
+	pwd = getmyenv("1PWD", *env);
+	tmp = NULL;
+	if (!command[1])
+	{
+		tmp = getmyenv("HOME", *env);
+		if (!tmp)
+			return(write (2, "HOME not set\n", 14), 1);
+		if (chdir(tmp))
+			return (perror("chdir"), 1);
+		unprotectedgetnewvar(*env, ft_strdup("PWD", 2), ft_strdup(tmp1, 1));
+		unprotectedgetnewvar(*env, ft_strdup("1PWD", 0), tmp);
+		return (0);
+	}
+	if (command[2])
+		write(2, "cd: too many arguments\n", 24);
+	if (*command[1] == '/')
+	{
+		if (chdir(command[1]))
+			return (perror("chdir"), 1);
+		ft_export((char *[]){"export\0", ft_strjoin(ft_strdup("PWD=", 0), command[1], 0), NULL}, *env);
+		unprotectedgetnewvar(*env, ft_strdup("1PWD", 0), command[1]);
+	}
+	else 
+	{
+		tmp = ft_strjoin("/", command[1], 0);
+		tmp = ft_strjoin(pwd, tmp, 0);
+		if (chdir(tmp) && chdir(command[1]))
+			return (perror("chdir"), 1);
+		if (!getcwd(tmp1, 4096))
+			return (perror("getcwd"), 1);
+		unprotectedgetnewvar(*env, ft_strdup("PWD", 2), ft_strdup(tmp1, 2));
+		unprotectedgetnewvar(*env, ft_strdup("1PWD", 2), ft_strdup(tmp1, 2));
+	}
+	return (0);
+} 
+
+int ft_pwd(t_env *env)
+{
+	printf("%s\n", getmyenv("1PWD", env));
+	exit(0);
+}
+
 int	ft_echo(char **command)
 {
 	int	i;
@@ -33,7 +94,7 @@ int	ft_env(t_env *env)
 {
 	while (env)
 	{
-		if (ft_strncmp(env->name, "?", 2) && env->value)
+		if (ft_strncmp(env->name, "?", 2) && env->value && ft_strncmp(env->name, "1PWD", 5))
 			printf("%s=%s\n", env->name, env->value);
 		env = env->next;
 	}
@@ -74,7 +135,7 @@ int	ft_unset(char **command, t_env **env)
 		while (tmp)
 		{
 			if (!ft_strncmp(tmp->name, command[i], ft_strlen(command[i]))
-				&& ft_strncmp(command[i], "?", 2))
+				&& ft_strncmp(command[i], "?", 2) && ft_strncmp(command[i], "1PWD", 5))
 			{
 				if (previous)
 					previous->next = tmp->next;
@@ -91,10 +152,8 @@ int	ft_unset(char **command, t_env **env)
 }
 int	execbuiltin(t_line *line, t_env **env)
 {
-	// if (!ft_strncmp(command[0], "cd", 3))
-	//     return (ft_cd(command, env));
-	// if (!ft_strncmp(command[0], "pwd", 4))
-	//     return (ft_pwd());
+	if (!ft_strncmp(line->command[0], "cd", 3))
+	    return (ft_cd(line->command, env));
 	if (!ft_strncmp(line->command[0], "export", 7))
 		return (ft_export(line->command, *env));
 	if (!ft_strncmp(line->command[0], "unset", 6))

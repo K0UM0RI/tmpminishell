@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 17:22:50 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 14:15:40 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_env	*getenvlst(char **env)
 {
 	t_env	*lstenv;
 	t_env	*head;
+	char tmp[4096];
 
 	int(i), (j) = 0;
 	if (!env)
@@ -82,7 +83,9 @@ t_env	*getenvlst(char **env)
 		}
 		j++;
 	}
+	getcwd(tmp, 4096);
 	newenv(&lstenv, "?", "0");
+	newenv(&lstenv, "1PWD", ft_strdup(tmp, 2));
 	return (head->next);
 }
 

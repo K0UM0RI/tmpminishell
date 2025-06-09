@@ -34,6 +34,8 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 		exit(ft_env(*env));
 	if (!ft_strncmp(line->command[0], "export", 7))
 		exit(ft_export(line->command, *env));
+	if (!ft_strncmp(line->command[0], "pwd", 4))
+		exit(ft_pwd(*env));
 	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
 		exit(127);

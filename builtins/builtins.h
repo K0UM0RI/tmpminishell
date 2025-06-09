@@ -6,7 +6,7 @@ int	isbuiltin(char *command);
 int	isnumber(char *c);
 int	ft_isalpha(int c);
 int foundchar(char f, char *c);
-
+void add_env(t_env *env, char *tmp);
 void	openredirsnodup(t_redirections *reds);
 
 int	ft_export(char **command, t_env *env);
