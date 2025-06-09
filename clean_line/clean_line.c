@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 11:07:16 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 13:50:12 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,13 @@ void	foundexpandable(t_lexvars *vars, const char *c, t_env *env)
 
 int	filllist(t_lexvars *vars, const char *c, t_env *env)
 {
-	int	d;
+	int	error;
 
-	d = 0;
+	error = 0;
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
-		d = handlequotes(vars, c, env);
+		error = handlequotes(vars, c, env);
 	else if (isoperator(c[vars->i]) && !vars->d)
-		d = handleoperators(vars, c, env);
+		error = handleoperators(vars, c, env);
 	else if ((c[vars->i] == '$' || c[vars->i] == '~') && !vars->d)
 		foundexpandable(vars, c, env);
 	else if (!mywhitespace(c[vars->i]))
@@ -112,7 +112,7 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 		(vars->i)++;
 		vars->s = 1;
 	}
-	return (d);
+	return (error);
 }
 
 t_string	*clean_line(const char *c, t_env *env)

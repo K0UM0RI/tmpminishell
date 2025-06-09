@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 12:05:06 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 13:44:25 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,25 @@ char	*makeheredoc(char *eof, t_env *env)
 	char		*file;
 	int			fd;
 
+	fd = fork();
+	//could use /tmp instead of here_doc_history
+	if (!fd)
+	{
+		if (access("here_doc_history", F_OK))
+			execve("/bin/mkdir", (char *[]){"mkdir", "here_doc_history", NULL}, NULL);
+		exit(0);
+	}
+	wait(NULL);
 	if (access(ft_strjoin("here_doc_history/.tmp", ft_itoa(1, 0), 0), F_OK))
 		order = 0;
 	order++;
 	file = ft_strjoin("here_doc_history/.tmp", ft_itoa(order, 0), 0);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (fd < 0)
+	{
+		perror("here_doc open");
+		return (NULL);
+	}
 	if (!eof)
 		return (file);
 	redirectcontent(eof, env, fd);
@@ -92,6 +106,7 @@ char	*makeheredoc(char *eof, t_env *env)
 int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 {
 	char	*eof;
+	char *file;
 
 	(*i)++;
 	while (c[*i] && mywhitespace(c[*i]))
@@ -102,7 +117,10 @@ int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 	if (eof == (char *)-1)
 		eof = ft_strdup("\0", 0);
 	nexts_string(ret);
-	(*ret)->c = ft_strjoin((*ret)->c, makeheredoc(eof, env), 0);
+	file = makeheredoc(eof, env);
+	if (!file)
+		return (1);
+	(*ret)->c = ft_strjoin((*ret)->c, file, 0);
 	(*i)++;
 	return (0);
 }
