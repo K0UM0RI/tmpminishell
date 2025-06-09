@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 10:54:08 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 12:05:06 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void redirectcontent(char *eof, t_env *env, int fd)
 	line = ft_append(line, '\n', 0);
 	while (line && ft_strncmp(line, eof, ft_strlen(line) + 1))
 	{
+		i = 0;
 		while (line && line[i])
 		{
 			if (line[i] == '$')
@@ -80,7 +81,7 @@ char	*makeheredoc(char *eof, t_env *env)
 		order = 0;
 	order++;
 	file = ft_strjoin("here_doc_history/.tmp", ft_itoa(order, 0), 0);
-	fd = open(file, O_CREAT | O_WRONLY, 0777);
+	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (!eof)
 		return (file);
 	redirectcontent(eof, env, fd);

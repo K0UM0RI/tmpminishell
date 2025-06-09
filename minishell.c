@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 10:59:46 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/09 12:14:26 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	changeexitstatus(int exit, t_env *env)
 		env = env->next;
 	}
 }
-
+//handle not expanding when quotes in endoffile
 int	main(int ac, char **av, char **env)
 {
 	const char	*c;
