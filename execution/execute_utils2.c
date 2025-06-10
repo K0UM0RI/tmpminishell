@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_utils2.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 12:16:34 by sbat              #+#    #+#             */
+/*   Updated: 2025/06/10 12:21:04 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execute.h"
 
-void openredirs(t_redirections *reds, int *file)
+void	openredirs(t_redirections *reds, int *file)
 {
 	if (reds->redtype == RED_OUT_APPEND)
 	{
@@ -45,9 +57,9 @@ void	openredirsnodup(t_redirections *reds, int *file)
 	}
 }
 
-int finishexec(t_exec exec, int i, int exit)
+int	finishexec(t_exec exec, int i, int exit)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	while (j < i)

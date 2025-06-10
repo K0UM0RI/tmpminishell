@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
+/*   Updated: 2025/06/10 12:35:11 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 
-void print_export(t_env *env)
+void	print_export(t_env *env)
 {
 	while (env)
 	{
-		if (ft_strncmp(env->name, "?", 2))
+		if (ft_strncmp(env->name, "?", 2) && ft_strncmp(env->name, "1", 1))
 		{
 			printf("declare -x %s", env->name);
 			if (env->value)
@@ -15,20 +27,12 @@ void print_export(t_env *env)
 	}
 }
 
-void add_env(t_env *env, char *tmp)
+int	getvalue(char *tmp)
 {
-	env->next = mymalloc(sizeof(t_env), 2);
-	env->next->name = tmp;
-	env->next->value = NULL;
-	env->next->next = NULL;
-}
-
-int getvalue(char *tmp)
-{
-	int j;
+	int	j;
 
 	j = 0;
-	if(*tmp == '=')
+	if (*tmp == '=')
 		return (0);
 	while (tmp[j] && tmp[j] != '=')
 		j++;
@@ -39,12 +43,15 @@ int getvalue(char *tmp)
 	return (j);
 }
 
-void getnewvar(char *tmp, t_env *env)
+void	getnewvar(char *tmp, t_env **env)
 {
-	int s;
+	int		s;
+	t_env	*tmpenv;
 
+	tmpenv = *env;
 	s = getvalue(tmp);
-	if (!(ft_isalpha(*tmp) || *tmp == '_') || foundchar('?', tmp) || (*tmp >= '0' && *tmp <= '9') || *tmp == '=')
+	if (!(ft_isalpha(*tmp) || *tmp == '_') || foundchar('?', tmp)
+		|| (*tmp >= '0' && *tmp <= '9') || *tmp == '=')
 	{
 		tmp[s] = '=';
 		write(2, "export: \'", 10);
@@ -52,25 +59,34 @@ void getnewvar(char *tmp, t_env *env)
 		write(2, "\' not a valid identifier\n", 26);
 		return ;
 	}
-	if (ft_strncmp(env->name, tmp, ft_strlen(tmp)))
+	if (!*env)
 	{
-		while (env->next && ft_strncmp(env->next->name, tmp,
-				ft_strlen(tmp)))
-			env = env->next;
+		(*env) = mymalloc(sizeof(t_env), 2);
+		(*env)->name = ft_strdup(tmp, 2);
+		if (s > 0)
+			(*env)->value = ft_strdup(tmp + s + 1, 2);
+		(*env)->next = NULL;
+		return ;
 	}
-	if (!env->next)
-		add_env(env, tmp);
+	if (ft_strncmp(tmpenv->name, tmp, ft_strlen(tmp)))
+	{
+		while (tmpenv->next && ft_strncmp(tmpenv->next->name, tmp,
+				ft_strlen(tmp)))
+			tmpenv = tmpenv->next;
+	}
+	if (!tmpenv->next)
+		add_env(tmpenv, tmp);
 	if (s > 0)
-		env->next->value = ft_strdup(tmp + s + 1, 2);
+		tmpenv->next->value = ft_strdup(tmp + s + 1, 2);
 }
 
-int	ft_export(char **command, t_env *env)
+int	ft_export(char **command, t_env **env)
 {
-	int		i;
+	int i;
 
 	i = 1;
 	if (!command[i])
-		print_export(env);
+		print_export(*env);
 	while (command[i])
 	{
 		getnewvar(ft_strdup(command[i], 2), env);

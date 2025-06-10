@@ -39,10 +39,9 @@ int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 	return (0);
 }
 
-void expandhome(t_lexvars *vars, const char *c, t_env *env)
+void	expandhome(t_lexvars *vars, const char *c, t_env *env)
 {
-	int j;
-
+	int	j;
 
 	if (c[vars->i] == '~' && (mywhitespace(c[vars->i + 1]) || !c[vars->i + 1]
 			|| c[vars->i + 1] == '/') && (vars->s || !vars->i))
@@ -135,5 +134,5 @@ t_string	*clean_line(const char *c, t_env *env)
 	if (!handlerrors(head))
 		return (head);
 	else
-		return NULL;
+		return (NULL);
 }

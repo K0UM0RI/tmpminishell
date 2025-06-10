@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
+/*   Updated: 2025/06/10 12:20:36 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execute.h"
 
 void	handleredirections(t_redirections *reds, int ft)
@@ -33,7 +45,7 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 	if (!ft_strncmp(line->command[0], "env", 5))
 		exit(ft_env(*env));
 	if (!ft_strncmp(line->command[0], "export", 7))
-		exit(ft_export(line->command, *env));
+		exit(ft_export(line->command, env));
 	if (!ft_strncmp(line->command[0], "pwd", 4))
 		exit(ft_pwd(*env));
 	cmd = getcmd(line->command[0], *env);
@@ -63,13 +75,15 @@ int	ft_execute(t_line *line, t_env **env)
 {
 	t_exec	exec;
 
-	int(exit), (i) = 0;
+	int (exit), (i) = 0;
 	exit = initexecstruct(&exec, line);
 	while (line)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
-		if (line->command && (isbuiltin(line->command[0]) || (!ft_strncmp(line->command[0], "export", 7) && line->command[1])) && !line->next && !i)
+		if (line->command && (isbuiltin(line->command[0])
+				|| (!ft_strncmp(line->command[0], "export", 7)
+					&& line->command[1])) && !line->next && !i)
 			return (cleanfds(exec.pipefd, 2), handleredirections(line->reds, 1),
 				execbuiltin(line, env));
 		else

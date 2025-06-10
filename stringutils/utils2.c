@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:19 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 18:08:12 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/10 12:29:12 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,17 @@ int	ft_strlen(char *c)
 	while (c[i])
 		i++;
 	return (i);
+}
+
+int	ft_intlen(int n)
+{
+	int	len;
+
+	len = 1;
+	while (n / 10 != 0)
+	{
+		n = n / 10;
+		len++;
+	}
+	return (len);
 }

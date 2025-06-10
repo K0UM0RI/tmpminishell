@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 12:16:57 by sbat              #+#    #+#             */
+/*   Updated: 2025/06/10 12:22:24 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 static size_t	countwords(const char *s, char c)
@@ -28,11 +40,11 @@ static void	wordlen(const char *s, char c, size_t *d, size_t *b)
 
 char	**ft_split(char *s, char c)
 {
-	char **str;
-	size_t count;
-	size_t j;
-	size_t d;
-	size_t b;
+	char	**str;
+	size_t	count;
+	size_t	j;
+	size_t	d;
+	size_t	b;
 
 	if (!s)
 		return (NULL);

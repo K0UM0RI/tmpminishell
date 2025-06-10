@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 14:22:19 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/10 12:19:58 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*foundvar(int *i, const char *c, t_env *env)
 	(*i)++;
 	var = getvarname(c, i);
 	if (!ft_strncmp(var, "1PWD", 5))
-		return NULL;
+		return (NULL);
 	if (var == (char *)-1)
 		return ((char *)-1);
 	else if (var == (char *)-2)
@@ -101,7 +101,7 @@ int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 	return (0);
 }
 
-int checkopsorder(int r, int p, t_string *clean)
+int	checkopsorder(int r, int p, t_string *clean)
 {
 	if ((r || p) && !ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
 		return (write(2, "syntax error\n", 14), 1);
@@ -119,9 +119,10 @@ int checkopsorder(int r, int p, t_string *clean)
 	}
 	return (0);
 }
+
 int	handlerrors(t_string *clean)
 {
-	int	(p), (r) = 0;
+	int (p), (r) = 0;
 	p = 0;
 	if (!clean)
 		return (1);

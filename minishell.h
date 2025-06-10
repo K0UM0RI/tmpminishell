@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 18:06:14 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/10 12:13:55 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,30 @@ typedef struct s_exec
 	int						npipes;
 }							t_exec;
 
-//malloc-free
-void	*mymalloc(size_t size, int fn);
+// malloc-free
+void						*mymalloc(size_t size, int fn);
 
-//utils
-char	**ft_split(char *s, char c);
-char	*ft_strjoin(char *s1, char *s2, int fn);
-char	*ft_append(char *c1, char c2, int fn);
-char	*ft_strdup(char *s, int fn);
-int	mywhitespace(char c);
-int	isoperator(char c);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
-int	ft_strlen(char *c);
-int	ft_atoi(const char *nptr);
-char	*ft_itoa(int n, int fn);
+// utils
+char						**ft_split(char *s, char c);
+char						*ft_strjoin(char *s1, char *s2, int fn);
+char						*ft_append(char *c1, char c2, int fn);
+char						*ft_strdup(char *s, int fn);
+int							mywhitespace(char c);
+int							isoperator(char c);
+int							ft_strncmp(const char *s1, const char *s2,
+								size_t n);
+int							ft_strlen(char *c);
+int							ft_atoi(const char *nptr);
+char						*ft_itoa(int n, int fn);
 
-//env
-char	*getmyenv(char *var, t_env *env);
+// env
+char						*getmyenv(char *var, t_env *env);
+void						unprotectedgetnewvar(t_env *env, char *name,
+								char *value);
 
-t_string	*clean_line(const char *c, t_env *env);
-t_line	*breakdown(t_string *elems);
-int	ft_execute(t_line *line, t_env **env);
-t_env	*getenvlst(char **env);
+t_string					*clean_line(const char *c, t_env *env);
+t_line						*breakdown(t_string *elems);
+int							ft_execute(t_line *line, t_env **env);
+t_env						*getenvlst(char **env);
 
 #endif

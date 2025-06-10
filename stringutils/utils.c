@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:16 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 18:08:08 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/10 12:29:32 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,28 +105,27 @@ int	ft_atoi(const char *nptr)
 char	*ft_itoa(int n, int fn)
 {
 	char	*str;
-	int		len;
-	int		tmp;
-	int		neg;
 
-	len = 1;
-	tmp = n;
+	int (len), (neg), (i), (tmp);
 	neg = n < 0;
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648", fn));
-	while (tmp /= 10)
-		len++;
+	len = ft_intlen(n);
+	tmp = n;
+	if (neg)
+		tmp = -n;
 	str = mymalloc(sizeof(char) * (len + neg + 1), fn);
+	if (!str)
+		return (NULL);
 	str[len + neg] = '\0';
 	if (neg)
-	{
 		str[0] = '-';
-		n = -n;
-	}
-	for (int i = len + neg - 1; i >= neg; i--)
+	i = len + neg - 1;
+	while (i >= neg)
 	{
-		str[i] = (n % 10) + '0';
-		n /= 10;
+		str[i] = (tmp % 10) + '0';
+		tmp = tmp / 10;
+		i--;
 	}
 	return (str);
 }

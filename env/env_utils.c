@@ -6,11 +6,47 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 14:15:40 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/10 12:38:25 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	add_env(t_env *env, char *name)
+{
+	env->next = mymalloc(sizeof(t_env), 2);
+	env->next->name = name;
+	env->next->value = NULL;
+	env->next->next = NULL;
+}
+
+void	newenv(t_env **lstenv, char *name, char *value)
+{
+	t_env	*env;
+
+	if (!ft_strncmp(name, "SHLVL", 5))
+		value = ft_itoa(ft_atoi(value) + 1, 2);
+	env = mymalloc(sizeof(t_env), 2);
+	env->name = ft_strdup(name, 2);
+	env->value = ft_strdup(value, 2);
+	env->next = NULL;
+	if (!*lstenv)
+		(*lstenv) = env;
+	(*lstenv)->next = env;
+	*lstenv = (*lstenv)->next;
+}
+
+void	unprotectedgetnewvar(t_env *env, char *name, char *value)
+{
+	if (ft_strncmp(env->name, name, ft_strlen(name)))
+	{
+		while (env->next && ft_strncmp(env->next->name, name, ft_strlen(name)))
+			env = env->next;
+	}
+	if (!env->next)
+		add_env(env, name);
+	env->next->value = value;
+}
 
 int	ft_lstsizeenv(t_env *env)
 {
@@ -43,25 +79,11 @@ char	*getmyenv(char *var, t_env *env)
 	return (NULL);
 }
 
-void	newenv(t_env **lstenv, char *name, char *value)
-{
-	t_env	*env;
-
-	if (!ft_strncmp(name, "SHLVL", 5))
-		value = ft_itoa(ft_atoi(value) + 1, 2);
-	env = mymalloc(sizeof(t_env), 2);
-	env->name = ft_strdup(name, 2);
-	env->value = ft_strdup(value, 2);
-	env->next = NULL;
-	(*lstenv)->next = env;
-	*lstenv = (*lstenv)->next;
-}
-
 t_env	*getenvlst(char **env)
 {
 	t_env	*lstenv;
 	t_env	*head;
-	char tmp[4096];
+	char	tmp[4096];
 
 	int(i), (j) = 0;
 	if (!env)
@@ -100,7 +122,7 @@ char	**convertenv(t_env *env)
 	ret = mymalloc(sizeof(char *) * (size + 1), 0);
 	while (env)
 	{
-		if (!ft_strncmp(env->name, "?", 2))
+		if (!ft_strncmp(env->name, "?", 2) || !ft_strncmp(env->name, "1", 1))
 			env = env->next;
 		else
 		{

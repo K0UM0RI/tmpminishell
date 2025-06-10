@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   breakdown_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 12:15:34 by sbat              #+#    #+#             */
+/*   Updated: 2025/06/10 12:15:35 by sbat             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "breakdown.h"
 
 void	red_addback(t_redirections **head, t_redirections *new)
@@ -27,4 +39,3 @@ t_redirections	*red_new(char *file, int type)
 	tmp->next = NULL;
 	return (tmp);
 }
-

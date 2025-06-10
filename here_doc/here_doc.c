@@ -41,11 +41,11 @@ char	*getendoffile(const char *c, int *i)
 	return (eof);
 }
 
-void redirectcontent(char *eof, t_env *env, int fd)
+void	redirectcontent(char *eof, t_env *env, int fd)
 {
-	char *tmp;
-	char *line;
-	int i;
+	char	*tmp;
+	char	*line;
+	int		i;
 
 	i = 0;
 	line = NULL;
@@ -78,11 +78,12 @@ char	*makeheredoc(char *eof, t_env *env)
 	int			fd;
 
 	fd = fork();
-	//could use /tmp instead of here_doc_history
+	// could use /tmp instead of here_doc_history
 	if (!fd)
 	{
 		if (access("here_doc_history", F_OK))
-			execve("/bin/mkdir", (char *[]){"mkdir", "here_doc_history", NULL}, NULL);
+			execve("/bin/mkdir", (char *[]){"mkdir", "here_doc_history", NULL},
+				NULL);
 		exit(0);
 	}
 	wait(NULL);
@@ -106,7 +107,7 @@ char	*makeheredoc(char *eof, t_env *env)
 int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 {
 	char	*eof;
-	char *file;
+	char	*file;
 
 	(*i)++;
 	while (c[*i] && mywhitespace(c[*i]))
