@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 13:44:25 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 18:35:32 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,20 @@ char	*makeheredoc(char *eof, t_env *env)
 	char		*file;
 	int			fd;
 
-	fd = fork();
-	// could use /tmp instead of here_doc_history
-	if (!fd)
-	{
-		if (access("here_doc_history", F_OK))
-			execve("/bin/mkdir", (char *[]){"mkdir", "here_doc_history", NULL},
-				NULL);
-		exit(0);
-	}
-	wait(NULL);
-	if (access(ft_strjoin("here_doc_history/.tmp", ft_itoa(1, 0), 0), F_OK))
+	// fd = fork();
+	// // could use /tmp instead of here_doc_history
+	// if (!fd)
+	// {
+	// 	if (access("here_doc_history", F_OK) && !is_directory("here_doc_history"))
+	// 		execve("/bin/mkdir", (char *[]){"mkdir", "here_doc_history", NULL},
+	// 			NULL);
+	// 	exit(0);
+	// }
+	// wait(NULL);
+	if (access(ft_strjoin(".tmp", "1", 0), F_OK))
 		order = 0;
 	order++;
-	file = ft_strjoin("here_doc_history/.tmp", ft_itoa(order, 0), 0);
+	file = ft_strjoin(".tmp", ft_itoa(order, 0), 0);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (fd < 0)
 	{

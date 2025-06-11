@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 15:23:27 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 19:06:20 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,9 @@ int	main(int ac, char **av, char **env)
 	exit = 0;
 	while (1)
 	{
-		c = ft_strjoin("minishell>", getmyenv("1PWD", lstenv), 0);
-		c = ft_strjoin(c, "$", 0);
+		c = NULL;
+		// c = ft_strjoin("minishell>", getmyenv("1PWD", lstenv), 0);
+		c = ft_strjoin(c, ">", 0);
 		c = readline(c);
 		if (!c)
 			break ;

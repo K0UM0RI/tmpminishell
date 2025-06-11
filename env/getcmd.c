@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:15 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:16:16 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 19:02:16 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,14 @@ char	*getcmd(char *cmd, t_env *env)
 	char	**paths;
 
 	c = NULL;
-	error = "command not found, or isnt executable\n";
+	error = "command not found\n";
 	if (!cmd)
 		return (NULL);
 	if (!*cmd)
 		return (write(2, error, ft_strlen(error)), NULL);
 	if (ifslash(cmd))
 	{
-		if (!access(cmd, F_OK | X_OK))
+		if (!access(cmd, F_OK))
 			return (ft_strdup(cmd, 0));
 		else
 			return (write(2, error, ft_strlen(error)), NULL);
@@ -99,7 +99,7 @@ char	*getcmd(char *cmd, t_env *env)
 	paths = getpaths(env);
 	if (paths)
 		c = checkpaths(cmd, paths);
-	else if (!access(cmd, F_OK | X_OK))
+	else if (!access(cmd, F_OK))
 		return (ft_strdup(cmd, 0));
 	if (c)
 		return (c);

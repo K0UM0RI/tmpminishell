@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:19:58 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 18:44:15 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*getvarname(const char *c, int *i)
 	{
 		var = ft_append(var, c[(*i)], 0);
 		(*i)++;
+		if (!ft_strncmp(var, "?", 2))
+			return (var);
 	}
 	if ((mywhitespace(c[*i]) || !c[*i]) && !var)
 		return ((char *)-1);
@@ -37,12 +39,12 @@ char	*foundvar(int *i, const char *c, t_env *env)
 
 	(*i)++;
 	var = getvarname(c, i);
-	if (!ft_strncmp(var, "1PWD", 5))
-		return (NULL);
 	if (var == (char *)-1)
 		return ((char *)-1);
 	else if (var == (char *)-2)
 		return ((char *)-2);
+	if (var && !ft_strncmp(var, "1PWD", 5))
+		return (NULL);
 	var = getmyenv(var, env);
 	if (!var)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:35:11 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 18:53:56 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	getvalue(char *tmp)
 	return (j);
 }
 
-void	getnewvar(char *tmp, t_env **env)
+//handle when non alphanumerique exists in name
+int	getnewvar(char *tmp, t_env **env)
 {
 	int		s;
 	t_env	*tmpenv;
@@ -53,11 +54,12 @@ void	getnewvar(char *tmp, t_env **env)
 	if (!(ft_isalpha(*tmp) || *tmp == '_') || foundchar('?', tmp)
 		|| (*tmp >= '0' && *tmp <= '9') || *tmp == '=')
 	{
-		tmp[s] = '=';
+		if (s >= 0)
+			tmp[s] = '=';
 		write(2, "export: \'", 10);
 		write(2, tmp, ft_strlen(tmp));
 		write(2, "\' not a valid identifier\n", 26);
-		return ;
+		return 1;
 	}
 	if (!*env)
 	{
@@ -66,7 +68,7 @@ void	getnewvar(char *tmp, t_env **env)
 		if (s > 0)
 			(*env)->value = ft_strdup(tmp + s + 1, 2);
 		(*env)->next = NULL;
-		return ;
+		return 0;
 	}
 	if (ft_strncmp(tmpenv->name, tmp, ft_strlen(tmp)))
 	{
@@ -78,19 +80,23 @@ void	getnewvar(char *tmp, t_env **env)
 		add_env(tmpenv, tmp);
 	if (s > 0)
 		tmpenv->next->value = ft_strdup(tmp + s + 1, 2);
+	return 0;
 }
 
 int	ft_export(char **command, t_env **env)
 {
 	int i;
+	int r;
 
+	r = 0;
 	i = 1;
 	if (!command[i])
 		print_export(*env);
 	while (command[i])
 	{
-		getnewvar(ft_strdup(command[i], 2), env);
+		if (getnewvar(ft_strdup(command[i], 2), env))
+			r = 1;
 		i++;
 	}
-	return (0);
+	return (r);
 }

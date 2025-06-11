@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:34 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:21:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 18:35:50 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ int	finishexec(t_exec exec, int i, int exit)
 	while (j < i)
 		waitpid(exec.child[j++], &exit, 0);
 	j = 1;
-	while (!access(ft_strjoin("here_doc_history/.tmp", ft_itoa(j, 0), 0), F_OK))
+	while (!access(ft_strjoin(".tmp", ft_itoa(j, 0), 0), F_OK))
 	{
-		unlink(ft_strjoin("here_doc_history/.tmp", ft_itoa(j, 0), 0));
+		unlink(ft_strjoin(".tmp", ft_itoa(j, 0), 0));
 		j++;
 	}
 	return (WEXITSTATUS(exit));

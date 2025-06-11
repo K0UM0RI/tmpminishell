@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:20:36 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 19:05:04 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
 		exit(127);
+	if (is_directory(cmd))
+		(write(2, cmd, ft_strlen(cmd)), write(2, ": Is a directory\n", 18), exit(126));
+	if (access(cmd, X_OK))
+		(write(2, cmd, ft_strlen(cmd)), write(2, ": Permission denied\n", 21), exit(126));
 	execve(cmd, line->command, convertenv(*env));
 	mymalloc(0, 1);
 	mymalloc(0, 3);

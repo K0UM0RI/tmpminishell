@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:19 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:29:12 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 18:31:46 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,15 @@ int	ft_intlen(int n)
 		len++;
 	}
 	return (len);
+}
+int	is_directory(char *path)
+{
+    struct stat	sb;
+
+    if (stat(path, &sb) == 0)
+    {
+        if ((sb.st_mode & S_IFMT) == S_IFDIR)
+            return (1);
+    }
+    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:13:55 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/11 18:31:35 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <sys/stat.h>
 
 # define WORD 0
 # define OPERATOR 1
@@ -105,6 +106,7 @@ int							ft_strncmp(const char *s1, const char *s2,
 int							ft_strlen(char *c);
 int							ft_atoi(const char *nptr);
 char						*ft_itoa(int n, int fn);
+int	is_directory(char *path);
 
 // env
 char						*getmyenv(char *var, t_env *env);
