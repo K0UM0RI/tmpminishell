@@ -6,25 +6,22 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 18:11:13 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 18:40:38 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "builtins.h"
 
-char	*getrelativepath(char *command, char *pwd)
+int getrelativepath(char *command, char *pwd)
 {
 	char	*tmp;
 
 	tmp = ft_strjoin("/", command, 0);
 	tmp = ft_strjoin(pwd, tmp, 0);
 	if (chdir(tmp) && chdir(command) )
-		return (perror("chdir"), NULL);
-	tmp = mymalloc(sizeof(char) * 4096, 0);
-	if (!getcwd(tmp, 4096))
-		return (perror("getcwd"), NULL);
-	return (tmp);
+		return (perror("chdir"), 0);
+	return (1);
 }
 
 int	updatepwd(t_env **env, char *tmp, int s)
@@ -34,6 +31,9 @@ int	updatepwd(t_env **env, char *tmp, int s)
 		if (chdir(tmp))
 			return (perror("chdir"), 1);
 	}
+	tmp = mymalloc(sizeof(char) * 4096, 0);
+	if (!getcwd(tmp, 4096))
+		return (perror("getcwd"), 1);
 	unprotectedgetnewvar(*env, ft_strdup("PWD", 2), ft_strdup(tmp, 2));
 	unprotectedgetnewvar(*env, ft_strdup("1PWD", 2), ft_strdup(tmp, 2));
 	return (0);
@@ -60,8 +60,7 @@ int	ft_cd(char **command, t_env **env)
 		tmp = command[1];
 	else
 	{
-		tmp = getrelativepath(command[1], pwd);
-		if (!tmp)
+		if (!getrelativepath(command[1], pwd))
 			return (1);
 		s = 1;
 	}
