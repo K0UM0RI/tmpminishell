@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 17:42:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 22:41:51 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void ft_SIGINThere_doc(int sig)
 	mymalloc(0, 1);
 	mymalloc(0, 3);
 	write(1, "\n", 1);
-	exit(69);
+	exit(130);
 }
 
 void	redirectcontent(char *eof, t_env *env, int fd)
@@ -65,7 +65,7 @@ void	redirectcontent(char *eof, t_env *env, int fd)
         write(2, "\nwarning: here-document delimited by end-of-file (wanted '", 59);
         write(2, eof, ft_strlen(eof)); 
         write(2, "')\n", 4);
-        return;
+        exit(0);
     }
 	eof = ft_append(eof, '\n', 0);
 	line = ft_append(line, '\n', 0);
@@ -89,10 +89,11 @@ void	redirectcontent(char *eof, t_env *env, int fd)
     	    write(2, "\nwarning: here-document delimited by end-of-file (wanted '", 59);
     	    write(2, eof, ft_strlen(eof) - 1); 
     	    write(2, "')\n", 4);
-    	    return;
+    	    exit(0);
     	}
 		line = ft_append(line, '\n', 0);
 	}
+	exit(0);
 }
 
 char	*makeheredoc(char *eof, t_env *env)
@@ -102,6 +103,13 @@ char	*makeheredoc(char *eof, t_env *env)
 	int			fd;
 	int child;
 	int exit;
+	// struct sigaction sa_ignore;
+	// struct sigaction sa_old;
+
+	// sa_ignore.sa_handler = SIG_IGN;
+    // sigemptyset(&sa_ignore.sa_mask);
+    // sa_ignore.sa_flags = 0;
+    // sigaction(SIGINT, &sa_ignore, &sa_old);
 
 	child = 0;
 	if (access(ft_strjoin(".tmp", "1", 0), F_OK))
@@ -119,8 +127,9 @@ char	*makeheredoc(char *eof, t_env *env)
 	child = fork();
 	if (!child)
 		redirectcontent(eof, env, fd);
+	// sigaction(SIGINT, &sa_old, NULL);
 	waitpid(child, &exit, 0);
-	if(WEXITSTATUS(exit) == 69)
+	if(WEXITSTATUS(exit) == 130)
 	{
 		unlink(file);
 		file = NULL;
