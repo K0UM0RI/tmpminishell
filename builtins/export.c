@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/11 18:53:56 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 10:18:05 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,22 @@ int	getvalue(char *tmp)
 	return (j);
 }
 
-//handle when non alphanumerique exists in name
+int isvalididentifier(char *tmp)
+{
+	int i;
+
+	i = 1;
+	if (!ft_isalpha(*tmp) && *tmp != '_')
+		return (0);
+	while (tmp[i])
+	{
+		if (!ft_isalpha(tmp[i]) && !ft_isnum(tmp[i]) && tmp[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	getnewvar(char *tmp, t_env **env)
 {
 	int		s;
@@ -51,8 +66,7 @@ int	getnewvar(char *tmp, t_env **env)
 
 	tmpenv = *env;
 	s = getvalue(tmp);
-	if (!(ft_isalpha(*tmp) || *tmp == '_') || foundchar('?', tmp)
-		|| (*tmp >= '0' && *tmp <= '9') || *tmp == '=')
+	if (!isvalididentifier(tmp))
 	{
 		if (s >= 0)
 			tmp[s] = '=';
