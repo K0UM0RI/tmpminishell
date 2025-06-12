@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:32:25 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 15:15:15 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*getrelativepath(char *command, char *pwd)
 	tmp = ft_strjoin(pwd, tmp, 0);
 	if (chdir(tmp) && chdir(command) )
 		return (perror("chdir"), NULL);
-	tmp = malloc(sizeof(char) * 4096);
+	tmp = mymalloc(sizeof(char) * 4096, 0);
 	if (!getcwd(tmp, 4096))
 		return (perror("getcwd"), NULL);
 	return (tmp);
