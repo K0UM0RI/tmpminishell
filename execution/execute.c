@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/11 19:05:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 11:20:56 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,10 @@ int	entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
 int	ft_execute(t_line *line, t_env **env)
 {
 	t_exec	exec;
+	int i;
 
-	int (exit), (i) = 0;
-	exit = initexecstruct(&exec, line);
+	i = 0;
+	initexecstruct(&exec, line);
 	while (line)
 	{
 		if (pipe(exec.pipefd) < 0)
@@ -99,5 +100,5 @@ int	ft_execute(t_line *line, t_env **env)
 		line = line->next;
 	}
 	cleanfds(exec.oldpipefd, 2);
-	return (finishexec(exec, i, exit));
+	return (finishexec(exec, i));
 }

@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra #-Werror
+CFLAGS = -Wall -Wextra -Werror
 SRC = break_down/breakdown.c \
 	break_down/breakdown_utils.c \
 	builtins/builtins.c \

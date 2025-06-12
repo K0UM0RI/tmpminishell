@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:34 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/11 18:35:50 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 11:22:22 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,9 @@ void	openredirsnodup(t_redirections *reds, int *file)
 	}
 }
 
-int	finishexec(t_exec exec, int i, int exit)
+int	finishexec(t_exec exec, int i)
 {
-	int	j;
-
+	int	(j), (exit) = 0;
 	j = 0;
 	while (j < i)
 		waitpid(exec.child[j++], &exit, 0);
