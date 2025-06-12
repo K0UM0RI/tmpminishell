@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 17:13:46 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 18:11:13 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,24 +77,24 @@ int	ft_pwd(t_env *env)
 int	ft_echo(char **command)
 {
 	int	i;
-	// int	j;
+	int	j;
 	int n;
 
 	i = 1;
 	n = 0;
-	// while (!ft_strncmp(command[i], "-n", 2))
-	// {
-	// 	j = 1;
-	// 	while (command[i][n] == 'n')
-	// 		n++;
-	// 	if (command[i] && !command[i][n])
-	// 	{
-	// 		i++;
-	// 		n  = 1;
-	// 	}
-	// 	else 
-	// 		break;
-	// }
+	while (!ft_strncmp(command[i], "-n", 2))
+	{
+		j = 1;
+		while (command[i][j] == 'n')
+			j++;
+		if (command[i] && !command[i][j])
+		{
+			i++;
+			n = 1;
+		}
+		else 
+			break;
+	}
 	while (command[i])
 	{
 		write(1, command[i], ft_strlen(command[i]));
