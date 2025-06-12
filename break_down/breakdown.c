@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:41 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:15:42 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 17:06:44 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	doops(t_string **elems, t_line **line)
 
 	tmp = (*elems)->c;
 	(*elems) = (*elems)->next;
+	
 	if (!ft_strncmp(tmp, ">", 2))
 		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0),
 				RED_OUT_TRUNC));

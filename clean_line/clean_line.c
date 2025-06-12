@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/09 13:50:12 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 17:41:30 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 	int	error;
 
 	error = 0;
+	if (c[vars->i] == '\0')
+        return (0);
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
 		error = handlequotes(vars, c, env);
 	else if (isoperator(c[vars->i]) && !vars->d)
@@ -118,7 +120,9 @@ t_string	*clean_line(const char *c, t_env *env)
 {
 	t_string	*head;
 	t_lexvars	vars;
-
+	int er;
+	
+	er = 0;
 	vars.s = 0;
 	vars.i = 0;
 	vars.d = 0;
@@ -128,8 +132,11 @@ t_string	*clean_line(const char *c, t_env *env)
 		vars.i++;
 	while (c[vars.i])
 	{
-		if (filllist(&vars, c, env))
-			return (NULL);
+		er = filllist(&vars, c, env);
+		if (er == 130)
+			return ((t_string *)130);
+		if (er)
+			return NULL;
 	}
 	if (!handlerrors(head))
 		return (head);

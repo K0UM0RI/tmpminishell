@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 10:31:03 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/12 17:27:34 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,20 @@
 // 		i++;
 // 	}
 // }
+
+void ft_SIGINT(int sig)
+{
+    (void)sig;
+    rl_replace_line("", 0);
+    write(1, "\n", 1);
+    rl_on_new_line();
+    rl_redisplay();
+}
 // handle not expanding when quotes in endoffile
+//fixecho -n thing
+//some characters stay even when after $
+//dont show $_ in export
+//make += work in export
 int	main(int ac, char **av, char **env)
 {
 	char		*c;
@@ -86,6 +99,8 @@ int	main(int ac, char **av, char **env)
 		return (write(2, "error: env unset\n", 18));
 	lstenv = getenvlst(env);
 	exit = 0;
+	signal(SIGINT, ft_SIGINT);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		c = NULL;
@@ -93,9 +108,14 @@ int	main(int ac, char **av, char **env)
         c = ft_strjoin(c, "\033[0m\033[34m$\033[0m", 0);
         c = readline(c);
 		if (!c)
-			break ;
+		{
+        	write(1, "\nexit\n", 6);
+        	break;
+    	}	
 		clean = clean_line(c, lstenv);
-		if (clean)
+		if (clean == (t_string *)130)
+			exit = 130;
+		else if (clean)
 		{
 			line = breakdown(clean);
 			// printcleanline(clean);
