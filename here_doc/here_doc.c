@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 22:41:51 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 16:10:46 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void ft_SIGINThere_doc(int sig)
 	(void)sig;
 	mymalloc(0, 1);
 	mymalloc(0, 3);
-	write(1, "\n", 1);
 	exit(130);
 }
 
@@ -103,14 +102,13 @@ char	*makeheredoc(char *eof, t_env *env)
 	int			fd;
 	int child;
 	int exit;
-	// struct sigaction sa_ignore;
-	// struct sigaction sa_old;
+	struct sigaction sa_ignore;
+	struct sigaction sa_old;
 
-	// sa_ignore.sa_handler = SIG_IGN;
-    // sigemptyset(&sa_ignore.sa_mask);
-    // sa_ignore.sa_flags = 0;
-    // sigaction(SIGINT, &sa_ignore, &sa_old);
-
+	sa_ignore.sa_handler = SIG_IGN;
+    sigemptyset(&sa_ignore.sa_mask);
+    sa_ignore.sa_flags = 0;
+    sigaction(SIGINT, &sa_ignore, &sa_old);
 	child = 0;
 	if (access(ft_strjoin(".tmp", "1", 0), F_OK))
 		order = 0;
@@ -127,7 +125,7 @@ char	*makeheredoc(char *eof, t_env *env)
 	child = fork();
 	if (!child)
 		redirectcontent(eof, env, fd);
-	// sigaction(SIGINT, &sa_old, NULL);
+	sigaction(SIGINT, &sa_old, NULL);
 	waitpid(child, &exit, 0);
 	if(WEXITSTATUS(exit) == 130)
 	{

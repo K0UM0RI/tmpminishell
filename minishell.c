@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 22:03:13 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 16:14:19 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void ft_SIGINT(int sig)
 //some characters stay even when after $
 //dont show $_ in export
 //make += work in export
+//exit with biiiiig number
 //9ra any signal functions used
 int	main(int ac, char **av, char **env)
 {
@@ -118,7 +119,7 @@ int	main(int ac, char **av, char **env)
 		{
 			exit = 130;
 			unprotectedgetnewvar(lstenv, ft_strdup("?", 2), ft_itoa(exit, 2));
-			add_history(c);
+			// add_history(c);
 			mymalloc(0, 1);
 			continue ;
 		}
