@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 17:41:30 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 17:02:33 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 	int	error;
 
 	error = 0;
-	if (c[vars->i] == '\0')
-        return (0);
 	if ((c[vars->i] == '"' || c[vars->i] == '\'') && !vars->d)
 		error = handlequotes(vars, c, env);
 	else if (isoperator(c[vars->i]) && !vars->d)

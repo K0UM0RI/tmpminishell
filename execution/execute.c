@@ -6,55 +6,85 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 21:49:06 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 17:01:57 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-void	handleredirections(t_redirections *reds, int ft)
+int	handleredirections(t_redirections *reds, int ft)
 {
 	int	file[2];
+	int ret;
 
 	file[0] = -1;
 	file[1] = -1;
+	ret = 0;
 	while (reds)
 	{
 		if (!ft)
-			openredirs(reds, file);
+			ret = openredirs(reds, file);
 		else
-			openredirsnodup(reds, file);
+			ret = openredirsnodup(reds, file);
+		if (ret)
+			return (ret);
 		cleanfds(file, 2);
 		reds = reds->next;
 	}
+	return (0);
 }
 
 void	birth(int i, t_exec exec, t_line *line, t_env **env)
 {
 	char	*cmd;
+	int exit_status;
 
+	exit_status = -1;
 	cmd = NULL;
 	piping(i, exec, line);
-	handleredirections(line->reds, 0);
+	if (handleredirections(line->reds, 0))
+	{
+		mymalloc(0, 1);
+		mymalloc(0, 3);
+		exit(1);
+	}
 	if (!line->command || !line->command[0])
-		exit(0);
-	if (isbuiltin(line->command[0]))
-		exit(execbuiltin(line, env));
-	if (!ft_strncmp(line->command[0], "echo", 5))
-		exit(ft_echo(line->command));
-	if (!ft_strncmp(line->command[0], "env", 5))
-		exit(ft_env(*env));
-	if (!ft_strncmp(line->command[0], "export", 7))
-		exit(ft_export(line->command, env));
-	if (!ft_strncmp(line->command[0], "pwd", 4))
-		exit(ft_pwd(*env));
+		exit_status = 0;
+	else if (isbuiltin(line->command[0]))
+		exit_status = execbuiltin(line, env);
+	else if (!ft_strncmp(line->command[0], "echo", 5))
+		exit_status = ft_echo(line->command);
+	else if (!ft_strncmp(line->command[0], "env", 5))
+		exit_status = ft_env(*env);
+	else if (!ft_strncmp(line->command[0], "export", 7))
+		exit_status = ft_export(line->command, env);
+	else if (!ft_strncmp(line->command[0], "pwd", 4))
+		exit_status = ft_pwd(*env);
+	if (exit_status != -1)
+	{
+		mymalloc(0, 1);
+		mymalloc(0, 3);
+		exit(exit_status);
+	}
 	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
-		exit(127);
-	if (is_directory(cmd))
-		(write(2, cmd, ft_strlen(cmd)), write(2, ": Is a directory\n", 18), exit(126));
-	if (access(cmd, X_OK))
-		(write(2, cmd, ft_strlen(cmd)), write(2, ": Permission denied\n", 21), exit(126));
+		exit_status = 127;
+	else if (is_directory(cmd))
+	{
+		(write(2, cmd, ft_strlen(cmd)), write(2, ": Is a directory\n", 18));
+		exit_status = 126;
+	}
+	else if (access(cmd, X_OK))
+	{
+		(write(2, cmd, ft_strlen(cmd)), write(2, ": Permission denied\n", 21));
+		exit_status = 126;
+	}
+	if (exit_status != -1)
+	{
+		mymalloc(0, 1);
+		mymalloc(0, 3);
+		exit(exit_status);
+	}
 	execve(cmd, line->command, convertenv(*env));
 	mymalloc(0, 1);
 	mymalloc(0, 3);
@@ -89,8 +119,12 @@ int	ft_execute(t_line *line, t_env **env)
 		if (line->command && (isbuiltin(line->command[0])
 				|| (!ft_strncmp(line->command[0], "export", 7)
 					&& line->command[1])) && !line->next && !i)
-			return (cleanfds(exec.pipefd, 2), handleredirections(line->reds, 1),
-				execbuiltin(line, env));
+		{
+			cleanfds(exec.pipefd, 2);
+			if (handleredirections(line->reds, 1))
+				return (1);
+			return (execbuiltin(line, env));
+		}
 		else
 			exec.child[i] = entersubprocess(exec, line, env, i);
 		if (exec.child[i] < 0)

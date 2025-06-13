@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 18:40:38 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 16:58:32 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_cd(char **command, t_env **env)
 int	ft_pwd(t_env *env)
 {
 	printf("%s\n", getmyenv("1PWD", env));
-	exit(0);
+	return (0);
 }
 
 int	ft_echo(char **command)

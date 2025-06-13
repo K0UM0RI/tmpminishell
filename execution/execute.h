@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:40 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 11:21:08 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 16:47:35 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	resetoldpipe(int *oldpipefd, int *pipefd);
 void		initexecstruct(t_exec *exec, t_line *line);
 
 // utils2
-void	openredirs(t_redirections *reds, int *file);
-void	openredirsnodup(t_redirections *reds, int *file);
+int	openredirs(t_redirections *reds, int *file);
+int	openredirsnodup(t_redirections *reds, int *file);
 int		finishexec(t_exec exec, int i);
 
 // builtins
