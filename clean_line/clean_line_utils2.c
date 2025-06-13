@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:03 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 23:24:06 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/14 00:16:41 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,16 @@ char	*getvarname(const char *c, int *i)
 	char	*var;
 
 	var = NULL;
-	if (c[*i] && (!ft_isalpha(c[*i]) && c[*i] != '_'))
+	if (!ft_isalpha(c[*i]) && c[*i] != '_')
 	{
 		if (c[*i] == '?')
-			var = ft_strdup("?", 0);
-		if (!isoperator(c[*i]) && c[*i] != '"')
+		{
 			(*i)++;
-		if (c[*i] == '"')
-			return ((char *) -2);
-		return (var);
+			return (ft_strdup("?", 0));
+		}
+		if ((c[*i] != '"' && c[*i] != '\'') || c[*i] == '$')
+			return ((char *)-1);
+		return ((char *)-2);
 	}
 	while (c[*i] && (ft_isalpha(c[(*i)]) || ft_isnum(c[(*i)])
 			|| c[(*i)] == '_'))
@@ -63,9 +64,5 @@ char	*getvarname(const char *c, int *i)
 		var = ft_append(var, c[(*i)], 0);
 		(*i)++;
 	}
-	if ((mywhitespace(c[*i]) || !c[*i]) && !var)
-		return ((char *)-1);
-	else if (!var && c[*i] == '"')
-		return ((char *)-2);
-	return (var);
+	return var;
 }
