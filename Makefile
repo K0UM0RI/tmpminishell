@@ -6,16 +6,21 @@ SRC = break_down/breakdown.c \
 	builtins/builtins.c \
 	builtins/builtins_utils.c \
 	builtins/export.c \
+	builtins/echo.c \
+	builtins/ft_cd.c \
+	builtins/ft_unset.c \
 	clean_line/clean_line_utils.c \
 	clean_line/clean_line.c \
 	clean_line/clean_line_utils2.c \
 	env/env_utils.c \
 	env/getcmd.c \
+	env/env_utils_utils.c \
 	execution/execute.c \
 	execution/execute_utils.c \
 	execution/execute_utils2.c \
 	here_doc/here_doc.c \
 	here_doc/here_doc_expand.c \
+	here_doc/here_doc_utils.c \
 	malloc-free/garbage_collector.c \
 	stringutils/ft_split.c \
 	stringutils/ft_strjoins.c \

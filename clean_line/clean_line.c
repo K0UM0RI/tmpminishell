@@ -118,8 +118,8 @@ t_string	*clean_line(const char *c, t_env *env)
 {
 	t_string	*head;
 	t_lexvars	vars;
-	int er;
-	
+	int			er;
+
 	er = 0;
 	vars.s = 0;
 	vars.i = 0;
@@ -134,7 +134,7 @@ t_string	*clean_line(const char *c, t_env *env)
 		if (er == 130)
 			return ((t_string *)130);
 		if (er)
-			return NULL;
+			return (NULL);
 	}
 	if (!handlerrors(head))
 		return (head);

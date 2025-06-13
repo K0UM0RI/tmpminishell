@@ -6,35 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 10:32:18 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 22:17:09 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-void	add_env(t_env *env, char *name)
-{
-	env->next = mymalloc(sizeof(t_env), 2);
-	env->next->name = name;
-	env->next->value = NULL;
-	env->next->next = NULL;
-}
-
-void	newenv(t_env **lstenv, char *name, char *value)
-{
-	t_env	*env;
-
-	if (!ft_strncmp(name, "SHLVL", 5))
-		value = ft_itoa(ft_atoi(value) + 1, 2);
-	env = mymalloc(sizeof(t_env), 2);
-	env->name = ft_strdup(name, 2);
-	env->value = ft_strdup(value, 2);
-	env->next = NULL;
-	if (!*lstenv)
-		(*lstenv) = env;
-	(*lstenv)->next = env;
-	*lstenv = (*lstenv)->next;
-}
+#include "env.h"
 
 void	unprotectedgetnewvar(t_env *env, char *name, char *value)
 {
@@ -86,8 +62,6 @@ t_env	*getenvlst(char **env)
 	char	tmp[4096];
 
 	int(i), (j) = 0;
-	if (!env)
-		return (NULL);
 	lstenv = mymalloc(sizeof(t_env), 2);
 	lstenv->next = NULL;
 	head = lstenv;
@@ -105,8 +79,7 @@ t_env	*getenvlst(char **env)
 		}
 		j++;
 	}
-	getcwd(tmp, 4096);
-	newenv(&lstenv, "?", "0");
+	(getcwd(tmp, 4096), newenv(&lstenv, "?", "0"));
 	newenv(&lstenv, "1PWD", ft_strdup(tmp, 2));
 	return (head->next);
 }

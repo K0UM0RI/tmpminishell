@@ -106,7 +106,7 @@ char	*ft_itoa(int n, int fn)
 {
 	char	*str;
 
-	int (len), (neg), (i), (tmp);
+	int(len), (neg), (i), (tmp);
 	neg = n < 0;
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648", fn));

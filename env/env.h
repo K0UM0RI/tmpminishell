@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 12:15:54 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:11:40 by sbat             ###   ########.fr       */
+/*   Created: 2025/06/13 22:15:32 by sbat              #+#    #+#             */
+/*   Updated: 2025/06/13 22:16:33 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef ENV_H
+# define ENV_H
+
 # include "../minishell.h"
 
-int		isbuiltin(char *command);
-int		isnumber(char *c);
-int		foundchar(char f, char *c);
-void	add_env(t_env *env, char *tmp);
+void	add_env(t_env *env, char *name);
+void	newenv(t_env **lstenv, char *name, char *value);
 
-int		ft_export(char **command, t_env **env);
-int		ft_echo(char **command);
-int		ft_cd(char **command, t_env **env);
-int		ft_unset(char **command, t_env **env);
-// clean
-void	cleanfds(int *fd, int end);
-
-// exec
-void	handleredirections(t_redirections *reds, int ft);
 #endif

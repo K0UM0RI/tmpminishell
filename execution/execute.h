@@ -18,11 +18,11 @@ int		ft_lstsizeline(t_line *line);
 void	cleanfds(int *fd, int end);
 void	piping(int i, t_exec exec, t_line *line);
 void	resetoldpipe(int *oldpipefd, int *pipefd);
-void		initexecstruct(t_exec *exec, t_line *line);
+void	initexecstruct(t_exec *exec, t_line *line);
 
 // utils2
-int	openredirs(t_redirections *reds, int *file);
-int	openredirsnodup(t_redirections *reds, int *file);
+int		openredirs(t_redirections *reds, int *file);
+int		openredirsnodup(t_redirections *reds, int *file);
 int		finishexec(t_exec exec, int i);
 
 // builtins

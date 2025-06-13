@@ -6,35 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 18:00:43 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 22:13:04 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "clean_line.h"
-
-char	*getvarname(const char *c, int *i)
-{
-	char	*var;
-
-	var = NULL;
-	if (c[*i] && (!ft_isalpha(c[*i]) && c[*i] != '_'))
-    {
-		if (c[*i] == '?')
-			var = ft_strdup("?", 0);
-        (*i)++;
-        return var;
-    }
-	while (c[*i] && (ft_isalpha(c[(*i)]) || ft_isnum(c[(*i)]) || c[(*i)] == '_'))
-	{
-		var = ft_append(var, c[(*i)], 0);
-		(*i)++;
-	}
-	if ((mywhitespace(c[*i]) || !c[*i]) && !var)
-		return ((char *)-1);
-	else if (!var && c[*i] == '"')
-		return ((char *)-2);
-	return (var);
-}
 
 char	*foundvar(int *i, const char *c, t_env *env)
 {
@@ -108,51 +84,48 @@ int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 
 int	checkopsorder(int *r, int *p, t_string *clean)
 {
-    if ((*r || *p) && !ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
-        return (write(2, "syntax error\n", 14), 1);
-    else if (clean->type == OPERATOR && ft_strncmp(clean->c, "|", 1))
-    {
-        *r = 1;
-        *p = 0;
-    }
-    else if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
-    {
-        *p = 1;
-    }
-    else
-    {
-        *p = 0;
-        *r = 0;
-    }
-    return (0);
-}
-
-int	is_redirection(const t_string *node)
-{
-    return (node && node->type == OPERATOR &&
-        (!ft_strncmp(node->c, ">", 1) || !ft_strncmp(node->c, "<", 1)));
+	if ((*r || *p) && !ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+		return (write(2, "syntax error\n", 14), 1);
+	else if (clean->type == OPERATOR && ft_strncmp(clean->c, "|", 1))
+	{
+		*r = 1;
+		*p = 0;
+	}
+	else if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+	{
+		*p = 1;
+	}
+	else
+	{
+		*p = 0;
+		*r = 0;
+	}
+	return (0);
 }
 
 int	handlerrors(t_string *clean)
 {
-    int p = 0;
-    int r = 0;
-    t_string *prev = NULL;
+	int			p;
+	int			r;
+	t_string	*prev;
 
-    if (!clean)
-        return (1);
-    if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
-        return (write(2, "syntax error\n", 14), 1);
-    while (clean)
-    {
-        if (is_redirection(prev) && is_redirection(clean))
-            return (write(2, "syntax error\n", 14), 1);
-        if (checkopsorder(&r, &p, clean))
-            return (1);
-        prev = clean;
-        clean = clean->next;
-    }
-    if (p || r)
-        return (write(2, "syntax error\n", 14), 1);
-    return (0);
+	p = 0;
+	r = 0;
+	prev = NULL;
+	if (!clean)
+		return (1);
+	if (!ft_strncmp(clean->c, "|", 1) && clean->type == OPERATOR)
+		return (write(2, "syntax error\n", 14), 1);
+	while (clean)
+	{
+		if (is_redirection(prev) && is_redirection(clean))
+			return (write(2, "syntax error\n", 14), 1);
+		if (checkopsorder(&r, &p, clean))
+			return (1);
+		prev = clean;
+		clean = clean->next;
+	}
+	if (p || r)
+		return (write(2, "syntax error\n", 14), 1);
+	return (0);
 }

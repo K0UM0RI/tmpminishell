@@ -36,7 +36,7 @@ int	openredirs(t_redirections *reds, int *file)
 		dup2(file[0], 0);
 	if (file[1] != -1)
 		dup2(file[1], 1);
-	return 0;
+	return (0);
 }
 
 int	openredirsnodup(t_redirections *reds, int *file)
@@ -66,7 +66,7 @@ int	openredirsnodup(t_redirections *reds, int *file)
 
 int	finishexec(t_exec exec, int i)
 {
-	int	(j), (exit) = 0;
+	int(j), (exit) = 0;
 	j = 0;
 	while (j < i)
 		waitpid(exec.child[j++], &exit, 0);

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:08 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:16:09 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 22:13:20 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int			handlerrors(t_string *clean);
 t_string	*news_string(void);
 void		nexts_string(t_string **ret);
 int			mywhitespace(char c);
+int			is_redirection(const t_string *node);
+char		*getvarname(const char *c, int *i);
 
 // here_doc
 int			doheredoc(int *i, t_string **ret, const char *c, t_env *env);

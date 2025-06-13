@@ -43,9 +43,9 @@ int	getvalue(char *tmp)
 	return (j);
 }
 
-int isvalididentifier(char *tmp)
+int	isvalididentifier(char *tmp)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!ft_isalpha(*tmp) && *tmp != '_')
@@ -73,7 +73,7 @@ int	getnewvar(char *tmp, t_env **env)
 		write(2, "export: \'", 10);
 		write(2, tmp, ft_strlen(tmp));
 		write(2, "\' not a valid identifier\n", 26);
-		return 1;
+		return (1);
 	}
 	if (!*env)
 	{
@@ -82,7 +82,7 @@ int	getnewvar(char *tmp, t_env **env)
 		if (s > 0)
 			(*env)->value = ft_strdup(tmp + s + 1, 2);
 		(*env)->next = NULL;
-		return 0;
+		return (0);
 	}
 	if (ft_strncmp(tmpenv->name, tmp, ft_strlen(tmp)))
 	{
@@ -94,7 +94,7 @@ int	getnewvar(char *tmp, t_env **env)
 		add_env(tmpenv, tmp);
 	if (s > 0)
 		tmpenv->next->value = ft_strdup(tmp + s + 1, 2);
-	return 0;
+	return (0);
 }
 
 int	ft_export(char **command, t_env **env)

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 16:23:21 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 21:18:17 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <sys/stat.h>
-#include <signal.h>
 
 # define WORD 0
 # define OPERATOR 1
@@ -92,6 +92,12 @@ typedef struct s_exec
 	int						npipes;
 }							t_exec;
 
+typedef struct s_here_doc
+{
+	char					*file;
+	int						fd;
+}							t_here_doc;
+
 // malloc-free
 void						*mymalloc(size_t size, int fn);
 
@@ -107,9 +113,10 @@ int							ft_strncmp(const char *s1, const char *s2,
 int							ft_strlen(char *c);
 int							ft_atoi(const char *nptr);
 char						*ft_itoa(int n, int fn);
-int	is_directory(char *path);
-int ft_isnum(int c);
-int		ft_isalpha(int c);
+int							is_directory(char *path);
+int							ft_isnum(int c);
+int							ft_isalpha(int c);
+void						exitandfree(int exit_status);
 // env
 char						*getmyenv(char *var, t_env *env);
 void						unprotectedgetnewvar(t_env *env, char *name,

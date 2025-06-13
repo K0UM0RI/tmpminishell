@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 17:03:51 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 21:30:20 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,21 @@
 // 	}
 // }
 
-void ft_SIGINT(int sig)
+void	ft_sigint(int sig)
 {
-    (void)sig;
-    rl_replace_line("", 0);
-    write(1, "\n", 1);
-    rl_on_new_line();
-    rl_redisplay();
+	(void)sig;
+	rl_replace_line("", 0);
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_redisplay();
 }
 // handle not expanding when quotes in endoffile
-//fixecho -n thing
-//some characters stay even when after $
-//dont show $_ in export
-//make += work in export
-//exit with biiiiig number
-//9ra any signal functions used
+// fixecho -n thing
+// some characters stay even when after $
+// dont show $_ in export
+// make += work in export
+// exit with biiiiig number
+// 9ra any signal functions used
 int	main(int ac, char **av, char **env)
 {
 	char		*c;
@@ -101,19 +101,20 @@ int	main(int ac, char **av, char **env)
 		return (write(2, "error: env unset\n", 18));
 	lstenv = getenvlst(env);
 	exit = 0;
-	signal(SIGINT, ft_SIGINT);
+	signal(SIGINT, ft_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		c = NULL;
-        c = ft_strjoin("\033[1;32mminishell>\033[0m\033[1;33m", getmyenv("1PWD", lstenv), 0);
-        c = ft_strjoin(c, "\033[0m\033[34m$\033[0m", 0);
-        c = readline(c);
+		c = ft_strjoin("\033[1;32mminishell>\033[0m\033[1;33m", getmyenv("1PWD",
+					lstenv), 0);
+		c = ft_strjoin(c, "\033[0m\033[34m$\033[0m", 0);
+		c = readline(c);
 		if (!c)
 		{
-        	write(1, "\nexit\n", 6);
-        	break;
-    	}	
+			write(1, "\nexit\n", 6);
+			break ;
+		}
 		clean = clean_line(c, lstenv);
 		if (clean == (t_string *)130)
 			exit = 130;
@@ -132,6 +133,5 @@ int	main(int ac, char **av, char **env)
 		free(c);
 		mymalloc(0, 1);
 	}
-	mymalloc(0, 1);
-	mymalloc(0, 3);
+	exitandfree(exit);
 }

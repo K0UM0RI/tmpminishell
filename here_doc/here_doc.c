@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 17:03:59 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 22:07:18 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,106 +41,68 @@ char	*getendoffile(const char *c, int *i)
 	return (eof);
 }
 
-void ft_SIGINThere_doc(int sig)
+void	writeonfile(char *line, t_env *env, int fd)
 {
-	(void)sig;
-	mymalloc(0, 1);
-	mymalloc(0, 3);
-	write(1, "\n", 1);
-	exit(130);
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$')
+		{
+			tmp = here_docexpand(&i, line, env);
+			if (tmp)
+				write(fd, tmp, ft_strlen(tmp));
+		}
+		else
+			write(fd, &line[i++], 1);
+	}
 }
 
 void	redirectcontent(char *eof, t_env *env, int fd)
 {
-	char	*tmp;
 	char	*line;
-	int		i;
 
-	i = 0;
-	signal(SIGINT, ft_SIGINThere_doc);
-	line = NULL;
+	signal(SIGINT, ft_siginthere_doc);
 	line = readline(">");
-	if (!line)
-    {
-        write(2, "\nwarning: here-document delimited by end-of-file (wanted '", 59);
-        write(2, eof, ft_strlen(eof)); 
-        write(2, "')\n", 4);
-		mymalloc(0, 1);
-		mymalloc(0, 3);
-        exit(0);
-    }
+	here_doceof(line, eof, ft_strlen(eof));
 	eof = ft_append(eof, '\n', 0);
 	line = ft_append(line, '\n', 0);
 	while (line && ft_strncmp(line, eof, ft_strlen(line) + 1))
 	{
-		i = 0;
-		while (line && line[i])
-		{
-			if (line[i] == '$')
-			{
-				tmp = here_docexpand(&i, line, env);
-				if (tmp)
-					write(fd, tmp, ft_strlen(tmp));
-			}
-			else
-				write(fd, &line[i++], 1);
-		}
+		writeonfile(line, env, fd);
 		line = readline(">");
-		if (!line)
-    	{
-    	    write(2, "\nwarning: here-document delimited by end-of-file (wanted '", 59);
-    	    write(2, eof, ft_strlen(eof) - 1); 
-    	    write(2, "')\n", 4);
-			mymalloc(0, 1);
-			mymalloc(0, 3);
-    	    exit(0);
-    	}
+		here_doceof(line, eof, ft_strlen(eof) - 1);
 		line = ft_append(line, '\n', 0);
 	}
-	mymalloc(0, 1);
-	mymalloc(0, 3);
-	exit(0);
+	exitandfree(0);
 }
 
 char	*makeheredoc(char *eof, t_env *env)
 {
-	static int	order = 0;
-	char		*file;
-	int			fd;
-	int child;
-	int exit;
-	struct sigaction sa_ignore;
-	struct sigaction sa_old;
+	t_here_doc			hdoc;
+	int					child;
+	int					exit;
+	struct sigaction	old;
 
-	sa_ignore.sa_handler = SIG_IGN;
-    sigemptyset(&sa_ignore.sa_mask);
-    sa_ignore.sa_flags = 0;
-    sigaction(SIGINT, &sa_ignore, &sa_old);
+	old = ignoreparentsigint();
 	child = 0;
-	if (access(ft_strjoin(".tmp", "1", 0), F_OK))
-		order = 0;
-	order++;
-	file = ft_strjoin(".tmp", ft_itoa(order, 0), 0);
-	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (fd < 0)
-	{
-		perror("here_doc open");
+	hdoc = initfile();
+	if (hdoc.fd < 0)
 		return (NULL);
-	}
-	if (!eof)
-		return (file);
 	child = fork();
 	if (!child)
-		redirectcontent(eof, env, fd);
+		redirectcontent(eof, env, hdoc.fd);
 	waitpid(child, &exit, 0);
-	sigaction(SIGINT, &sa_old, NULL);
-	if(WEXITSTATUS(exit) == 130)
+	sigaction(SIGINT, &old, NULL);
+	if (WEXITSTATUS(exit) == 130)
 	{
-		unlink(file);
-		file = NULL;
+		unlink(hdoc.file);
+		hdoc.file = (char *)130;
 	}
-	close(fd);
-	return (file);
+	close(hdoc.fd);
+	return (hdoc.file);
 }
 
 int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
@@ -158,8 +120,10 @@ int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 		eof = ft_strdup("\0", 0);
 	nexts_string(ret);
 	file = makeheredoc(eof, env);
-	if (!file)
+	if (file == (char *)130)
 		return (130);
+	if (!file)
+		return (1);
 	(*ret)->c = ft_strjoin((*ret)->c, file, 0);
 	(*i)++;
 	return (0);

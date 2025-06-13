@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:19 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/11 18:31:46 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 21:03:04 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,18 @@ int	ft_intlen(int n)
 }
 int	is_directory(char *path)
 {
-    struct stat	sb;
+	struct stat	sb;
 
-    if (stat(path, &sb) == 0)
-    {
-        if ((sb.st_mode & S_IFMT) == S_IFDIR)
-            return (1);
-    }
-    return (0);
+	if (stat(path, &sb) == 0)
+	{
+		if ((sb.st_mode & S_IFMT) == S_IFDIR)
+			return (1);
+	}
+	return (0);
+}
+void	exitandfree(int exit_status)
+{
+	mymalloc(0, 1);
+	mymalloc(0, 3);
+	exit(exit_status);
 }

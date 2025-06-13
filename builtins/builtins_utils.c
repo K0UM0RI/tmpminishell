@@ -56,7 +56,7 @@ int	ft_isalpha(int c)
 	return (0);
 }
 
-int ft_isnum(int c)
+int	ft_isnum(int c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);

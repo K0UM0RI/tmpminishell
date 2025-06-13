@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:03 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:20:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 22:13:13 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,35 @@ void	nexts_string(t_string **ret)
 	(*ret)->next = news_string();
 	(*ret) = (*ret)->next;
 	(*ret)->type = 0;
+}
+
+int	is_redirection(const t_string *node)
+{
+	return (node && node->type == OPERATOR && (!ft_strncmp(node->c, ">", 1)
+			|| !ft_strncmp(node->c, "<", 1)));
+}
+
+char	*getvarname(const char *c, int *i)
+{
+	char	*var;
+
+	var = NULL;
+	if (c[*i] && (!ft_isalpha(c[*i]) && c[*i] != '_'))
+	{
+		if (c[*i] == '?')
+			var = ft_strdup("?", 0);
+		(*i)++;
+		return (var);
+	}
+	while (c[*i] && (ft_isalpha(c[(*i)]) || ft_isnum(c[(*i)])
+			|| c[(*i)] == '_'))
+	{
+		var = ft_append(var, c[(*i)], 0);
+		(*i)++;
+	}
+	if ((mywhitespace(c[*i]) || !c[*i]) && !var)
+		return ((char *)-1);
+	else if (!var && c[*i] == '"')
+		return ((char *)-2);
+	return (var);
 }

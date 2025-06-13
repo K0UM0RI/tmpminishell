@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 17:01:57 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 21:02:10 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	handleredirections(t_redirections *reds, int ft)
 {
 	int	file[2];
-	int ret;
+	int	ret;
 
 	file[0] = -1;
 	file[1] = -1;
@@ -34,38 +34,13 @@ int	handleredirections(t_redirections *reds, int ft)
 	return (0);
 }
 
-void	birth(int i, t_exec exec, t_line *line, t_env **env)
+void	doexecve(t_line *line, t_env **env)
 {
+	int		exit_status;
 	char	*cmd;
-	int exit_status;
 
 	exit_status = -1;
 	cmd = NULL;
-	piping(i, exec, line);
-	if (handleredirections(line->reds, 0))
-	{
-		mymalloc(0, 1);
-		mymalloc(0, 3);
-		exit(1);
-	}
-	if (!line->command || !line->command[0])
-		exit_status = 0;
-	else if (isbuiltin(line->command[0]))
-		exit_status = execbuiltin(line, env);
-	else if (!ft_strncmp(line->command[0], "echo", 5))
-		exit_status = ft_echo(line->command);
-	else if (!ft_strncmp(line->command[0], "env", 5))
-		exit_status = ft_env(*env);
-	else if (!ft_strncmp(line->command[0], "export", 7))
-		exit_status = ft_export(line->command, env);
-	else if (!ft_strncmp(line->command[0], "pwd", 4))
-		exit_status = ft_pwd(*env);
-	if (exit_status != -1)
-	{
-		mymalloc(0, 1);
-		mymalloc(0, 3);
-		exit(exit_status);
-	}
 	cmd = getcmd(line->command[0], *env);
 	if (!cmd)
 		exit_status = 127;
@@ -80,16 +55,35 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 		exit_status = 126;
 	}
 	if (exit_status != -1)
-	{
-		mymalloc(0, 1);
-		mymalloc(0, 3);
-		exit(exit_status);
-	}
+		exitandfree(exit_status);
 	execve(cmd, line->command, convertenv(*env));
-	mymalloc(0, 1);
-	mymalloc(0, 3);
 	perror("execv");
-	exit(127);
+	exitandfree(127);
+}
+
+void	birth(int i, t_exec exec, t_line *line, t_env **env)
+{
+	int	exit_status;
+
+	exit_status = -1;
+	piping(i, exec, line);
+	if (handleredirections(line->reds, 0))
+		exitandfree(1);
+	if (!line->command || !line->command[0])
+		exit_status = 0;
+	else if (isbuiltin(line->command[0]))
+		exit_status = execbuiltin(line, env);
+	else if (!ft_strncmp(line->command[0], "echo", 5))
+		exit_status = ft_echo(line->command);
+	else if (!ft_strncmp(line->command[0], "env", 5))
+		exit_status = ft_env(*env);
+	else if (!ft_strncmp(line->command[0], "export", 7))
+		exit_status = ft_export(line->command, env);
+	else if (!ft_strncmp(line->command[0], "pwd", 4))
+		exit_status = ft_pwd(*env);
+	if (exit_status != -1)
+		exitandfree(exit_status);
+	doexecve(line, env);
 }
 
 int	entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
@@ -105,10 +99,22 @@ int	entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
 	return (ret);
 }
 
+int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec)
+{
+	if (!env)
+		return (line->command && (isbuiltin(line->command[0])
+				|| (!ft_strncmp(line->command[0], "export", 7)
+					&& line->command[1])) && !line->next && !i);
+	cleanfds(exec.pipefd, 2);
+	if (handleredirections(line->reds, 1))
+		return (1);
+	return (execbuiltin(line, env));
+}
+
 int	ft_execute(t_line *line, t_env **env)
 {
 	t_exec	exec;
-	int i;
+	int		i;
 
 	i = 0;
 	initexecstruct(&exec, line);
@@ -116,15 +122,8 @@ int	ft_execute(t_line *line, t_env **env)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
-		if (line->command && (isbuiltin(line->command[0])
-				|| (!ft_strncmp(line->command[0], "export", 7)
-					&& line->command[1])) && !line->next && !i)
-		{
-			cleanfds(exec.pipefd, 2);
-			if (handleredirections(line->reds, 1))
-				return (1);
-			return (execbuiltin(line, env));
-		}
+		if (hastobeparent(line, i, NULL, exec))
+			return (hastobeparent(line, i, env, exec));
 		else
 			exec.child[i] = entersubprocess(exec, line, env, i);
 		if (exec.child[i] < 0)
