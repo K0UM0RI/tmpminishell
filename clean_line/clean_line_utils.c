@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:13:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 23:15:54 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	foundquote(const char *c, int *i, t_string **ret, t_env *env)
 		else
 			(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
 	}
-	if (c[(*i)++] != '"')
+	if (c[(*i)] != '"')
 		return (-1);
 	return (0);
 }
@@ -70,6 +70,7 @@ int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 		vars->s = foundquote(c, &vars->i, &vars->ret, env);
 		if (vars->s == -1)
 			return (write(2, "error:no double quote\n", 23), 1);
+		(vars->i)++;
 	}
 	else if (c[vars->i] == '\'')
 	{
