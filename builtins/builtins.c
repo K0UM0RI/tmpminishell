@@ -6,14 +6,16 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:13:52 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 23:28:56 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_pwd(t_env *env)
+int	ft_pwd(char **command, t_env *env)
 {
+	if (command[1])
+		return (write(2, "too many arguments\n", 20), 2);
 	printf("%s\n", getmyenv("1PWD", env));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:40 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 16:47:35 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 23:27:58 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		isbuiltin(char *command);
 int		ft_export(char **command, t_env **env);
 int		ft_env(t_env *env);
 int		ft_echo(char **command);
-int		ft_pwd(t_env *env);
+int		ft_pwd(char **command, t_env *env);
 
 // env
 char	**convertenv(t_env *env);

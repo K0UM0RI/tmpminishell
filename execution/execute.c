@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 21:02:10 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/13 23:28:13 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 	else if (!ft_strncmp(line->command[0], "export", 7))
 		exit_status = ft_export(line->command, env);
 	else if (!ft_strncmp(line->command[0], "pwd", 4))
-		exit_status = ft_pwd(*env);
+		exit_status = ft_pwd(line->command, *env);
 	if (exit_status != -1)
 		exitandfree(exit_status);
 	doexecve(line, env);
