@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 00:17:52 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/14 05:34:04 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	ft_sigint(int sig)
 // make += work in export
 // exit with biiiiig number
 // 9ra any signal functions used
+//9ra finisheexec
 int	main(int ac, char **av, char **env)
 {
 	char		*c;

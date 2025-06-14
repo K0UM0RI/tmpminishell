@@ -26,7 +26,8 @@ SRC = break_down/breakdown.c \
 	stringutils/ft_strjoins.c \
 	stringutils/utils.c \
 	stringutils/utils2.c \
-	minishell.c
+	minishell.c \
+	signals/signals.c
 
 lib = minishell.h
 

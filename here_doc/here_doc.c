@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:07:18 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/14 04:51:55 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	redirectcontent(char *eof, t_env *env, int fd)
 {
 	char	*line;
 
-	signal(SIGINT, ft_siginthere_doc);
+	signal(SIGINT, ft_siginthere_subprocess);
 	line = readline(">");
 	here_doceof(line, eof, ft_strlen(eof));
 	eof = ft_append(eof, '\n', 0);

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 23:28:13 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/14 05:22:22 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 	int	exit_status;
 
 	exit_status = -1;
+	signal(SIGINT, SIG_DFL);
 	piping(i, exec, line);
 	if (handleredirections(line->reds, 0))
 		exitandfree(1);
@@ -115,7 +116,9 @@ int	ft_execute(t_line *line, t_env **env)
 {
 	t_exec	exec;
 	int		i;
+	struct sigaction	old;
 
+	old = ignoreparentsigint();
 	i = 0;
 	initexecstruct(&exec, line);
 	while (line)
@@ -133,5 +136,5 @@ int	ft_execute(t_line *line, t_env **env)
 		line = line->next;
 	}
 	cleanfds(exec.oldpipefd, 2);
-	return (finishexec(exec, i));
+	return (finishexec(exec, i, old));
 }
