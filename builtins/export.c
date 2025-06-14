@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 16:38:41 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/14 01:02:02 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	isvalididentifier(char *tmp)
 	int	i;
 
 	i = 1;
-	if (!ft_isalpha(*tmp) && *tmp != '_')
+	if (!ft_isalpha(*tmp) && *tmp != '_' && !*tmp)
 		return (0);
 	while (tmp[i])
 	{
