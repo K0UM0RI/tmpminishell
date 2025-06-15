@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/15 22:32:32 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/15 22:37:16 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
 			cleanfds(exec.oldpipefd, 2), -1);
 	if (!ret)
 	{
-		if (line->next)
+		if (!ft_strncmp(line->command[0], "exit", 5))
 			close(2);
 		birth(i, exec, line, env);
 	}
