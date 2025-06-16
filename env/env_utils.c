@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:17:09 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/16 23:46:02 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	unprotectedgetnewvar(t_env *env, char *name, char *value)
 	}
 	if (!env->next)
 		add_env(env, name);
-	env->next->value = value;
+	env->next->value = ft_strdup(value, 2);
 }
 
 int	ft_lstsizeenv(t_env *env)

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 00:15:37 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/17 00:26:28 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,13 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 		vars->s = 0;
 		(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
 	}
-	while (mywhitespace(c[(vars->i)]))
+	else
 	{
-		(vars->i)++;
-		vars->s = 1;
+		while (mywhitespace(c[(vars->i)]))
+		{
+			vars->i++;
+			vars->s = 1;
+		}
 	}
 	return (error);
 }

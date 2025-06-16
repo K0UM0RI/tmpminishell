@@ -3,7 +3,7 @@
 void	add_env(t_env *env, char *name)
 {
 	env->next = mymalloc(sizeof(t_env), 2);
-	env->next->name = name;
+	env->next->name = ft_strdup(name, 2);
 	env->next->value = NULL;
 	env->next->next = NULL;
 }

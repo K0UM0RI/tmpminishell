@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 05:34:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/16 23:45:35 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	main(int ac, char **av, char **env)
 		}
 		else
 			exit = 2;
-		unprotectedgetnewvar(lstenv, ft_strdup("?", 2), ft_itoa(exit, 2));
+		unprotectedgetnewvar(lstenv, "?", ft_itoa(exit, 0));
 		if (c && *c)
 			add_history(c);
 		free(c);

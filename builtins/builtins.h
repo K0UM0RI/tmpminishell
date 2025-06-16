@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:54 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:11:40 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/16 23:46:20 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int		ft_unset(char **command, t_env **env);
 void	cleanfds(int *fd, int end);
 
 // exec
-void	handleredirections(t_redirections *reds, int ft);
+void	handleredirections(t_redirections *reds);
 #endif

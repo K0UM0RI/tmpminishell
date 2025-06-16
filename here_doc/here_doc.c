@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 04:51:55 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/17 00:31:04 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ char	*getendoffile(const char *c, int *i)
 			quote = c[(*i)++];
 			while (c[*i] && c[*i] != '"' && c[*i] != '\'')
 				eof = ft_append(eof, c[(*i)++], 0);
-			if (c[(*i)++] != quote)
+			if (c[*i] != quote)
 				return (printf("no matchine quote\n"), NULL);
+			(*i)++;
 		}
 		else
 			eof = ft_append(eof, c[(*i)++], 0);
@@ -125,6 +126,5 @@ int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 	if (!file)
 		return (1);
 	(*ret)->c = ft_strjoin((*ret)->c, file, 0);
-	(*i)++;
 	return (0);
 }

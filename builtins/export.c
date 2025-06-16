@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 01:02:02 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/16 23:53:32 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,21 @@ int	getvalue(char *tmp)
 	return (j);
 }
 
-int	isvalididentifier(char *tmp)
+int	isvalididentifier(char *tmp, int p)
 {
 	int	i;
 
 	i = 1;
-	if (!ft_isalpha(*tmp) && *tmp != '_' && !*tmp)
+	if ((!ft_isalpha(*tmp) && *tmp != '_') || !*tmp)
 		return (0);
 	while (tmp[i])
 	{
 		if (!ft_isalpha(tmp[i]) && !ft_isnum(tmp[i]) && tmp[i] != '_')
+		{
+			if (p >= 0 && i == p - 1 && tmp[p - 1] == '+')
+				return 2;
 			return (0);
+		}
 		i++;
 	}
 	return (1);
@@ -63,10 +67,13 @@ int	getnewvar(char *tmp, t_env **env)
 {
 	int		s;
 	t_env	*tmpenv;
+	int v;
 
+	v = 0;
 	tmpenv = *env;
 	s = getvalue(tmp);
-	if (!isvalididentifier(tmp))
+	v = isvalididentifier(tmp, s);
+	if (!v)
 	{
 		if (s >= 0)
 			tmp[s] = '=';
@@ -75,6 +82,8 @@ int	getnewvar(char *tmp, t_env **env)
 		write(2, "\' not a valid identifier\n", 26);
 		return (1);
 	}
+	if (v == 2)
+		tmp[s - 1] = '\0';
 	if (!*env)
 	{
 		(*env) = mymalloc(sizeof(t_env), 2);
@@ -92,8 +101,10 @@ int	getnewvar(char *tmp, t_env **env)
 	}
 	if (!tmpenv->next)
 		add_env(tmpenv, tmp);
-	if (s > 0)
+	if (s && v == 1)
 		tmpenv->next->value = ft_strdup(tmp + s + 1, 2);
+	else if (s && v == 2)
+		tmpenv->next->value = ft_strjoin(tmpenv->next->value, tmp + s + 1, 2);
 	return (0);
 }
 
@@ -108,7 +119,7 @@ int	ft_export(char **command, t_env **env)
 		print_export(*env);
 	while (command[i])
 	{
-		if (getnewvar(ft_strdup(command[i], 2), env))
+		if (getnewvar(ft_strdup(command[i], 0), env))
 			r = 1;
 		i++;
 	}

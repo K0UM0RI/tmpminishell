@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 22:14:26 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 04:53:03 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/17 00:04:15 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ t_here_doc	initfile(void)
 	static int	order = 0;
 	t_here_doc	hdoc;
 
-	if (access(ft_strjoin(".tmp", "1", 0), F_OK))
+	if (access(ft_strjoin("/tmp/.tmp", "1", 0), F_OK))
 		order = 0;
 	order++;
-	hdoc.file = ft_strjoin(".tmp", ft_itoa(order, 0), 0);
+	hdoc.file = ft_strjoin("/tmp/.tmp", ft_itoa(order, 0), 0);
 	hdoc.fd = open(hdoc.file, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (hdoc.fd < 0)
 		perror("here_doc open");
