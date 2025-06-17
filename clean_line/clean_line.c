@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/17 00:26:28 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/17 23:11:12 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 		if (tmp == c[vars->i])
 			vars->ret->c = ft_append(vars->ret->c, c[vars->i++], 0);
 	}
-	if (isoperator(c[vars->i]))
+	if (isoperator(c[vars->i]) && tmp != '|')
 		return (write(2, "syntax error\n", 14), 1);
 	vars->s = 1;
 	return (0);
