@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:03 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 00:16:41 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/17 01:03:33 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,11 @@ char	*getvarname(const char *c, int *i)
 	var = NULL;
 	if (!ft_isalpha(c[*i]) && c[*i] != '_')
 	{
-		if (c[*i] == '?')
+		if (c[*i] == '?' || ft_isnum(c[*i]))
 		{
 			(*i)++;
+			if (ft_isnum(c[(*i) - 1]))
+				return (NULL);
 			return (ft_strdup("?", 0));
 		}
 		if ((c[*i] != '"' && c[*i] != '\'') || c[*i] == '$')

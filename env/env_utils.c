@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/16 23:46:02 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/17 00:44:52 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	**convertenv(t_env *env)
 	ret = mymalloc(sizeof(char *) * (size + 1), 0);
 	while (env)
 	{
-		if (!ft_strncmp(env->name, "?", 2) || !ft_strncmp(env->name, "1", 1))
+		if (!ft_strncmp(env->name, "?", 2) || !ft_strncmp(env->name, "1PWD", 5))
 			env = env->next;
 		else
 		{
