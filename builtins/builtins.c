@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 23:28:56 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/18 01:43:07 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_env(t_env *env)
 		env = env->next;
 	}
 	return (0);
-}
+} 
 
 int	ft_exit(char **command, t_env *env)
 {

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:48 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 10:09:09 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/18 01:37:36 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	isnumber(char *c)
 	int	i;
 
 	i = 0;
-	if (!c || !*c)
+	if (!c || !*c || (ft_strlen(c) > 20 && ft_isnum(*c)) || (ft_strlen(c) > 21 && !ft_isnum(*c)) )
 		return (write(2, "numeric argument required\n", 27), 0);
 	if (c[i] && (c[i] == '-' || c[i] == '+'))
 		i++;

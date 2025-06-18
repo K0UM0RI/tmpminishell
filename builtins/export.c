@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/16 23:53:32 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/18 01:31:22 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_export(t_env *env)
 {
 	while (env)
 	{
-		if (ft_strncmp(env->name, "?", 2) && ft_strncmp(env->name, "1", 1))
+		if (ft_strncmp(env->name, "?", 2) && ft_strncmp(env->name, "1", 1) && ft_strncmp(env->name, "_", 2))
 		{
 			printf("declare -x %s", env->name);
 			if (env->value)
