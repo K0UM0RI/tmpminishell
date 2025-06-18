@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/17 00:40:59 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/18 01:18:32 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*getendoffile(const char *c, int *i)
 	eof = NULL;
 	quote = 0;
 	if (isoperator(c[*i]))
-		return (printf("parsing error near <\n"), NULL);
+	return (write(2, "parsing error\n", 15), NULL);
 	while (c[*i] && !isoperator(c[*i]) && !mywhitespace(c[*i]))
 	{
 		if (c[*i] == '"' || c[*i] == '\'')
@@ -29,7 +29,7 @@ char	*getendoffile(const char *c, int *i)
 			while (c[*i] && c[*i] != '"' && c[*i] != '\'')
 				eof = ft_append(eof, c[(*i)++], 0);
 			if (c[*i] != quote)
-				return (printf("no matchine quote\n"), NULL);
+				return (write(2, "no matchine quote\n", 19), NULL);
 			(*i)++;
 		}
 		else
@@ -38,7 +38,7 @@ char	*getendoffile(const char *c, int *i)
 	if (!eof && quote)
 		eof = (char *)-1;
 	if (!eof)
-		return (printf("parsing error near < 1\n"), NULL);
+		return (write(2, "parsing error\n", 15), NULL);
 	return (eof);
 }
 
