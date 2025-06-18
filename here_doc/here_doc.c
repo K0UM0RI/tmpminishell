@@ -6,43 +6,41 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 01:18:32 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/18 01:25:35 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "here_doc.h"
 
-char	*getendoffile(const char *c, int *i)
+char	*getendoffile(const char *c, int *i, int *quote)
 {
 	char	*eof;
-	char	quote;
 
 	eof = NULL;
-	quote = 0;
 	if (isoperator(c[*i]))
 	return (write(2, "parsing error\n", 15), NULL);
 	while (c[*i] && !isoperator(c[*i]) && !mywhitespace(c[*i]))
 	{
 		if (c[*i] == '"' || c[*i] == '\'')
 		{
-			quote = c[(*i)++];
+			*quote = c[(*i)++];
 			while (c[*i] && c[*i] != '"' && c[*i] != '\'')
 				eof = ft_append(eof, c[(*i)++], 0);
-			if (c[*i] != quote)
+			if (c[*i] != *quote)
 				return (write(2, "no matchine quote\n", 19), NULL);
 			(*i)++;
 		}
 		else
 			eof = ft_append(eof, c[(*i)++], 0);
 	}
-	if (!eof && quote)
+	if (!eof && *quote)
 		eof = (char *)-1;
 	if (!eof)
 		return (write(2, "parsing error\n", 15), NULL);
 	return (eof);
 }
 
-void	writeonfile(char *line, t_env *env, int fd)
+void	writeonfile(char *line, t_env *env, int fd, int quote)
 {
 	int		i;
 	char	*tmp;
@@ -50,7 +48,7 @@ void	writeonfile(char *line, t_env *env, int fd)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '$')
+		if (line[i] == '$' && !quote)
 		{
 			tmp = here_docexpand(&i, line, env);
 			if (tmp)
@@ -61,7 +59,7 @@ void	writeonfile(char *line, t_env *env, int fd)
 	}
 }
 
-void	redirectcontent(char *eof, t_env *env, int fd)
+void	redirectcontent(char *eof, t_env *env, int fd, int quote)
 {
 	char	*line;
 
@@ -72,7 +70,7 @@ void	redirectcontent(char *eof, t_env *env, int fd)
 	line = ft_append(line, '\n', 0);
 	while (line && ft_strncmp(line, eof, ft_strlen(line) + 1))
 	{
-		writeonfile(line, env, fd);
+		writeonfile(line, env, fd, quote);
 		line = readline(">");
 		here_doceof(line, eof, ft_strlen(eof) - 1);
 		line = ft_append(line, '\n', 0);
@@ -80,7 +78,7 @@ void	redirectcontent(char *eof, t_env *env, int fd)
 	exitandfree(0);
 }
 
-char	*makeheredoc(char *eof, t_env *env)
+char	*makeheredoc(char *eof, t_env *env, int quote)
 {
 	t_here_doc			hdoc;
 	int					child;
@@ -94,7 +92,7 @@ char	*makeheredoc(char *eof, t_env *env)
 		return (NULL);
 	child = fork();
 	if (!child)
-		redirectcontent(eof, env, hdoc.fd);
+		redirectcontent(eof, env, hdoc.fd, quote);
 	waitpid(child, &exit, 0);
 	sigaction(SIGINT, &old, NULL);
 	if (WEXITSTATUS(exit) == 130)
@@ -110,17 +108,19 @@ int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 {
 	char	*eof;
 	char	*file;
+	int quote;
 
+	quote = 0;
 	(*i)++;
 	while (c[*i] && mywhitespace(c[*i]))
 		(*i)++;
-	eof = getendoffile(c, i);
+	eof = getendoffile(c, i, &quote);
 	if (!eof)
 		return (1);
 	if (eof == (char *)-1)
 		eof = ft_strdup("\0", 0);
 	nexts_string(ret);
-	file = makeheredoc(eof, env);
+	file = makeheredoc(eof, env, quote);
 	if (file == (char *)130)
 		return (130);
 	if (!file)
