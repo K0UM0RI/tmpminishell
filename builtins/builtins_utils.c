@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:48 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 01:37:36 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/18 23:50:23 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,29 @@ int	isbuiltin(char *command)
 	return (0);
 }
 
+int	ft_sstrlen(char *str)
+{
+	int	i;
+	int	l;
+
+	i = 0;
+	l = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i] == '0')
+		i++;
+	while (str[i + l])
+		l++;
+	return (l + (*str == '-'));
+}
+
 int	isnumber(char *c)
 {
 	int	i;
+	int longmax;
 
 	i = 0;
-	if (!c || !*c || (ft_strlen(c) > 20 && ft_isnum(*c)) || (ft_strlen(c) > 21 && !ft_isnum(*c)) )
+	if (!c || !*c)
 		return (write(2, "numeric argument required\n", 27), 0);
 	if (c[i] && (c[i] == '-' || c[i] == '+'))
 		i++;
@@ -35,6 +52,25 @@ int	isnumber(char *c)
 		i++;
 	if (c[i])
 		return (write(2, "numeric argument required\n", 27), 0);
+	if (*c == '+')
+		c++;
+	i = ft_sstrlen(c);
+	if (*c == '-')
+	{
+		longmax = ft_sstrlen("-9223372036854775808");
+		if (longmax < i)
+			return (write(2, "numeric argument required\n", 27), 0);
+		if (longmax == i && ft_strncmp("-9223372036854775808", c, i) < 0)
+			return (write(2, "numeric argument required\n", 27), 0);
+	}
+	else
+	{
+		longmax = ft_sstrlen("9223372036854775807");
+		if (longmax < i)
+			return (write(2, "numeric argument required\n", 27), 0);
+		if (longmax == i && ft_strncmp("9223372036854775807", c, i) < 0)
+			return (write(2, "numeric argument required\n", 27), 0);
+	}
 	return (1);
 }
 

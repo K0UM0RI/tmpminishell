@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 01:31:41 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/18 23:51:25 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ void	ft_sigint(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
-// exit with biiiiig number
 // 9ra any signal functions used
 //9ra finisheexec
+//sort export output
+//exit shouldnt write exit when in child
 int	main(int ac, char **av, char **env)
 {
 	char		*c;
