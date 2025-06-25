@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:54 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/16 23:46:20 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/25 22:40:23 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,8 @@ void	cleanfds(int *fd, int end);
 
 // exec
 void	handleredirections(t_redirections *reds);
+
+//for export
+int	getvalue(char *tmp);
+void	print_export(t_env *env);
 #endif

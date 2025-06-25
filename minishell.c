@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 23:51:25 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/25 22:40:56 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ int	main(int ac, char **av, char **env)
 		else if (clean)
 		{
 			line = breakdown(clean);
-			// printcleanline(clean);
-			// printbreakdown(line);
 			exit = ft_execute(line, &lstenv);
 		}
 		else

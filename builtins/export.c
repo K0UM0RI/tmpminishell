@@ -6,42 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 01:31:22 by sbat             ###   ########.fr       */
+/*   Updated: 2025/06/25 22:39:59 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
-void	print_export(t_env *env)
-{
-	while (env)
-	{
-		if (ft_strncmp(env->name, "?", 2) && ft_strncmp(env->name, "1", 1) && ft_strncmp(env->name, "_", 2))
-		{
-			printf("declare -x %s", env->name);
-			if (env->value)
-				printf("=\"%s\"", env->value);
-			printf("\n");
-		}
-		env = env->next;
-	}
-}
-
-int	getvalue(char *tmp)
-{
-	int	j;
-
-	j = 0;
-	if (*tmp == '=')
-		return (0);
-	while (tmp[j] && tmp[j] != '=')
-		j++;
-	if (!tmp[j])
-		return (-1);
-	else
-		tmp[j] = '\0';
-	return (j);
-}
 
 int	isvalididentifier(char *tmp, int p)
 {
@@ -55,7 +24,7 @@ int	isvalididentifier(char *tmp, int p)
 		if (!ft_isalpha(tmp[i]) && !ft_isnum(tmp[i]) && tmp[i] != '_')
 		{
 			if (p >= 0 && i == p - 1 && tmp[p - 1] == '+')
-				return 2;
+				return (2);
 			return (0);
 		}
 		i++;
@@ -63,24 +32,41 @@ int	isvalididentifier(char *tmp, int p)
 	return (1);
 }
 
+void attachnewvar(char *tmp, t_env **env, int s, int v)
+{
+	t_env *tmpenv;
+	t_env *previous;
+
+	tmpenv = *env;
+	previous = NULL;
+	while (tmpenv && ft_strncmp(tmpenv->name, tmp, ft_strlen(tmp)))
+	{
+		previous = tmpenv;
+		tmpenv = tmpenv->next;
+	}
+	if (!tmpenv && previous)
+	{
+		add_env(previous, tmp);
+		tmpenv = previous->next;
+	}
+	if (s > 0 && v == 1)
+		tmpenv->value = ft_strdup(tmp + s + 1, 2);
+	else if (s > 0 && v == 2)
+		tmpenv->value = ft_strjoin(tmpenv->value, tmp + s + 1, 2);
+}
+
 int	getnewvar(char *tmp, t_env **env)
 {
 	int		s;
-	t_env	*tmpenv;
 	int v;
 
-	v = 0;
-	tmpenv = *env;
 	s = getvalue(tmp);
 	v = isvalididentifier(tmp, s);
 	if (!v)
 	{
 		if (s >= 0)
 			tmp[s] = '=';
-		write(2, "export: \'", 10);
-		write(2, tmp, ft_strlen(tmp));
-		write(2, "\' not a valid identifier\n", 26);
-		return (1);
+		return (write(2, "export: \'", 10), write(2, tmp, ft_strlen(tmp)), write(2, "\' not a valid identifier\n", 26), 1);
 	}
 	if (v == 2)
 		tmp[s - 1] = '\0';
@@ -93,18 +79,7 @@ int	getnewvar(char *tmp, t_env **env)
 		(*env)->next = NULL;
 		return (0);
 	}
-	if (ft_strncmp(tmpenv->name, tmp, ft_strlen(tmp)))
-	{
-		while (tmpenv->next && ft_strncmp(tmpenv->next->name, tmp,
-				ft_strlen(tmp)))
-			tmpenv = tmpenv->next;
-	}
-	if (!tmpenv->next)
-		add_env(tmpenv, tmp);
-	if (s && v == 1)
-		tmpenv->next->value = ft_strdup(tmp + s + 1, 2);
-	else if (s && v == 2)
-		tmpenv->next->value = ft_strjoin(tmpenv->next->value, tmp + s + 1, 2);
+	attachnewvar(tmp, env, s, v);
 	return (0);
 }
 

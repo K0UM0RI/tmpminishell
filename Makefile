@@ -6,6 +6,7 @@ SRC = break_down/breakdown.c \
 	builtins/builtins.c \
 	builtins/builtins_utils.c \
 	builtins/export.c \
+	builtins/export_utils.c \
 	builtins/echo.c \
 	builtins/ft_cd.c \
 	builtins/ft_unset.c \
