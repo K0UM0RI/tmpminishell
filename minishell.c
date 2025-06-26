@@ -84,6 +84,7 @@ void	ft_sigint(int sig)
 //9ra finisheexec
 //sort export output
 //exit shouldnt write exit when in child
+//fixe makefile
 int	main(int ac, char **av, char **env)
 {
 	char		*c;
