@@ -30,7 +30,7 @@ int	ft_env(t_env *env)
 		env = env->next;
 	}
 	return (0);
-} 
+}
 
 int	ft_exit(char **command, t_env *env)
 {

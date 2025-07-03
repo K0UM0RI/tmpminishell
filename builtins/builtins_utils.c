@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:48 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 23:50:23 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:01:37 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,11 @@ int	ft_sstrlen(char *str)
 	return (l + (*str == '-'));
 }
 
-int	isnumber(char *c)
+int	islonglong(char *c)
 {
 	int	i;
-	int longmax;
+	int	longmax;
 
-	i = 0;
-	if (!c || !*c)
-		return (write(2, "numeric argument required\n", 27), 0);
-	if (c[i] && (c[i] == '-' || c[i] == '+'))
-		i++;
-	while (c[i] && (c[i] >= '0' && c[i] <= '9'))
-		i++;
-	if (c[i])
-		return (write(2, "numeric argument required\n", 27), 0);
 	if (*c == '+')
 		c++;
 	i = ft_sstrlen(c);
@@ -74,6 +65,22 @@ int	isnumber(char *c)
 	return (1);
 }
 
+int	isnumber(char *c)
+{
+	int	i;
+
+	i = 0;
+	if (!c || !*c)
+		return (write(2, "numeric argument required\n", 27), 0);
+	if (c[i] && (c[i] == '-' || c[i] == '+'))
+		i++;
+	while (c[i] && (c[i] >= '0' && c[i] <= '9'))
+		i++;
+	if (c[i])
+		return (write(2, "numeric argument required\n", 27), 0);
+	return (islonglong(c));
+}
+
 int	foundchar(char f, char *c)
 {
 	while (*c)
@@ -82,19 +89,5 @@ int	foundchar(char f, char *c)
 			return (1);
 		c++;
 	}
-	return (0);
-}
-
-int	ft_isalpha(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
-
-int	ft_isnum(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
 	return (0);
 }

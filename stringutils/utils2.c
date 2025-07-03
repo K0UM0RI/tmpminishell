@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:19 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 21:03:04 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:13:27 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	ft_intlen(int n)
 	}
 	return (len);
 }
+
 int	is_directory(char *path)
 {
 	struct stat	sb;
@@ -50,6 +51,7 @@ int	is_directory(char *path)
 	}
 	return (0);
 }
+
 void	exitandfree(int exit_status)
 {
 	mymalloc(0, 1);

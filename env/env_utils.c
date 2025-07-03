@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/17 00:44:52 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:09:19 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_env	*getenvlst(char **env)
 	t_env	*head;
 	char	tmp[4096];
 
-	int(i), (j) = 0;
+	int (i), (j) = 0;
 	lstenv = mymalloc(sizeof(t_env), 2);
 	lstenv->next = NULL;
 	head = lstenv;

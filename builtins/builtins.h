@@ -29,7 +29,7 @@ void	cleanfds(int *fd, int end);
 // exec
 void	handleredirections(t_redirections *reds);
 
-//for export
-int	getvalue(char *tmp);
+// for export
+int		getvalue(char *tmp);
 void	print_export(t_env *env);
 #endif

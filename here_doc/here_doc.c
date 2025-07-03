@@ -18,7 +18,7 @@ char	*getendoffile(const char *c, int *i, int *quote)
 
 	eof = NULL;
 	if (isoperator(c[*i]))
-	return (write(2, "parsing error\n", 15), NULL);
+		return (write(2, "parsing error\n", 15), NULL);
 	while (c[*i] && !isoperator(c[*i]) && !mywhitespace(c[*i]))
 	{
 		if (c[*i] == '"' || c[*i] == '\'')
@@ -108,7 +108,7 @@ int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 {
 	char	*eof;
 	char	*file;
-	int quote;
+	int		quote;
 
 	quote = 0;
 	(*i)++;

@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.h                                         :+:      :+:    :+:   */
+/*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 12:16:48 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/14 04:53:42 by sbat             ###   ########.fr       */
+/*   Created: 2025/07/03 08:02:28 by sbat              #+#    #+#             */
+/*   Updated: 2025/07/03 08:13:33 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HERE_DOC_H
-# define HERE_DOC_H
+#include "utils.h"
 
-# include "../minishell.h"
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}
 
-char				*here_docexpand(int *i, const char *c, t_env *env);
-char				*here_docvarname(const char *c, int *i);
-
-void				here_doceof(char *line, char *eof, int size);
-void				ft_siginthere_subprocess(int sig);
-t_here_doc			initfile(void);
-struct sigaction	ignoreparentsigint(void);
-
-// clean_line
-void				nexts_string(t_string **ret);
-#endif
+int	ft_isnum(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}

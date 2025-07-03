@@ -66,5 +66,5 @@ char	*getvarname(const char *c, int *i)
 		var = ft_append(var, c[(*i)], 0);
 		(*i)++;
 	}
-	return var;
+	return (var);
 }

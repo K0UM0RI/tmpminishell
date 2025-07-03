@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 23:13:39 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:23:23 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 # define MINISHELL_H
 
+// # include <bits/sigaction.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <bits/sigaction.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -31,6 +31,10 @@
 # define RED_OUT_APPEND 2
 # define RED_OUT_TRUNC 3
 # define RED_IN 4
+# define GREEN   "\033[1;32m"
+# define YELLOW  "\033[1;33m"
+# define BLUE    "\033[34m"
+# define COLOR_RESET   "\033[0m"
 
 typedef struct s_string
 {
@@ -118,6 +122,9 @@ int							is_directory(char *path);
 int							ft_isnum(int c);
 int							ft_isalpha(int c);
 void						exitandfree(int exit_status);
+int							ft_isalpha(int c);
+int							ft_isnum(int c);
+
 // env
 char						*getmyenv(char *var, t_env *env);
 void						unprotectedgetnewvar(t_env *env, char *name,

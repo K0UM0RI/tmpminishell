@@ -6,33 +6,11 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 23:35:55 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:10:28 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
-
-int	handleredirections(t_redirections *reds, int ft)
-{
-	int	file[2];
-	int	ret;
-
-	file[0] = -1;
-	file[1] = -1;
-	ret = 0;
-	while (reds)
-	{
-		if (!ft)
-			ret = openredirs(reds, file);
-		else
-			ret = openredirsnodup(reds, file);
-		if (ret)
-			return (ret);
-		cleanfds(file, 2);
-		reds = reds->next;
-	}
-	return (0);
-}
 
 void	doexecve(t_line *line, t_env **env)
 {
@@ -114,8 +92,8 @@ int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec)
 
 int	ft_execute(t_line *line, t_env **env)
 {
-	t_exec	exec;
-	int		i;
+	t_exec				exec;
+	int					i;
 	struct sigaction	old;
 
 	old = ignoreparentsigint();

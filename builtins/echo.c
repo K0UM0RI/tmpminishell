@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 22:14:20 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:14:21 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:07:23 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	checkforoption(char **command, int *i)
 
 int	ft_echo(char **command)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	i = 1;
 	n = checkforoption(command, &i);

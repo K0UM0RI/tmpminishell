@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 22:14:22 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/13 22:14:23 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:07:47 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	updatepwd(t_env **env, char *tmp, int s)
 
 int	ft_cd(char **command, t_env **env)
 {
-	char *pwd;
-	char *tmp;
-	int s;
+	char	*pwd;
+	char	*tmp;
+	int		s;
 
 	s = 0;
 	pwd = getmyenv("1PWD", *env);

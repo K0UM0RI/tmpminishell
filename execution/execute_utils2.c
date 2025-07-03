@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:34 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/17 00:04:47 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/03 08:11:44 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,32 +64,51 @@ int	openredirsnodup(t_redirections *reds, int *file)
 	return (0);
 }
 
+int	handleredirections(t_redirections *reds, int ft)
+{
+	int	file[2];
+	int	ret;
+
+	file[0] = -1;
+	file[1] = -1;
+	ret = 0;
+	while (reds)
+	{
+		if (!ft)
+			ret = openredirs(reds, file);
+		else
+			ret = openredirsnodup(reds, file);
+		if (ret)
+			return (ret);
+		cleanfds(file, 2);
+		reds = reds->next;
+	}
+	return (0);
+}
+
 int	finishexec(t_exec exec, int i, struct sigaction old)
 {
-	int(j),(sig), (status), (exit) = 0;
+	int (j), (sig), (status), (exit) = 0;
 	j = 0;
 	status = 0;
 	while (j < i)
 	{
 		waitpid(exec.child[j++], &status, 0);
 		if ((status & 0x7f) != 0 && (status & 0x7f) != 0x7f)
-        {
-            sig = status & 0x7f;
-            if (sig == SIGINT || sig == SIGQUIT)
-                write(1, "\n", 1);
-            exit = 128 + sig;
-        }
-        else
-        {
-            exit = (status >> 8) & 0xff;
-        }
+		{
+			sig = status & 0x7f;
+			if (sig == SIGINT || sig == SIGQUIT)
+				write(1, "\n", 1);
+			exit = 128 + sig;
+		}
+		else
+		{
+			exit = (status >> 8) & 0xff;
+		}
 	}
 	sigaction(SIGINT, &old, NULL);
 	j = 1;
 	while (!access(ft_strjoin("/tmp/.tmp", ft_itoa(j, 0), 0), F_OK))
-	{
-		unlink(ft_strjoin("/tmp/.tmp", ft_itoa(j, 0), 0));
-		j++;
-	}
+		unlink(ft_strjoin("/tmp/.tmp", ft_itoa(j++, 0), 0));
 	return (exit);
 }
