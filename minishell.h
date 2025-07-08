@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:23:23 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/08 18:51:40 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct s_exec
 {
 	int						pipefd[2];
 	int						oldpipefd[2];
-	int						*child;
+	pid_t					*child;
 	int						npipes;
 }							t_exec;
 

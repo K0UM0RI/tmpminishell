@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 01:25:35 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/08 18:52:22 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	redirectcontent(char *eof, t_env *env, int fd, int quote)
 char	*makeheredoc(char *eof, t_env *env, int quote)
 {
 	t_here_doc			hdoc;
-	int					child;
+	pid_t				child;
 	int					exit;
 	struct sigaction	old;
 

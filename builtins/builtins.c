@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/18 01:43:07 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/08 18:51:27 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,25 @@ int	ft_env(t_env *env)
 	return (0);
 }
 
+int	*cmdnum(void)
+{
+	static int	n = 0;
+
+	return (&n);
+}
+
 int	ft_exit(char **command, t_env *env)
 {
 	int	e;
 
-	write(2, "exit\n", 5);
+	if (*cmdnum() == 1)
+		write(2, "exit\n", 5);
 	if (!command[1])
 		e = ft_atoi(getmyenv("?", env)) & 0xFF;
 	else if (command[2])
 		return (write(2, "too many arguments\n", 20), 1);
 	else if (isnumber(command[1]))
-		e = ft_atoi(command[1]) & 0xFF;
+		e = ft_atoi(command[1]) & 255;
 	else
 		e = 2;
 	mymalloc(0, 1);

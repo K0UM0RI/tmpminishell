@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:10:28 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/08 18:53:10 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	ft_execute(t_line *line, t_env **env)
 	old = ignoreparentsigint();
 	i = 0;
 	initexecstruct(&exec, line);
+	cmdnum();
+	*cmdnum() = exec.npipes;
 	while (line)
 	{
 		if (pipe(exec.pipefd) < 0)

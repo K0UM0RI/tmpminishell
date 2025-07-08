@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:40 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:11:16 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/08 18:52:10 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,6 @@ char				*getcmd(char *cmd, t_env *env);
 
 struct sigaction	ignoreparentsigint(void);
 void				ft_siginthere_subprocess(int sig);
+
+int					*cmdnum(void);
 #endif

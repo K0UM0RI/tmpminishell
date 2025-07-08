@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:26:18 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/08 18:44:36 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ void	ft_sigint(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
-// 9ra any signal functions used
-// 9ra finisheexec
-// sort export output
-// exit shouldnt write exit when in child
-// fixe makefile
 
 char	*getprompt(t_env *lstenv)
 {
