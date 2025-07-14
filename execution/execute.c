@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 10:00:49 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 13:05:08 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	doexecve(t_line *line, t_env **env)
 	if (exit_status != -1)
 		exitandfree(exit_status);
 	execve(cmd, line->command, convertenv(*env));
-	perror("execv");
+	perror("execve");
 	exitandfree(127);
 }
 
