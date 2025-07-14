@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 22:14:25 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 08:13:08 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 09:56:36 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	huntforvar(t_env **env, t_env *tmp, char *var)
 	previous = NULL;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->name, var, ft_strlen(tmp->name) + 1) && ft_strncmp(var, "?",
-				2) && ft_strncmp(var, "1PWD", 5))
+		if (!ft_strncmp(tmp->name, var, ft_strlen(tmp->name) + 1)
+			&& ft_strncmp(var, "?", 2) && ft_strncmp(var, "1PWD", 5))
 		{
 			if (previous)
 				previous->next = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:06:17 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 10:02:32 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ void	foundexpandable(t_lexvars *vars, const char *c, t_env *env)
 		vars->ret->c = ft_append(vars->ret->c, '$', 0);
 		tmp = NULL;
 	}
-	else if (tmp == (char *)-2)	
+	else if (tmp == (char *)-2)
 		tmp = NULL;
-	else if (!tmp && !vars->ret->c && (isoperator(c[vars->i]) || mywhitespace(c[vars->i])))
+	else if (!tmp && !vars->ret->c
+		&& (isoperator(c[vars->i]) || mywhitespace(c[vars->i])))
 		nexts_string(&vars->ret);
 	j = vars->i;
 	vars->i = 0;

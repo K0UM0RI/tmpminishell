@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:23:44 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 10:00:49 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ int	entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
 	return (ret);
 }
 
-int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec, struct sigaction	old)
+int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec)
 {
-	int exit;
-	int j;
+	int	exit;
+	int	j;
 
 	if (!env)
 		return (line->command && (isbuiltin(line->command[0])
@@ -92,7 +92,7 @@ int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec, struct sigactio
 	if (handleredirections(line->reds, 1))
 		return (1);
 	exit = execbuiltin(line, env);
-	sigaction(SIGINT, &old, NULL);
+	sigaction(SIGINT, &exec.old, NULL);
 	j = 1;
 	while (!access(ft_strjoin("/tmp/.tmp", ft_itoa(j, 0), 0), F_OK))
 		unlink(ft_strjoin("/tmp/.tmp", ft_itoa(j++, 0), 0));
@@ -103,9 +103,8 @@ int	ft_execute(t_line *line, t_env **env)
 {
 	t_exec				exec;
 	int					i;
-	struct sigaction	old;
 
-	old = ignoreparentsigint();
+	exec.old = ignoreparentsigint();
 	i = 0;
 	initexecstruct(&exec, line);
 	cmdnum();
@@ -114,8 +113,8 @@ int	ft_execute(t_line *line, t_env **env)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
-		if (hastobeparent(line, i, NULL, exec, old))
-			return (hastobeparent(line, i, env, exec, old));
+		if (hastobeparent(line, i, NULL, exec))
+			return (hastobeparent(line, i, env, exec));
 		else
 			exec.child[i] = entersubprocess(exec, line, env, i);
 		if (exec.child[i] < 0)
@@ -125,5 +124,5 @@ int	ft_execute(t_line *line, t_env **env)
 		line = line->next;
 	}
 	cleanfds(exec.oldpipefd, 2);
-	return (finishexec(exec, i, old));
+	return (finishexec(exec, i, exec.old));
 }

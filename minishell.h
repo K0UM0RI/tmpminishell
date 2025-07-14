@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:29:37 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 09:59:52 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_exec
 	int						oldpipefd[2];
 	pid_t					*child;
 	int						npipes;
+	struct sigaction		old;
 }							t_exec;
 
 typedef struct s_here_doc
