@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 10:02:32 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 13:16:39 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	expandhome(t_lexvars *vars, const char *c, t_env *env)
 void	foundexpandable(t_lexvars *vars, const char *c, t_env *env)
 {
 	char	*tmp;
-	int		j;
 
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
@@ -81,14 +80,13 @@ void	foundexpandable(t_lexvars *vars, const char *c, t_env *env)
 	else if (!tmp && !vars->ret->c
 		&& (isoperator(c[vars->i]) || mywhitespace(c[vars->i])))
 		nexts_string(&vars->ret);
-	j = vars->i;
+	vars->d = vars->i + 1;
 	vars->i = 0;
-	vars->d = 1;
 	vars->s = 0;
 	while (tmp && tmp[vars->i])
 		filllist(vars, tmp, env);
+	vars->i = vars->d - 1;
 	vars->d = 0;
-	vars->i = j;
 }
 
 int	filllist(t_lexvars *vars, const char *c, t_env *env)
