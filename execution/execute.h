@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:40 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/08 18:52:10 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 09:24:26 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int					ft_export(char **command, t_env **env);
 int					ft_env(t_env *env);
 int					ft_echo(char **command);
 int					ft_pwd(char **command, t_env *env);
+int					*cmdnum(void);
 
 // env
 char				**convertenv(t_env *env);
@@ -38,6 +39,4 @@ char				*getcmd(char *cmd, t_env *env);
 
 struct sigaction	ignoreparentsigint(void);
 void				ft_siginthere_subprocess(int sig);
-
-int					*cmdnum(void);
 #endif

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:08:36 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 08:23:37 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	getnewvar(char *tmp, t_env **env)
 		if (s >= 0)
 			tmp[s] = '=';
 		return (write(2, "export: \'", 10), write(2, tmp, ft_strlen(tmp)),
-			write(2, "\' not a valid identifier\n", 26), 1);
+			write(2, "\' not a valid identifier\n", 26), 2);
 	}
 	if (v == 2)
 		tmp[s - 1] = '\0';
@@ -96,7 +96,7 @@ int	ft_export(char **command, t_env **env)
 	while (command[i])
 	{
 		if (getnewvar(ft_strdup(command[i], 0), env))
-			r = 1;
+			r = 2;
 		i++;
 	}
 	return (r);

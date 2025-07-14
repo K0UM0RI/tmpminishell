@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:34 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:11:44 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 08:41:29 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	openredirs(t_redirections *reds, int *file)
 {
+	if (!reds->file)
+		return (write(2, "ambiguous redirection\n", 23), 1);
 	if (reds->redtype == RED_OUT_APPEND)
 	{
 		file[1] = open(reds->file, O_CREAT | O_APPEND | O_WRONLY, 0777);
@@ -41,6 +43,8 @@ int	openredirs(t_redirections *reds, int *file)
 
 int	openredirsnodup(t_redirections *reds, int *file)
 {
+	if (!reds->file)
+		return (write(2, "ambiguous redirection\n", 23), 1);
 	if (reds->redtype == RED_OUT_APPEND)
 	{
 		file[1] = open(reds->file, O_CREAT | O_APPEND | O_WRONLY, 0777);

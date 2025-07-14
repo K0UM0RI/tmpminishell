@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:38 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/08 18:53:10 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 09:23:44 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	birth(int i, t_exec exec, t_line *line, t_env **env)
 
 	exit_status = -1;
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	piping(i, exec, line);
 	if (handleredirections(line->reds, 0))
 		exitandfree(1);
@@ -78,8 +79,11 @@ int	entersubprocess(t_exec exec, t_line *line, t_env **env, int i)
 	return (ret);
 }
 
-int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec)
+int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec, struct sigaction	old)
 {
+	int exit;
+	int j;
+
 	if (!env)
 		return (line->command && (isbuiltin(line->command[0])
 				|| (!ft_strncmp(line->command[0], "export", 7)
@@ -87,7 +91,12 @@ int	hastobeparent(t_line *line, int i, t_env **env, t_exec exec)
 	cleanfds(exec.pipefd, 2);
 	if (handleredirections(line->reds, 1))
 		return (1);
-	return (execbuiltin(line, env));
+	exit = execbuiltin(line, env);
+	sigaction(SIGINT, &old, NULL);
+	j = 1;
+	while (!access(ft_strjoin("/tmp/.tmp", ft_itoa(j, 0), 0), F_OK))
+		unlink(ft_strjoin("/tmp/.tmp", ft_itoa(j++, 0), 0));
+	return (exit);
 }
 
 int	ft_execute(t_line *line, t_env **env)
@@ -105,8 +114,8 @@ int	ft_execute(t_line *line, t_env **env)
 	{
 		if (pipe(exec.pipefd) < 0)
 			perror("pipe");
-		if (hastobeparent(line, i, NULL, exec))
-			return (hastobeparent(line, i, env, exec));
+		if (hastobeparent(line, i, NULL, exec, old))
+			return (hastobeparent(line, i, env, exec, old));
 		else
 			exec.child[i] = entersubprocess(exec, line, env, i);
 		if (exec.child[i] < 0)

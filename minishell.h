@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/08 18:51:40 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/14 09:29:37 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,6 @@ typedef struct s_string
 	int						type;
 	struct s_string			*next;
 }							t_string;
-
-typedef struct s_tree
-{
-	t_string				*command;
-	t_string				*input_red;
-	t_string				*output_red;
-	int						type;
-	int						append;
-	struct s_tree			*left;
-	struct s_tree			*right;
-}							t_tree;
 
 typedef struct s_truck
 {
