@@ -6,11 +6,20 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:20:08 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/16 14:16:58 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_env	*save_env(t_env *env)
+{
+	static t_env	*envs;
+
+	if (env)
+		envs = env;
+	return (envs);
+}
 
 void	ft_sigint(int sig)
 {
@@ -19,6 +28,7 @@ void	ft_sigint(int sig)
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
+	unprotectedgetnewvar(save_env(NULL), "?", "130");
 }
 
 char	*getprompt(t_env *lstenv)
@@ -42,6 +52,11 @@ void	exec(t_env **lstenv, int *exit)
 	c = getprompt(*lstenv);
 	if (!c)
 		(write(1, "\nexit\n", 6), exitandfree(*exit));
+	if (!*c)
+	{
+		*exit = ft_atoi(getmyenv("?", *lstenv));
+		return ;
+	}
 	clean = clean_line(c, *lstenv);
 	if (clean == (t_string *)130)
 		*exit = 130;
@@ -67,7 +82,7 @@ int	main(int ac, char **av, char **env)
 	if (!env || !*env)
 		return (write(2, "error: env unset\n", 18));
 	lstenv = getenvlst(env);
-	exit = 0;
+	save_env(lstenv);
 	(signal(SIGINT, ft_sigint), signal(SIGQUIT, SIG_IGN));
 	while (1)
 	{
