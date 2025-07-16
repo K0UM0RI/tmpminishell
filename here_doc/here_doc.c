@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ayhakimi <ayhakimi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:30:18 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/15 07:03:01 by ayhakimi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,20 @@ void	writeonfile(char *line, t_env *env, int fd, int quote)
 void	redirectcontent(char *eof, t_env *env, int fd, int quote)
 {
 	char	*line;
+	char	*tmp;
 
 	signal(SIGINT, ft_siginthere_subprocess);
 	line = readline(">");
+	tmp = line;
 	here_doceof(line, eof, ft_strlen(eof));
 	eof = ft_append(eof, '\n', 0);
 	line = ft_append(line, '\n', 0);
 	while (line && ft_strncmp(line, eof, ft_strlen(line) + 1))
 	{
+		free(tmp);
 		writeonfile(line, env, fd, quote);
 		line = readline(">");
+		tmp = line;
 		here_doceof(line, eof, ft_strlen(eof) - 1);
 		line = ft_append(line, '\n', 0);
 	}
