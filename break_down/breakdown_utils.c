@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:34 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/10 12:15:35 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:06:39 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_redirections	*red_new(char *file, int type)
 {
 	t_redirections	*tmp;
 
-	tmp = mymalloc(sizeof(t_redirections), 0);
+	tmp = mymalloc(sizeof(t_redirections), MALLOC_TMP);
 	tmp->file = file;
 	tmp->redtype = type;
 	tmp->next = NULL;

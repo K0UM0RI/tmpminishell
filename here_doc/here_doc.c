@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:11:30 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/16 14:21:14 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:57:28 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ char	*getendoffile(const char *c, int *i, int *quote)
 		{
 			*quote = c[(*i)++];
 			while (c[*i] && c[*i] != '"' && c[*i] != '\'')
-				eof = ft_append(eof, c[(*i)++], 0);
+				eof = ft_append(eof, c[(*i)++], MALLOC_TMP);
 			if (c[*i] != *quote)
 				return (write(2, "no matchine quote\n", 19), NULL);
 			(*i)++;
 		}
 		else
-			eof = ft_append(eof, c[(*i)++], 0);
+			eof = ft_append(eof, c[(*i)++], MALLOC_TMP);
 	}
 	if (!eof && *quote)
 		eof = (char *)-1;
@@ -68,8 +68,8 @@ void	redirectcontent(char *eof, t_env *env, int fd, int quote)
 	line = readline(">");
 	tmp = line;
 	here_doceof(line, eof, ft_strlen(eof));
-	eof = ft_append(eof, '\n', 0);
-	line = ft_append(line, '\n', 0);
+	eof = ft_append(eof, '\n', MALLOC_TMP);
+	line = ft_append(line, '\n', MALLOC_TMP);
 	while (line && ft_strncmp(line, eof, ft_strlen(line) + 1))
 	{
 		free(tmp);
@@ -77,7 +77,7 @@ void	redirectcontent(char *eof, t_env *env, int fd, int quote)
 		line = readline(">");
 		tmp = line;
 		here_doceof(line, eof, ft_strlen(eof) - 1);
-		line = ft_append(line, '\n', 0);
+		line = ft_append(line, '\n', MALLOC_TMP);
 	}
 	exitandfree(0);
 }
@@ -129,6 +129,6 @@ int	doheredoc(int *i, t_string **ret, const char *c, t_env *env)
 		return (130);
 	if (!file)
 		return (1);
-	(*ret)->c = ft_strjoin((*ret)->c, file, 0);
+	(*ret)->c = ft_strjoin((*ret)->c, file, MALLOC_TMP);
 	return (0);
 }

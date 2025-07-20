@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 22:14:22 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:07:47 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:06:13 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	getrelativepath(char *command, char *pwd)
 {
 	char	*tmp;
 
-	tmp = ft_strjoin("/", command, 0);
-	tmp = ft_strjoin(pwd, tmp, 0);
+	tmp = ft_strjoin("/", command, MALLOC_TMP);
+	tmp = ft_strjoin(pwd, tmp, MALLOC_TMP);
 	if (chdir(tmp) && chdir(command))
-		return (perror("chdir"), 0);
+		return (perror("chdir"), MALLOC_TMP);
 	return (1);
 }
 
@@ -30,11 +30,11 @@ int	updatepwd(t_env **env, char *tmp, int s)
 		if (chdir(tmp))
 			return (perror("chdir"), 1);
 	}
-	tmp = mymalloc(sizeof(char) * 4096, 0);
+	tmp = mymalloc(sizeof(char) * 4096, MALLOC_TMP);
 	if (!getcwd(tmp, 4096))
 		return (perror("getcwd"), 1);
-	unprotectedgetnewvar(*env, ft_strdup("PWD", 2), ft_strdup(tmp, 2));
-	unprotectedgetnewvar(*env, ft_strdup("1PWD", 2), ft_strdup(tmp, 2));
+	unprotectedgetnewvar(*env, ft_strdup("PWD", MALLOC_LASTING), ft_strdup(tmp, MALLOC_LASTING));
+	unprotectedgetnewvar(*env, ft_strdup("1PWD", MALLOC_LASTING), ft_strdup(tmp, MALLOC_LASTING));
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:45 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 13:13:48 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:00:31 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	unprotectedgetnewvar(t_env *env, char *name, char *value)
 	}
 	if (!env->next)
 		add_env(env, name);
-	env->next->value = ft_strdup(value, 2);
+	env->next->value = ft_strdup(value, MALLOC_LASTING);
 }
 
 int	ft_lstsizeenv(t_env *env)
@@ -49,7 +49,7 @@ char	*getmyenv(char *var, t_env *env)
 	while (env)
 	{
 		if (!ft_strncmp(env->name, var, l + 1))
-			return (ft_strdup(env->value, 2));
+			return (ft_strdup(env->value, MALLOC_LASTING));
 		env = env->next;
 	}
 	return (NULL);
@@ -62,7 +62,7 @@ t_env	*getenvlst(char **env)
 	char	tmp[4096];
 
 	int (i), (j) = 0;
-	lstenv = mymalloc(sizeof(t_env), 2);
+	lstenv = mymalloc(sizeof(t_env), MALLOC_LASTING);
 	lstenv->next = NULL;
 	head = lstenv;
 	while (env[j])
@@ -80,7 +80,7 @@ t_env	*getenvlst(char **env)
 		j++;
 	}
 	(getcwd(tmp, 4096), newenv(&lstenv, "?", "0"));
-	newenv(&lstenv, "1PWD", ft_strdup(tmp, 2));
+	newenv(&lstenv, "1PWD", ft_strdup(tmp, MALLOC_LASTING));
 	return (head->next);
 }
 
@@ -92,15 +92,15 @@ char	**convertenv(t_env *env)
 
 	i = 0;
 	size = ft_lstsizeenv(env);
-	ret = mymalloc(sizeof(char *) * (size + 1), 0);
+	ret = mymalloc(sizeof(char *) * (size + 1), MALLOC_TMP);
 	while (env)
 	{
 		if (!ft_strncmp(env->name, "?", 2) || !ft_strncmp(env->name, "1PWD", 5))
 			env = env->next;
 		else
 		{
-			ret[i] = ft_append(env->name, '=', 0);
-			ret[i] = ft_strjoin(ret[i], env->value, 0);
+			ret[i] = ft_append(env->name, '=', MALLOC_TMP);
+			ret[i] = ft_strjoin(ret[i], env->value, MALLOC_TMP);
 			i++;
 			env = env->next;
 		}

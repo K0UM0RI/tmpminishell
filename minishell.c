@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:56 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/16 14:16:58 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:54:21 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(int ac, char **av, char **env)
 	{
 		exec(&lstenv, &exit);
 		unprotectedgetnewvar(lstenv, "?", ft_itoa(exit, 0));
-		mymalloc(0, 1);
+		mymalloc(0, FREE_TMP);
 	}
 	exitandfree(exit);
 }

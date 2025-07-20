@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:23 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:23:27 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:08:10 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,8 @@ int	ft_exit(char **command, t_env *env)
 		e = ft_atoi(command[1]) & 0xFF;
 	else
 		e = 2;
-	mymalloc(0, 1);
-	mymalloc(0, 3);
-	exit(e);
+	exitandfree(e);
+	return (e);
 }
 
 int	execbuiltin(t_line *line, t_env **env)

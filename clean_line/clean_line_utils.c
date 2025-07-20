@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:50 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 10:02:29 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:01:54 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@ int	foundquote(const char *c, int *i, t_string **ret, t_env *env)
 			tmp = foundvar(i, c, env);
 			if (tmp == (char *)-2 || tmp == (char *)-1)
 			{
-				(*ret)->c = ft_append((*ret)->c, '$', 0);
+				(*ret)->c = ft_append((*ret)->c, '$', MALLOC_TMP);
 				tmp = NULL;
 			}
 			while (tmp && *tmp)
 			{
-				(*ret)->c = ft_append((*ret)->c, *tmp, 0);
+				(*ret)->c = ft_append((*ret)->c, *tmp, MALLOC_TMP);
 				tmp++;
 			}
 		}
 		else
-			(*ret)->c = ft_append((*ret)->c, c[(*i)++], 0);
+			(*ret)->c = ft_append((*ret)->c, c[(*i)++], MALLOC_TMP);
 	}
 	if (c[(*i)] != '"')
 		return (-1);
@@ -62,7 +62,7 @@ int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 {
 	if (vars->s && (vars->ret)->c)
 		nexts_string(&vars->ret);
-	(vars->ret)->c = ft_append((vars->ret)->c, '\0', 0);
+	(vars->ret)->c = ft_append((vars->ret)->c, '\0', MALLOC_TMP);
 	vars->s = 0;
 	if (c[vars->i] == '"')
 	{
@@ -76,7 +76,7 @@ int	handlequotes(t_lexvars *vars, const char *c, t_env *env)
 	{
 		(vars->i)++;
 		while (c[vars->i] && c[vars->i] != '\'')
-			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
+			(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], MALLOC_TMP);
 		if (c[(vars->i)++] != '\'')
 			return (write(2, "error: no quote\n", 17), 1);
 	}

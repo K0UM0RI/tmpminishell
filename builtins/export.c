@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:57 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 08:23:37 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:05:27 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	attachnewvar(char *tmp, t_env **env, int s, int v)
 		tmpenv = previous->next;
 	}
 	if (s > 0 && v == 1)
-		tmpenv->value = ft_strdup(tmp + s + 1, 2);
+		tmpenv->value = ft_strdup(tmp + s + 1, MALLOC_LASTING);
 	else if (s > 0 && v == 2)
-		tmpenv->value = ft_strjoin(tmpenv->value, tmp + s + 1, 2);
+		tmpenv->value = ft_strjoin(tmpenv->value, tmp + s + 1, MALLOC_LASTING);
 }
 
 int	getnewvar(char *tmp, t_env **env)
@@ -73,10 +73,10 @@ int	getnewvar(char *tmp, t_env **env)
 		tmp[s - 1] = '\0';
 	if (!*env)
 	{
-		(*env) = mymalloc(sizeof(t_env), 2);
-		(*env)->name = ft_strdup(tmp, 2);
+		(*env) = mymalloc(sizeof(t_env), MALLOC_LASTING);
+		(*env)->name = ft_strdup(tmp, MALLOC_LASTING);
 		if (s > 0)
-			(*env)->value = ft_strdup(tmp + s + 1, 2);
+			(*env)->value = ft_strdup(tmp + s + 1, MALLOC_LASTING);
 		(*env)->next = NULL;
 		return (0);
 	}
@@ -95,7 +95,7 @@ int	ft_export(char **command, t_env **env)
 		print_export(*env);
 	while (command[i])
 	{
-		if (getnewvar(ft_strdup(command[i], 0), env))
+		if (getnewvar(ft_strdup(command[i], MALLOC_TMP), env))
 			r = 2;
 		i++;
 	}

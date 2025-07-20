@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:15:41 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/12 17:06:44 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:07:09 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	**gridjoin(char **command, char *elem, int i)
 	int		j;
 
 	j = 0;
-	ret = mymalloc(sizeof(char *) * (i + 1), 0);
+	ret = mymalloc(sizeof(char *) * (i + 1), MALLOC_TMP);
 	if (!command)
 	{
 		*ret = elem;
@@ -42,7 +42,7 @@ int	linenew(t_line **line)
 
 	if (!line)
 		return (1);
-	tmp = mymalloc(sizeof(t_line), 0);
+	tmp = mymalloc(sizeof(t_line), MALLOC_TMP);
 	tmp->command = NULL;
 	tmp->reds = NULL;
 	tmp->next = NULL;
@@ -63,13 +63,13 @@ int	doops(t_string **elems, t_line **line)
 	tmp = (*elems)->c;
 	(*elems) = (*elems)->next;
 	if (!ft_strncmp(tmp, ">", 2))
-		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0),
+		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, MALLOC_TMP),
 				RED_OUT_TRUNC));
 	if (!ft_strncmp(tmp, ">>", 3))
-		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0),
+		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, MALLOC_TMP),
 				RED_OUT_APPEND));
 	if (!ft_strncmp(tmp, "<", 2))
-		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, 0), RED_IN));
+		red_addback(&(*line)->reds, red_new(ft_strdup((*elems)->c, MALLOC_TMP), RED_IN));
 	if (!ft_strncmp(tmp, "|", 2))
 		return (linenew(line));
 	if (ft_strncmp(tmp, "|", 2))

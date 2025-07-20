@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:01 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:59:52 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:53:12 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@
 # define YELLOW  "\033[1;33m"
 # define BLUE    "\033[34m"
 # define COLOR_RESET   "\033[0m"
+# define MALLOC_TMP 0
+# define MALLOC_LASTING 2
+# define FREE_TMP 1
+# define FREE_LASTING 3
 
 typedef struct s_string
 {

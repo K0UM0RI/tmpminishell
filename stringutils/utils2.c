@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:35:19 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/03 08:13:27 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:55:26 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	is_directory(char *path)
 
 void	exitandfree(int exit_status)
 {
-	mymalloc(0, 1);
-	mymalloc(0, 3);
+	mymalloc(0, FREE_TMP);
+	mymalloc(0, FREE_LASTING);
 	exit(exit_status);
 }

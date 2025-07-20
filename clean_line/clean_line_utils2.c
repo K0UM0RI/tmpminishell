@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:03 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/17 01:03:33 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:02:22 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_string	*news_string(void)
 {
 	t_string	*c;
 
-	c = (t_string *)mymalloc(sizeof(t_string), 0);
+	c = (t_string *)mymalloc(sizeof(t_string), MALLOC_TMP);
 	c->c = NULL;
 	c->next = NULL;
 	c->type = 0;
@@ -54,7 +54,7 @@ char	*getvarname(const char *c, int *i)
 			(*i)++;
 			if (ft_isnum(c[(*i) - 1]))
 				return (NULL);
-			return (ft_strdup("?", 0));
+			return (ft_strdup("?", MALLOC_TMP));
 		}
 		if ((c[*i] != '"' && c[*i] != '\'') || c[*i] == '$')
 			return ((char *)-1);
@@ -63,7 +63,7 @@ char	*getvarname(const char *c, int *i)
 	while (c[*i] && (ft_isalpha(c[(*i)]) || ft_isnum(c[(*i)])
 			|| c[(*i)] == '_'))
 	{
-		var = ft_append(var, c[(*i)], 0);
+		var = ft_append(var, c[(*i)], MALLOC_TMP);
 		(*i)++;
 	}
 	return (var);

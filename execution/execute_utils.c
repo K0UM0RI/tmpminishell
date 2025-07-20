@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:19 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 09:30:08 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:57:37 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_lstsizeline(t_line *line)
 void	initexecstruct(t_exec *exec, t_line *line)
 {
 	exec->npipes = ft_lstsizeline(line);
-	exec->child = mymalloc(sizeof(pid_t) * exec->npipes, 0);
+	exec->child = mymalloc(sizeof(pid_t) * exec->npipes, MALLOC_TMP);
 	exec->oldpipefd[0] = -1;
 	exec->oldpipefd[1] = -1;
 }

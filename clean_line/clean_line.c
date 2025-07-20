@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:47 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 13:16:39 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:02:56 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 		nexts_string(&vars->ret);
 	vars->ret->type = OPERATOR;
 	tmp = c[vars->i];
-	vars->ret->c = ft_append(vars->ret->c, c[vars->i++], 0);
+	vars->ret->c = ft_append(vars->ret->c, c[vars->i++], MALLOC_TMP);
 	if (tmp == c[vars->i] && tmp == '|')
 		return (write(2, "syntax error\n", 14), 1);
 	else if (tmp == c[vars->i] && c[vars->i] == '<')
@@ -31,7 +31,7 @@ int	handleoperators(t_lexvars *vars, const char *c, t_env *env)
 	else if (tmp == '>')
 	{
 		if (tmp == c[vars->i])
-			vars->ret->c = ft_append(vars->ret->c, c[vars->i++], 0);
+			vars->ret->c = ft_append(vars->ret->c, c[vars->i++], MALLOC_TMP);
 	}
 	if (isoperator(c[vars->i]) && tmp != '|')
 		return (write(2, "syntax error\n", 14), 1);
@@ -55,7 +55,7 @@ void	expandhome(t_lexvars *vars, const char *c, t_env *env)
 	}
 	else if (c[vars->i] == '~')
 	{
-		vars->ret->c = ft_append(vars->ret->c, '~', 0);
+		vars->ret->c = ft_append(vars->ret->c, '~', MALLOC_TMP);
 		vars->i++;
 		return ;
 	}
@@ -72,7 +72,7 @@ void	foundexpandable(t_lexvars *vars, const char *c, t_env *env)
 	tmp = foundvar(&(vars->i), c, env);
 	if (tmp == (char *)-1)
 	{
-		vars->ret->c = ft_append(vars->ret->c, '$', 0);
+		vars->ret->c = ft_append(vars->ret->c, '$', MALLOC_TMP);
 		tmp = NULL;
 	}
 	else if (tmp == (char *)-2)
@@ -105,7 +105,7 @@ int	filllist(t_lexvars *vars, const char *c, t_env *env)
 		if (vars->s && (vars->ret)->c)
 			nexts_string(&vars->ret);
 		vars->s = 0;
-		(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], 0);
+		(vars->ret)->c = ft_append((vars->ret)->c, c[(vars->i)++], MALLOC_TMP);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:43 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/16 14:19:48 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:55:55 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*here_docvarname(const char *c, int *i)
 	while (c[*i] && !mywhitespace(c[(*i)]) && c[(*i)] != '"'
 		&& !isoperator(c[*i]) && c[(*i)] != '\'' && c[(*i)] != '$')
 	{
-		var = ft_append(var, c[(*i)], 0);
+		var = ft_append(var, c[(*i)], MALLOC_TMP);
 		(*i)++;
 	}
 	return (var);
@@ -33,7 +33,7 @@ char	*here_docexpand(int *i, const char *c, t_env *env)
 	(*i)++;
 	var = here_docvarname(c, i);
 	if (!var)
-		return (ft_strdup("$", 0));
+		return (ft_strdup("$", MALLOC_TMP));
 	var = getmyenv(var, env);
 	return (var);
 }

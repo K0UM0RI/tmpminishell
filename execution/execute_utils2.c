@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:34 by sbat              #+#    #+#             */
-/*   Updated: 2025/07/14 08:41:29 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:58:12 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	finishexec(t_exec exec, int i, struct sigaction old)
 	}
 	sigaction(SIGINT, &old, NULL);
 	j = 1;
-	while (!access(ft_strjoin("/tmp/.tmp", ft_itoa(j, 0), 0), F_OK))
-		unlink(ft_strjoin("/tmp/.tmp", ft_itoa(j++, 0), 0));
+	while (!access(ft_strjoin("/tmp/.tmp", ft_itoa(j, MALLOC_TMP), MALLOC_TMP), F_OK))
+		unlink(ft_strjoin("/tmp/.tmp", ft_itoa(j++, MALLOC_TMP), MALLOC_TMP));
 	return (exit);
 }

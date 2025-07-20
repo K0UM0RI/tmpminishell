@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 21:34:35 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/08 17:22:29 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 10:53:52 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	*mymalloc(size_t size, int fn)
 	static t_truck	*allocatedlasting = NULL;
 	t_truck			*new;
 
-	if (fn == 1)
+	if (fn == FREE_TMP)
 		return (free_lst(&allocatedtmp), NULL);
-	if (fn == 3)
+	if (fn == FREE_LASTING)
 		return (free_lst(&allocatedlasting), NULL);
 	new = malloc(sizeof(t_truck));
 	if (!new)
@@ -52,12 +52,12 @@ void	*mymalloc(size_t size, int fn)
 	new->ptr = malloc(size);
 	if (!new)
 		(free(new), mallocfail(&allocatedtmp, &allocatedlasting));
-	if (fn == 0)
+	if (fn == MALLOC_TMP)
 	{
 		new->next = allocatedtmp;
 		allocatedtmp = new;
 	}
-	if (fn == 2)
+	if (fn == MALLOC_LASTING)
 	{
 		new->next = allocatedlasting;
 		allocatedlasting = new;

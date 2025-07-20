@@ -6,7 +6,7 @@
 /*   By: sbat <sbat@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:16:15 by sbat              #+#    #+#             */
-/*   Updated: 2025/06/11 19:02:16 by sbat             ###   ########.fr       */
+/*   Updated: 2025/07/20 11:01:15 by sbat             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	joinwithslash(char **paths)
 	i = 0;
 	while (paths[i])
 	{
-		paths[i] = ft_strjoin(paths[i], "/", 0);
+		paths[i] = ft_strjoin(paths[i], "/", MALLOC_TMP);
 		i++;
 	}
 }
@@ -66,7 +66,7 @@ char	*checkpaths(char *cmd, char **paths)
 		return (NULL);
 	while (paths[i])
 	{
-		c = ft_strjoin(paths[i], cmd, 0);
+		c = ft_strjoin(paths[i], cmd, MALLOC_TMP);
 		if (!c)
 			return (NULL);
 		if (!access(c, F_OK | X_OK))
@@ -92,7 +92,7 @@ char	*getcmd(char *cmd, t_env *env)
 	if (ifslash(cmd))
 	{
 		if (!access(cmd, F_OK))
-			return (ft_strdup(cmd, 0));
+			return (ft_strdup(cmd, MALLOC_TMP));
 		else
 			return (write(2, error, ft_strlen(error)), NULL);
 	}
@@ -100,7 +100,7 @@ char	*getcmd(char *cmd, t_env *env)
 	if (paths)
 		c = checkpaths(cmd, paths);
 	else if (!access(cmd, F_OK))
-		return (ft_strdup(cmd, 0));
+		return (ft_strdup(cmd, MALLOC_TMP));
 	if (c)
 		return (c);
 	return (write(2, error, ft_strlen(error)), NULL);
